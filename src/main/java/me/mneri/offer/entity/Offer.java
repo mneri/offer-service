@@ -42,7 +42,7 @@ public class Offer {
     private Date endTime;
 
     @Column
-    private boolean expired;
+    private boolean canceled;
 
     @ManyToOne(fetch = LAZY)
     @NonNull
