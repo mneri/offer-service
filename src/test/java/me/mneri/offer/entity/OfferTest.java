@@ -49,6 +49,7 @@ class OfferTest {
         assertEquals(0, price.compareTo(instance.getPrice()));
         assertEquals(currency, instance.getCurrency());
         assertEquals(end, instance.getEnd());
+        assertFalse(instance.isCanceled());
         assertEquals(publisher, instance.getPublisher());
     }
 }
