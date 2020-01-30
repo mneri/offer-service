@@ -1,6 +1,7 @@
 package me.mneri.offer.entity;
 
 import lombok.*;
+import me.mneri.offer.validator.Username;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.Column;
@@ -48,6 +49,7 @@ public class User {
 
     @Column(unique = true)
     @NonNull
+    @Username
     private String username;
 
     /*

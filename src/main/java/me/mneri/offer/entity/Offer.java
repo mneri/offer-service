@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.UUID;
@@ -33,15 +34,18 @@ public class Offer {
 
     @Id
     @NonNull
+    @NotBlank
     @Setter(PROTECTED)
     private String id;
 
     @Column
     @NonNull
+    @NotBlank
     private String title;
 
     @Column
     @NonNull
+    @NotBlank
     private String description;
 
     @Column(precision = 16, scale = 2)
