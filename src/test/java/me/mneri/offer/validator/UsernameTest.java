@@ -16,7 +16,25 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class UsernameValidatorTest {
+/**
+ * Test {@link Username} validator.
+ * <p>
+ * The following tests are performed:
+ * <ul>
+ *     <li>A {@code null} string;</li>
+ *     <li>An empty string;</li>
+ *     <li>A short string;</li>
+ *     <li>A long string;</li>
+ *     <li>A string containing illegal symbols;</li>
+ *     <li>A legal string.</li>
+ * </ul>
+ *
+ * @author mneri
+ */
+class UsernameTest {
+    private static final int USERNAME_MAX_LENGTH = 24;
+    private static final int USERNAME_MIN_LENGTH = 3;
+
     @Data
     @AllArgsConstructor
     private static class Subject {
@@ -38,6 +56,9 @@ class UsernameValidatorTest {
         validator = validatorFactory.getValidator();
     }
 
+    /**
+     * Test {@link Username} validator against an empty string.
+     */
     @Test
     void givenEmptyUsername_whenValidationOccurs_thenErrorsAreProduced() {
         // Given
@@ -50,8 +71,11 @@ class UsernameValidatorTest {
         assertFalse(violations.isEmpty());
     }
 
+    /**
+     * Test {@link Username} validator against legal string.
+     */
     @Test
-    void givenLegalUsername_whenValidationOccurs_thenErrorsAreProduced() {
+    void givenLegalUsername_whenValidationOccurs_thenNoErrorsAreProduced() {
         // Given
         val subject = new Subject("user");
 
@@ -62,6 +86,29 @@ class UsernameValidatorTest {
         assertTrue(violations.isEmpty());
     }
 
+    /**
+     * Test {@link Username} validator against a long string.
+     */
+    @Test
+    void givenLongUsername_whenValidationOccurs_thenErrorsAreProduced() {
+        val builder = new StringBuilder();
+
+        for (int i = 0; i < USERNAME_MAX_LENGTH + 1; i++) {
+            builder.append("u");
+        }
+
+        val subject = new Subject(builder.toString());
+
+        // When
+        Set<ConstraintViolation<Subject>> violations = validator.validate(subject);
+
+        // Then
+        assertFalse(violations.isEmpty());
+    }
+
+    /**
+     * Test {@link Username} validator against {@code null}.
+     */
     @Test
     void givenNullUsername_whenValidationOccurs_thenErrorsAreProduced() {
         // Given
@@ -74,10 +121,19 @@ class UsernameValidatorTest {
         assertFalse(violations.isEmpty());
     }
 
+    /**
+     * Test {@link Username} validator against a short string.
+     */
     @Test
     void givenShortUsername_whenValidationOccurs_thenErrorsAreProduced() {
         // Given
-        val subject = new Subject("uu");
+        val builder = new StringBuilder();
+
+        for (int i = 0; i < USERNAME_MIN_LENGTH - 1; i++) {
+            builder.append("u");
+        }
+
+        val subject = new Subject(builder.toString());
 
         // When
         Set<ConstraintViolation<Subject>> violations = validator.validate(subject);
@@ -86,6 +142,9 @@ class UsernameValidatorTest {
         assertFalse(violations.isEmpty());
     }
 
+    /**
+     * Test {@link Username} validator against illegal characters.
+     */
     @Test
     void givenUsernameWithIllegalCharacters_whenValidationOccurs_thenErrorsAreProduced() {
         String illegals = "`¬¦!\"£$%^&*()-=+[];'#,./{}:@~<>?\\|";
