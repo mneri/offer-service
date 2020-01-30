@@ -15,7 +15,19 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import static me.mneri.offer.specification.UserSpecification.usernameIsEqualTo;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.data.jpa.domain.Specification.where;
 
+/**
+ * Test the {@link UserSpecification#usernameIsEqualTo(String)} specification.<br/>
+ * We test 3 different cases:
+ * <ul>
+ *     <li>Empty repository;</li>
+ *     <li>Repository containing a user with the specified username;</li>
+ *     <li>Repository containing a user with a different username.</li>
+ * </ul>
+ *
+ * @author mneri
+ */
 @DataJpaTest
 @ExtendWith(SpringExtension.class)
 public class UserSpecificationIntegrationTest$usernameIsEqualTo {
@@ -29,43 +41,54 @@ public class UserSpecificationIntegrationTest$usernameIsEqualTo {
         passwordEncoder = new BCryptPasswordEncoder();
     }
 
+    private User createTestUser() {
+        return new User("user", "secret", passwordEncoder);
+    }
+
+    /**
+     * Test the SQL predicate {@code user.username = 'value'} against a repository containing the wanted username.
+     */
     @Test
     void givenUsernameAndUserInRepository_whenFindAll$usernameIsEqualToIsCalled_thenUserIsReturned() {
         // Given
-        val username = "user";
-        val user = new User(username, "secret", passwordEncoder);
+        val user = createTestUser();
 
         userRepository.save(user);
 
         // When
-        val returned = userRepository.findAll(usernameIsEqualTo(username));
+        val returned = userRepository.findAll(where(usernameIsEqualTo(user.getUsername())));
 
         // Then
         assertTrue(returned.contains(user));
     }
 
+    /**
+     * Test the SQL predicate {@code user.username = 'value'} against an empty repository.
+     */
     @Test
-    void givenUsernameAndEmptyRepository_whenFindAll$usernameIsEqualToIsCalled_thenNoUserIsReturned() {
+    void givenEmptyRepository_whenFindAll$usernameIsEqualToIsCalled_thenNoUserIsReturned() {
         // Given
         val username = "user";
 
         // When
-        val returned = userRepository.findAll(usernameIsEqualTo(username));
+        val returned = userRepository.findAll(where(usernameIsEqualTo(username)));
 
         // Then
         assertTrue(returned.isEmpty());
     }
 
+    /**
+     * Test the SQL predicate {@code user.username = 'value'} against a repository containing a different username.
+     */
     @Test
     void givenUsernameAndDifferentUserInRepository_whenFindAll$usernameIsEqualToIsCalled_thenNoUserIsReturned() {
         // Given
-        val username = "user";
-        val user = new User("another", "secret", passwordEncoder);
+        val user = createTestUser();
 
         userRepository.save(user);
 
         // When
-        val returned = userRepository.findAll(usernameIsEqualTo(username));
+        val returned = userRepository.findAll(where(usernameIsEqualTo("another")));
 
         // Then
         assertFalse(returned.contains(user));

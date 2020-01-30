@@ -13,9 +13,21 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static me.mneri.offer.specification.UserSpecification.isEnabled;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.data.jpa.domain.Specification.where;
 
+/**
+ * Test the {@link UserSpecification#isEnabled()} specification.<br/>
+ * We test 3 different cases:
+ * <ul>
+ *     <li>Empty repository;</li>
+ *     <li>Repository containing an enabled user;</li>
+ *     <li>Repository containing a disabled user.</li>
+ * </ul>
+ *
+ * @author mneri
+ */
 @DataJpaTest
 @ExtendWith(SpringExtension.class)
 class UserSpecificationIntegrationTest$isEnabled {
@@ -29,20 +41,25 @@ class UserSpecificationIntegrationTest$isEnabled {
         passwordEncoder = new BCryptPasswordEncoder();
     }
 
+    private User createTestUser() {
+        return new User("user", "secret", passwordEncoder);
+    }
+
     /**
      * Test the SQL predicate {@code user.enabled = 1} against a repository containing an enabled user.
      */
     @Test
     void givenEnabledUserInRepository_whenFindAll$isEnabledIsCalled_thenUserIsReturned() {
         // Given
-        val user = new User("user", "secret", passwordEncoder);
+        val user = createTestUser();
 
         userRepository.save(user);
 
         // When
-        val returned = userRepository.findAll(isEnabled());
+        val returned = userRepository.findAll(where(isEnabled()));
 
         // Then
+        assertEquals(1, returned.size());
         assertTrue(returned.contains(user));
     }
 
@@ -55,7 +72,7 @@ class UserSpecificationIntegrationTest$isEnabled {
         // Empty repository
 
         // When
-        val returned = userRepository.findAll(isEnabled());
+        val returned = userRepository.findAll(where(isEnabled()));
 
         // Then
         assertTrue(returned.isEmpty());
@@ -67,15 +84,15 @@ class UserSpecificationIntegrationTest$isEnabled {
     @Test
     void givenDisabledUserInRepository_whenFindAll$isEnabledIsCalled_thenNoUserIsReturned() {
         // Given
-        val user = new User("user", "secret", passwordEncoder);
+        val user = createTestUser();
 
         user.setEnabled(false);
         userRepository.save(user);
 
         // When
-        val returned = userRepository.findAll(isEnabled());
+        val returned = userRepository.findAll(where(isEnabled()));
 
         // Then
-        assertFalse(returned.contains(user));
+        assertTrue(returned.isEmpty());
     }
 }

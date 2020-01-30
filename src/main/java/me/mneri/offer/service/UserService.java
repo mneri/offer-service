@@ -11,6 +11,11 @@ import static me.mneri.offer.specification.UserSpecification.isEnabled;
 import static me.mneri.offer.specification.UserSpecification.usernameIsEqualTo;
 import static org.springframework.data.jpa.domain.Specification.where;
 
+/**
+ * Service for accessing the user repository.
+ *
+ * @author mneri
+ */
 @Service
 public class UserService {
     @Autowired

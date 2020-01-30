@@ -8,10 +8,15 @@ import static lombok.AccessLevel.PRIVATE;
 import static me.mneri.offer.entity.User_.enabled;
 import static me.mneri.offer.entity.User_.username;
 
+/**
+ * Utility class for {@link User} specification definitions.
+ *
+ * @author mneri
+ */
 @NoArgsConstructor(access = PRIVATE)
 public final class UserSpecification {
     /**
-     * Return a specification for the SQL predicate {@code user.enabled = 1}.
+     * Return a {@link Specification} for the SQL predicate {@code user.enabled = 1}.
      *
      * @return The specification.
      */
@@ -20,7 +25,7 @@ public final class UserSpecification {
     }
 
     /**
-     * Return a specification for the SQL predicate {@code user.username = 'value'}.
+     * Return a {@link Specification} for the SQL predicate {@code user.username = 'value'}.
      *
      * @param value The value to match against username.
      * @return The specification.
