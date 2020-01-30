@@ -13,6 +13,11 @@ import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import static me.mneri.offer.validator.Constants.*;
 
+/**
+ * Constraint to be applied to a user's username.
+ *
+ * @author mneri
+ */
 @Constraint(validatedBy = {})
 @Documented
 @NotEmpty

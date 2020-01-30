@@ -18,9 +18,16 @@ import static org.springframework.data.jpa.domain.Specification.not;
  */
 @NoArgsConstructor(access = PRIVATE)
 public final class OfferSpecification {
+    /**
+     * Return a {@link Specification} for the SQL predicate {@code offer.id = 'value'}.
+     *
+     * @param value The offer id.
+     * @return The specification.
+     */
     public static Specification<Offer> idIsEqualTo(String value) {
         return (root, query, builder) -> builder.equal(root.get(Offer_.id), value);
     }
+
     /**
      * Return a {@link Specification} for the SQL predicate {@code offer.canceled = 1}.
      *
@@ -52,6 +59,7 @@ public final class OfferSpecification {
     /**
      * Return a {@link Specification} for the SQL predicate {@code offer.publisher = 'value'}.
      *
+     * @param value The publisher's id.
      * @return The specification.
      */
     public static Specification<Offer> publisherIdIsEqualTo(String value) {
@@ -61,6 +69,7 @@ public final class OfferSpecification {
     /**
      * Return a {@link Specification} for the SQL predicate {@code publisher.username = 'value'}.
      *
+     * @param value The publisher's username
      * @return The specification.
      */
     public static Specification<Offer> publisherUsernameIsEqualTo(String value) {

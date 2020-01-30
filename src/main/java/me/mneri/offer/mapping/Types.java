@@ -10,6 +10,11 @@ import java.util.List;
 
 import static lombok.AccessLevel.PRIVATE;
 
+/**
+ * {@link Type} constants for mapping generic objects.
+ *
+ * @author mneri
+ */
 @NoArgsConstructor(access = PRIVATE)
 public final class Types {
     //@formatter:off

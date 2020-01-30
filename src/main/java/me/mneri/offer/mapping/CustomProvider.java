@@ -4,6 +4,11 @@ import lombok.SneakyThrows;
 import me.mneri.offer.entity.Offer;
 import org.modelmapper.Provider;
 
+/**
+ * Custom mapping provider capable of creating {@link Offer} instances.
+ *
+ * @author mneri
+ */
 class CustomProvider implements Provider<Object> {
     @Override
     @SneakyThrows

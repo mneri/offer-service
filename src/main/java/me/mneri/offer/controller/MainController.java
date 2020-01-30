@@ -22,7 +22,11 @@ import static me.mneri.offer.mapping.Types.OFFER_DTO_LIST_TYPE;
 import static me.mneri.offer.mapping.Types.USER_DTO_LIST_TYPE;
 import static org.springframework.http.HttpStatus.CREATED;
 
-@RequestMapping
+/**
+ * Main application REST controller.
+ *
+ * @author mneri
+ */
 @RestController
 public class MainController {
     @Autowired

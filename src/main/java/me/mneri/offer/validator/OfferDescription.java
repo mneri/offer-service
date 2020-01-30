@@ -13,6 +13,11 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import static me.mneri.offer.validator.Constants.OFFER_DESCRIPTION_MAX_LENGTH;
 import static me.mneri.offer.validator.Constants.OFFER_DESCRIPTION_MIN_LENGTH;
 
+/**
+ * Constraint to be applied to offer descriptions.
+ *
+ * @author mneri
+ */
 @Constraint(validatedBy = {})
 @Documented
 @NotEmpty

@@ -22,6 +22,12 @@ public class OfferService {
     @Autowired
     private OfferRepository offerRepository;
 
+    /**
+     * Return whether or not an open {@link Offer} with the specified id exists in the database.
+     *
+     * @param id The offer's id.
+     * @return {@code true} if such an offer exists, false otherwise.
+     */
     public boolean existsOpenById(String id) {
         return offerRepository.count(where(isOpen()).and(idIsEqualTo(id))) == 1;
     }
@@ -65,6 +71,11 @@ public class OfferService {
         return offerRepository.findOne(where(isOpen()).and(idIsEqualTo(id)));
     }
 
+    /**
+     * Persist an offer into the database.
+     *
+     * @param offer The offer.
+     */
     public void save(Offer offer) {
         offerRepository.save(offer);
     }

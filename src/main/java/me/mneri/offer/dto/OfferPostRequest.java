@@ -2,12 +2,18 @@ package me.mneri.offer.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
+import me.mneri.offer.entity.Offer;
 import me.mneri.offer.validator.OfferDescription;
 import me.mneri.offer.validator.OfferTitle;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
+/**
+ * DTO for a user's request to create a new {@link Offer}.
+ *
+ * @author mneri
+ */
 @Data
 @EqualsAndHashCode
 @NoArgsConstructor

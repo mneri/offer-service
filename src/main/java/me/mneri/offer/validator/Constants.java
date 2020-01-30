@@ -4,6 +4,11 @@ import lombok.NoArgsConstructor;
 
 import static lombok.AccessLevel.PRIVATE;
 
+/**
+ * Contains all the constants for validation in a single centralized point.
+ *
+ * @author mneri
+ */
 @NoArgsConstructor(access = PRIVATE)
 final class Constants {
     public static final int OFFER_DESCRIPTION_MAX_LENGTH = 8192;

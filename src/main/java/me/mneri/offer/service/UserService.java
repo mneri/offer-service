@@ -21,6 +21,13 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    /**
+     * Return whether or not an enabled {@link User} with the specified id exists.
+     *
+     * @param id The user's id.
+     * @return {@code true} if such a user exists, {@code false} otherwise.
+     */
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean existsEnabledById(String id) {
         return userRepository.count(where(isEnabled()).and(idIsEqualTo(id))) == 1;
     }
@@ -56,6 +63,11 @@ public class UserService {
         return userRepository.findOne(where(isEnabled()).and(usernameIsEqualTo(username)));
     }
 
+    /**
+     * Persist a user into the database.
+     *
+     * @param user The user.
+     */
     public void save(User user) {
         userRepository.save(user);
     }

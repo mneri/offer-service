@@ -11,6 +11,13 @@ import java.util.UUID;
 
 import static lombok.AccessLevel.PROTECTED;
 
+/**
+ * ORM for {@code user} table.
+ * <p>
+ * The id is immutable and is assigned upon creation. ORM objects are compared by their id and not their state.
+ *
+ * @author mneri
+ */
 @Data
 @Entity
 @EqualsAndHashCode(of = "id")
