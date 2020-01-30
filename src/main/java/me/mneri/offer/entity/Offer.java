@@ -1,6 +1,8 @@
 package me.mneri.offer.entity;
 
 import lombok.*;
+import me.mneri.offer.validator.OfferDescription;
+import me.mneri.offer.validator.OfferTitle;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,8 +23,7 @@ import static lombok.AccessLevel.PROTECTED;
 @ToString
 public class Offer {
     @Builder
-    private Offer(@NonNull String title, @NonNull String description, @NonNull BigDecimal price,
-                  @NonNull String currency, @NonNull Date end, @NonNull User publisher) {
+    private Offer(String title, String description, BigDecimal price, String currency, Date end, User publisher) {
         this.id = UUID.randomUUID().toString();
         this.title = title;
         this.description = description;
@@ -40,12 +41,12 @@ public class Offer {
 
     @Column
     @NonNull
-    @NotBlank
+    @OfferTitle
     private String title;
 
     @Column
     @NonNull
-    @NotBlank
+    @OfferDescription
     private String description;
 
     @Column(precision = 16, scale = 2)

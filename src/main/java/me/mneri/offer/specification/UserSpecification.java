@@ -5,8 +5,7 @@ import me.mneri.offer.entity.User;
 import org.springframework.data.jpa.domain.Specification;
 
 import static lombok.AccessLevel.PRIVATE;
-import static me.mneri.offer.entity.User_.enabled;
-import static me.mneri.offer.entity.User_.username;
+import static me.mneri.offer.entity.User_.*;
 
 /**
  * Utility class for {@link User} specification definitions.
@@ -15,6 +14,16 @@ import static me.mneri.offer.entity.User_.username;
  */
 @NoArgsConstructor(access = PRIVATE)
 public final class UserSpecification {
+    /**
+     * Return a {@link Specification} for the SQL predicate {@code user.id = 'value'}.
+     *
+     * @param value The value to match against the id.
+     * @return The specification.
+     */
+    public static Specification<User> idIsEqualTo(String value) {
+        return (root, query, builder) -> builder.equal(root.get(id), value);
+    }
+
     /**
      * Return a {@link Specification} for the SQL predicate {@code user.enabled = 1}.
      *

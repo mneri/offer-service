@@ -31,7 +31,7 @@ class UserServiceIntegrationTest$findByUsername {
     }
 
     /**
-     * Test the method {@link UserService#findByUsername(String)} against an empty repository.
+     * Test the method {@link UserService#findEnabledByUsername(String)} against an empty repository.
      */
     @Test
     void givenEmptyRepository_whenFindByUsernameIsCalled_thenNoUserIsReturned() {
@@ -39,14 +39,14 @@ class UserServiceIntegrationTest$findByUsername {
         val username = "user";
 
         // When
-        val returned = userService.findByUsername(username);
+        val returned = userService.findEnabledByUsername(username);
 
         // Then
         assertFalse(returned.isPresent());
     }
 
     /**
-     * Test the method {@link UserService#findByUsername(String)} against a repository that does not contain the
+     * Test the method {@link UserService#findEnabledByUsername(String)} against a repository that does not contain the
      * specified username.
      */
     @Test
@@ -58,14 +58,14 @@ class UserServiceIntegrationTest$findByUsername {
         userRepository.save(user);
 
         // When
-        val returned = userService.findByUsername(username);
+        val returned = userService.findEnabledByUsername(username);
 
         // Then
         assertFalse(returned.isPresent());
     }
 
     /**
-     * Test the method {@link UserService#findByUsername(String)} against a repository that contains the specified
+     * Test the method {@link UserService#findEnabledByUsername(String)} against a repository that contains the specified
      * username, but the user is disabled.
      */
     @Test
@@ -78,14 +78,14 @@ class UserServiceIntegrationTest$findByUsername {
         userRepository.save(user);
 
         // When
-        val returned = userService.findByUsername(username);
+        val returned = userService.findEnabledByUsername(username);
 
         // Then
         assertFalse(returned.isPresent());
     }
 
     /**
-     * Test the method {@link UserService#findByUsername(String)} against a repository that contains the specified
+     * Test the method {@link UserService#findEnabledByUsername(String)} against a repository that contains the specified
      * username and the user is enabled.
      */
     @Test
@@ -97,7 +97,7 @@ class UserServiceIntegrationTest$findByUsername {
         userRepository.save(user);
 
         // When
-        val returned = userService.findByUsername(username);
+        val returned = userService.findEnabledByUsername(username);
 
         // Then
         assertEquals(user, returned.orElse(null));

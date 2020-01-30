@@ -18,6 +18,9 @@ import static org.springframework.data.jpa.domain.Specification.not;
  */
 @NoArgsConstructor(access = PRIVATE)
 public final class OfferSpecification {
+    public static Specification<Offer> idIsEqualTo(String value) {
+        return (root, query, builder) -> builder.equal(root.get(Offer_.id), value);
+    }
     /**
      * Return a {@link Specification} for the SQL predicate {@code offer.canceled = 1}.
      *
