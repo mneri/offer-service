@@ -20,8 +20,6 @@ import java.util.Optional;
 
 import static me.mneri.offer.mapping.Types.OFFER_DTO_LIST_TYPE;
 import static me.mneri.offer.mapping.Types.USER_DTO_LIST_TYPE;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
-import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON;
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 
 /**

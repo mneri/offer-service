@@ -47,7 +47,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
 @SpringBootTest
-public class OffersControllerTest$putOffer {
+class OffersControllerTest$putOffer {
     private static final String PATH = "/offers/%s?user.id=%s";
     @Autowired
     private MockMvc mockMvc;

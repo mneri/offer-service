@@ -1,34 +1,17 @@
 package me.mneri.offer.service;
 
 import me.mneri.offer.entity.User;
-import me.mneri.offer.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-import static me.mneri.offer.specification.UserSpecification.*;
-import static org.springframework.data.jpa.domain.Specification.where;
-
-/**
- * Service for accessing the user repository.
- *
- * @author mneri
- */
-@Service
-public class UserService {
-    @Autowired
-    private UserRepository userRepository;
-
+public interface UserService {
     /**
      * Find all enabled {@link User}s.
      *
      * @return The list of all enabled users.
      */
-    public List<User> findAllEnabled() {
-        return userRepository.findAll(where(userIsEnabled()));
-    }
+    List<User> findAllEnabled();
 
     /**
      * Find the user with the specified id in the repository.
@@ -37,9 +20,7 @@ public class UserService {
      * @return If the user is present return an {@link Optional} of the user; otherwise return an empty
      * {@link Optional}.
      */
-    public Optional<User> findEnabledById(String id) {
-        return userRepository.findOne(where(userIsEnabled()).and(userIdIsEqualTo(id)));
-    }
+    Optional<User> findEnabledById(String id);
 
     /**
      * Find the user with the specified username in the repository.
@@ -48,16 +29,12 @@ public class UserService {
      * @return If the user is present return an {@link Optional} of the user; otherwise return an empty
      * {@link Optional}.
      */
-    public Optional<User> findEnabledByUsername(String username) {
-        return userRepository.findOne(where(userIsEnabled()).and(userUsernameIsEqualTo(username)));
-    }
+    Optional<User> findEnabledByUsername(String username);
 
     /**
      * Persist a user into the database.
      *
      * @param user The user.
      */
-    public void save(User user) {
-        userRepository.save(user);
-    }
+    void save(User user);
 }

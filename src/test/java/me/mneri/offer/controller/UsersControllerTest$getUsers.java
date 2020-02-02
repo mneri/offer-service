@@ -42,7 +42,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
 @SpringBootTest
-public class UsersControllerTest$getUsers {
+class UsersControllerTest$getUsers {
     private static final String PATH = "/users";
 
     @Autowired

@@ -4,11 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import lombok.val;
 import me.mneri.offer.dto.OfferDto;
-import me.mneri.offer.dto.UserDto;
 import me.mneri.offer.entity.Offer;
 import me.mneri.offer.entity.User;
 import me.mneri.offer.service.OfferService;
-import me.mneri.offer.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
@@ -46,7 +44,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
 @SpringBootTest
-public class OffersControllerTest$getOfferById {
+class OffersControllerTest$getOfferById {
     private static final String PATH = "/offers/%s";
 
     @Autowired

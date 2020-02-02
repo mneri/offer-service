@@ -5,11 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import lombok.val;
 import me.mneri.offer.dto.OfferDto;
-import me.mneri.offer.dto.UserDto;
 import me.mneri.offer.entity.Offer;
 import me.mneri.offer.entity.User;
 import me.mneri.offer.service.OfferService;
-import me.mneri.offer.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
@@ -21,13 +19,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.math.BigDecimal;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 import static me.mneri.offer.mapping.Types.OFFER_DTO_LIST_TYPE;
-import static me.mneri.offer.mapping.Types.USER_DTO_LIST_TYPE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.http.HttpStatus.OK;
@@ -48,7 +43,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
 @SpringBootTest
-public class OffersControllerTest$getOffers {
+class OffersControllerTest$getOffers {
     private static final String PATH = "/offers";
 
     @Autowired

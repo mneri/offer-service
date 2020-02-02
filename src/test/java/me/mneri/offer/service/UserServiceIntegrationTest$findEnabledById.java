@@ -3,6 +3,7 @@ package me.mneri.offer.service;
 import lombok.val;
 import me.mneri.offer.entity.User;
 import me.mneri.offer.repository.UserRepository;
+import me.mneri.offer.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
