@@ -1,6 +1,5 @@
 package me.mneri.offer.controller;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import lombok.val;
@@ -21,33 +20,32 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
-import java.util.Collections;
 import java.util.Date;
-import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
-import static me.mneri.offer.mapping.Types.OFFER_DTO_LIST_TYPE;
-import static me.mneri.offer.mapping.Types.USER_DTO_LIST_TYPE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 /**
- * Test the {@code GET /offers} endpoint.
+ * Test the {@code GET /offers/{offerId}} endpoint.
  * <p>
  * We test 2 main cases:
  * <ul>
- *     <li>Empty repository;</li>
- *     <li>A repository containing a single offer.</li>
+ *     <li>An empty repository;</li>
+ *     <li>A repository containing the specified offer.</li>
  * </ul>
  *
  * @author mneri
  */
 @AutoConfigureMockMvc
 @SpringBootTest
-public class OffersControllerTest$getOffers {
-    private static final String PATH = "/offers";
+public class OffersControllerTest$getOfferById {
+    private static final String PATH = "/offers/%s";
 
     @Autowired
     private MockMvc mvc;
@@ -68,58 +66,66 @@ public class OffersControllerTest$getOffers {
         objectMapper = new ObjectMapper();
     }
 
+    private Offer createTestOffer(User publisher) {
+        return Offer.builder()
+                .title("Bazinga")
+                .description("Amazing")
+                .price(new BigDecimal("100.00"))
+                .currency("GBP")
+                .publisher(publisher)
+                .end(new Date(System.currentTimeMillis() + 30 * 42 * 60 * 60 * 1000L))
+                .build();
+    }
+
     /**
-     * Test the endpoint against an empty repository (this test also covers the case where no user in the repository is
-     * enabled).
+     * Test the endpoint against an empty repository.
      */
     @SneakyThrows
     @Test
-    void givenEmptyRepository_whenGetUsersIsCalled_thenNoUserIsReturned() {
+    void givenEmptyRepository_whenGetOfferByIdIsCalled_thenNoOfferIsReturned() {
         // Given
-        List<Offer> offers = Collections.emptyList();
+        val id = UUID.randomUUID().toString();
+        Optional<Offer> optional = Optional.empty();
 
-        given(offerService.findAllOpen())
-                .willReturn(offers);
+        given(offerService.findOpenById(id))
+                .willReturn(optional);
 
         // When
         val response = mvc
-                .perform(get(PATH)
+                .perform(get(String.format(PATH, id))
                         .contentType(APPLICATION_JSON))
                 .andReturn()
                 .getResponse();
 
         // Then
-        val result = objectMapper.readValue(response.getContentAsString(), new TypeReference<List<OfferDto>>() {});
-        val expected = Collections.emptyList();
-
-        assertEquals(OK.value(), response.getStatus());
-        assertEquals(expected, result);
+        assertEquals(NOT_FOUND.value(), response.getStatus());
     }
 
     /**
-     * Test the endpoint against a repository containing a single open offer.
+     * Test the endpoint against a repository containing an offer with the specified offer id.
      */
     @SneakyThrows
     @Test
     void givenEnabledUser_whenGetUsersIsCalled_thenUserIsReturned() {
         // Given
         val publisher = new User("user", "secret", passwordEncoder);
-        val offer = ControllerTestUtil.createTestOffer(publisher);
-        val offers = Collections.singletonList(offer);
+        val offer = createTestOffer(publisher);
+        val id = offer.getId();
+        Optional<Offer> optional = Optional.of(offer);
 
-        given(offerService.findAllOpen())
-                .willReturn(offers);
+        given(offerService.findOpenById(id))
+                .willReturn(optional);
 
         // When
         val response = mvc
-                .perform(get(PATH)
+                .perform(get(String.format(PATH, id))
                         .contentType(APPLICATION_JSON))
                 .andReturn()
                 .getResponse();
 
         // Then
-        val result = objectMapper.readValue(response.getContentAsString(), new TypeReference<List<OfferDto>>() {});
-        val expected = modelMapper.map(offers, OFFER_DTO_LIST_TYPE);
+        OfferDto result = objectMapper.readValue(response.getContentAsString(), OfferDto.class);
+        OfferDto expected = modelMapper.map(offer, OfferDto.class);
 
         assertEquals(OK.value(), response.getStatus());
         assertEquals(expected, result);

@@ -29,6 +29,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 /**
  * Test the {@code GET /users} endpoint.
+ * <p>
+ * We test two main cases:
+ * <ul>
+ *     <li>An empty repository;</li>
+ *     <li>A repository containing a single user.</li>
+ * </ul>
  *
  * @author mneri
  */

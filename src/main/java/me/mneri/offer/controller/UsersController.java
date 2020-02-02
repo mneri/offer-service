@@ -21,6 +21,7 @@ import java.util.Optional;
 import static me.mneri.offer.mapping.Types.OFFER_DTO_LIST_TYPE;
 import static me.mneri.offer.mapping.Types.USER_DTO_LIST_TYPE;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON;
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 
 /**
@@ -28,9 +29,7 @@ import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
  *
  * @author mneri
  */
-@RequestMapping(consumes = APPLICATION_JSON_VALUE,
-                produces = APPLICATION_JSON_VALUE,
-                value = "/users")
+@RequestMapping("/users")
 @RestController
 @Tag(name = "users", description = "The User API")
 public class UsersController {
@@ -50,7 +49,7 @@ public class UsersController {
      */
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful operation.")})
-    @GetMapping
+    @GetMapping(produces = APPLICATION_JSON_VALUE)
     @Operation(summary = "Return the list of enabled users.",
                description = "Return the list of enabled users.")
     public List<UserDto> getUsers() {
@@ -67,7 +66,7 @@ public class UsersController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful operation."),
             @ApiResponse(responseCode = "404", description = "If the user doesn't exist or it's disabled.")})
-    @GetMapping("/{userId}")
+    @GetMapping(value = "/{userId}", produces = APPLICATION_JSON_VALUE)
     @Operation(summary = "Return the user identified by the specified id.",
                description = "Return the user given its id or return an error if such user doesn't exist or it's disabled.")
     public UserDto getUserById(@PathVariable String userId) throws UserIdNotFoundException {
@@ -90,19 +89,11 @@ public class UsersController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful operation."),
             @ApiResponse(responseCode = "404", description = "If the user doesn't exist or it's disabled.")})
-    @GetMapping("/{userId}/offers")
+    @GetMapping(value = "/{userId}/offers", produces = APPLICATION_JSON_VALUE)
     @Operation(summary = "Return the list of offers published by the user identified by the specified id.",
                description = "Return a user's offers or return an error if the user doesn't exist or it's disabled.")
     public List<OfferDto> getOffersByPublisherId(@PathVariable String userId) throws UserIdNotFoundException {
         List<Offer> offers = offerService.findAllOpenByPublisherId(userId);
         return modelMapper.map(offers, OFFER_DTO_LIST_TYPE);
-    }
-
-    /**
-     * Handler for {@link UserIdNotFoundException}.
-     */
-    @ResponseStatus(value = NOT_FOUND, reason = "The specified user id was not found.")
-    @ExceptionHandler(UserIdNotFoundException.class)
-    public void userIdNotFound() {
     }
 }

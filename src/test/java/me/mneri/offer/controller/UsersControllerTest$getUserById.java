@@ -28,6 +28,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 /**
  * Test the {@code GET /users/{userId}} endpoint.
+ * <p>
+ * We test 2 main cases:
+ * <ul>
+ *     <li>An empty repository;</li>
+ *     <li>A repository containing the specified user.</li>
+ * </ul>
  *
  * @author mneri
  */
@@ -60,7 +66,7 @@ public class UsersControllerTest$getUserById {
      */
     @SneakyThrows
     @Test
-    void givenEmptyRepository_whenGetUserByIdIsCalled_thenUsersAreReturned() {
+    void givenEmptyRepository_whenGetUserByIdIsCalled_thenNoUserIsReturned() {
         // Given
         val id = UUID.randomUUID().toString();
         Optional<User> optional = Optional.empty();

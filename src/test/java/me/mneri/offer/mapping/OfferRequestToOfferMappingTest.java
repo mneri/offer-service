@@ -1,7 +1,7 @@
 package me.mneri.offer.mapping;
 
 import lombok.val;
-import me.mneri.offer.dto.OfferPostRequest;
+import me.mneri.offer.dto.OfferRequest;
 import me.mneri.offer.entity.Offer;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
@@ -17,12 +17,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
- * Tests for {@link OfferPostRequest} to {@link Offer} mapping.
+ * Tests for {@link OfferRequest} to {@link Offer} mapping.
  *
  * @author mneri
  */
 @SpringBootTest
-class OfferPostRequestToOfferMappingTest {
+class OfferRequestToOfferMappingTest {
     @Autowired
     private ModelMapper modelMapper;
 
@@ -30,12 +30,12 @@ class OfferPostRequestToOfferMappingTest {
     private PasswordEncoder passwordEncoder;
 
     /**
-     * Create a test {@link OfferPostRequest}.
+     * Create a test {@link OfferRequest}.
      *
      * @return The offer.
      */
-    private OfferPostRequest createTestOfferPostRequest() {
-        OfferPostRequest request = new OfferPostRequest();
+    private OfferRequest createTestOfferPostRequest() {
+        OfferRequest request = new OfferRequest();
         request.setTitle("Bazinga");
         request.setDescription("Awesome");
         request.setPrice(new BigDecimal("100.00"));

@@ -1,8 +1,9 @@
 package me.mneri.offer.service;
 
-import me.mneri.offer.exception.UserIdNotFoundException;
 import me.mneri.offer.entity.Offer;
 import me.mneri.offer.entity.User;
+import me.mneri.offer.exception.UserIdNotFoundException;
+import me.mneri.offer.exception.UserNotAuthorizedException;
 import me.mneri.offer.repository.OfferRepository;
 import me.mneri.offer.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,6 +73,29 @@ public class OfferService {
      */
     public Optional<Offer> findOpenById(String id) {
         return offerRepository.findOne(where(offerIsOpen()).and(offerIdIsEqualTo(id)));
+    }
+
+    /**
+     * Update the specified {@link Offer} given the specified user id.
+     * <p>
+     * Only the publisher of a specific offer is granted the permission to update.
+     *
+     * @param offer  The offer.
+     * @param userId The user id of the modifier.
+     * @throws UserIdNotFoundException    If a user with the specified id was not found in the repository.
+     * @throws UserNotAuthorizedException If the specified user id doesn't belong to the publisher of the offer.
+     */
+    @Transactional
+    public void update(Offer offer, String userId) throws UserIdNotFoundException, UserNotAuthorizedException {
+        if (userRepository.count(where(userIsEnabled()).and(userIdIsEqualTo(userId))) == 0) {
+            throw new UserIdNotFoundException(userId);
+        }
+
+        if (offerRepository.count(where(offerIdIsEqualTo(offer.getId())).and(offerPublisherIdIsEqualTo(userId))) == 0) {
+            throw new UserNotAuthorizedException(userId);
+        }
+
+        offerRepository.save(offer);
     }
 
     /**

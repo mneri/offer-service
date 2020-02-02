@@ -22,7 +22,7 @@ import static me.mneri.offer.validator.Constants.DESCRIPTION_MIN_LENGTH;
 @EqualsAndHashCode
 @NoArgsConstructor
 @ToString
-public class OfferPostRequest {
+public class OfferRequest {
     @NonNull
     @Schema(description = "Offer's title.",
             example = "Buy 1 get 1 for free.",

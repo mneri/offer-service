@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Swagger Open API configuration.
+ * Swagger and Open API configuration.
  *
  * @author mneri
  */
