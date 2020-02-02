@@ -12,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import javax.persistence.PersistenceException;
 import javax.validation.ConstraintViolationException;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -43,6 +44,21 @@ class UserRepositoryTest {
 
         // When/Then
         assertThrows(ConstraintViolationException.class, () -> {
+            userRepository.save(user);
+            testEntityManager.flush();
+        });
+    }
+
+    @Test
+    void givenDuplicateUsername_whenUserIsPersisted_thenPersistenceExceptionIsThrown() {
+        // Given
+        val other = new User("user", "secret", passwordEncoder);
+        val user = new User("user", "secret", passwordEncoder);
+
+        userRepository.save(other);
+
+        // When/Then
+        assertThrows(PersistenceException.class, () -> {
             userRepository.save(user);
             testEntityManager.flush();
         });

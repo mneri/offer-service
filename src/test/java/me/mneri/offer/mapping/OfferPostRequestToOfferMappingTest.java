@@ -3,7 +3,6 @@ package me.mneri.offer.mapping;
 import lombok.val;
 import me.mneri.offer.dto.OfferPostRequest;
 import me.mneri.offer.entity.Offer;
-import me.mneri.offer.entity.User;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +16,11 @@ import static java.lang.System.currentTimeMillis;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+/**
+ * Tests for {@link OfferPostRequest} to {@link Offer} mapping.
+ *
+ * @author mneri
+ */
 @SpringBootTest
 class OfferPostRequestToOfferMappingTest {
     @Autowired
@@ -25,6 +29,11 @@ class OfferPostRequestToOfferMappingTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    /**
+     * Create a test {@link OfferPostRequest}.
+     *
+     * @return The offer.
+     */
     private OfferPostRequest createTestOfferPostRequest() {
         OfferPostRequest request = new OfferPostRequest();
         request.setTitle("Bazinga");
@@ -35,10 +44,9 @@ class OfferPostRequestToOfferMappingTest {
         return request;
     }
 
-    private User createTestPublisher() {
-        return new User("user", "secret", passwordEncoder);
-    }
-
+    /**
+     * Test the correct initialization of all the fields after the mapping.
+     */
     @Test
     void givenOfferPostRequest_whenOfferPostRequestIsMappedToOffer_thenAllFieldsAreCorrectlyInitialized() {
         // Given

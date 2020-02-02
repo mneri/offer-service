@@ -8,6 +8,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit tests for {@link User} class.
+ *
+ * @author mneri
+ */
 class UserTest {
     private PasswordEncoder passwordEncoder;
 

@@ -14,6 +14,11 @@ import static java.lang.System.currentTimeMillis;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
+/**
+ * Unit tests for {@link Offer} class.
+ *
+ * @author mneri
+ */
 class OfferTest {
     private PasswordEncoder passwordEncoder;
 
@@ -22,6 +27,9 @@ class OfferTest {
         passwordEncoder = new BCryptPasswordEncoder();
     }
 
+    /**
+     * Test the creation of a new {@link Offer} instance.
+     */
     @Test
     void givenAllParameters_whenNewInstanceIsConstructed_thenAllFieldsAreProperlyInitialized() {
         // Given

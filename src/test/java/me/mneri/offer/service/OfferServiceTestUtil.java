@@ -13,6 +13,11 @@ import java.util.List;
 import static java.lang.System.currentTimeMillis;
 import static lombok.AccessLevel.PRIVATE;
 
+/**
+ * Utility class for {@code OfferServiceIntegrationTest$}* classes.
+ *
+ * @author mneri
+ */
 @NoArgsConstructor(access = PRIVATE)
 final class OfferServiceTestUtil {
     /**

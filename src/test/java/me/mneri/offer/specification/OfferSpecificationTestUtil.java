@@ -11,6 +11,11 @@ import java.util.Date;
 import static java.lang.System.currentTimeMillis;
 import static lombok.AccessLevel.PRIVATE;
 
+/**
+ * Utility class for {@code OfferSpecificationIntegrationTest$}* classes.
+ *
+ * @author mneri
+ */
 @NoArgsConstructor(access = PRIVATE)
 final class OfferSpecificationTestUtil {
     /**

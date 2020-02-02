@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Test {@link OfferTitle} validator.
+ * Test {@link Title} validator.
  * <p>
  * The following tests are performed:
  * <ul>
@@ -29,14 +29,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  *
  * @author mneri
  */
-class OfferTitleTest {
+class TitleTest {
     private static final int OFFER_TITLE_MAX_LENGTH = 256;
     private static final int OFFER_TITLE_MIN_LENGTH = 1;
 
     @Data
     @AllArgsConstructor
     private static class Subject {
-        @OfferTitle
+        @Title
         private String title;
     }
 
@@ -55,7 +55,7 @@ class OfferTitleTest {
     }
 
     /**
-     * Test {@link OfferTitle} validator against an empty string.
+     * Test {@link Title} validator against an empty string.
      */
     @Test
     void givenEmptyTitle_whenValidationOccurs_thenErrorsAreProduced() {
@@ -70,7 +70,7 @@ class OfferTitleTest {
     }
 
     /**
-     * Test {@link OfferTitle} validator against legal string.
+     * Test {@link Title} validator against legal string.
      */
     @Test
     void givenLegalTitle_whenValidationOccurs_thenNoErrorsAreProduced() {
@@ -85,7 +85,7 @@ class OfferTitleTest {
     }
 
     /**
-     * Test {@link OfferTitle} validator against a long string.
+     * Test {@link Title} validator against a long string.
      */
     @Test
     void givenLongTitle_whenValidationOccurs_thenErrorsAreProduced() {
@@ -105,7 +105,7 @@ class OfferTitleTest {
     }
 
     /**
-     * Test {@link OfferTitle} validator against {@code null}.
+     * Test {@link Title} validator against {@code null}.
      */
     @Test
     void givenNullTitle_whenValidationOccurs_thenErrorsAreProduced() {
@@ -120,7 +120,7 @@ class OfferTitleTest {
     }
 
     /**
-     * Test {@link OfferTitle} validator against a short string.
+     * Test {@link Title} validator against a short string.
      */
     @Test
     void givenShortTitle_whenValidationOccurs_thenErrorsAreProduced() {

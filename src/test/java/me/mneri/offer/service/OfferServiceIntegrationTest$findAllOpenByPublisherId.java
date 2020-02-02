@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Test the {@link OfferService#findAllOpenByPublisherId(String)}.<br/>
+ * Test the {@link OfferService#findAllOpenByPublisherId(String)} method.<br/>
  * We test 5 different cases:
  * <ul>
  *     <li>Empty repository;</li>

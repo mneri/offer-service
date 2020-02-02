@@ -15,6 +15,11 @@ import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * Tests for {@link Offer} to {@link OfferDto} mapping.
+ *
+ * @author mneri
+ */
 @SpringBootTest
 class OfferToOfferDtoMappingTest {
     @Autowired
@@ -23,6 +28,12 @@ class OfferToOfferDtoMappingTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    /**
+     * Create a test {@link Offer}.
+     *
+     * @param publisher The publisher of the offer.
+     * @return The offer.
+     */
     private Offer createTestOffer(User publisher) {
         return Offer.builder()
                 .title("Bazinga")
@@ -34,10 +45,18 @@ class OfferToOfferDtoMappingTest {
                 .build();
     }
 
+    /**
+     * Create a test {@link User}.
+     *
+     * @return The user.
+     */
     private User createTestPublisher() {
         return new User("user", "secret", passwordEncoder);
     }
 
+    /**
+     * Test the correct initialization of all the fields after the mapping.
+     */
     @Test
     void givenOffer_whenOfferIsMappedToOfferDto_thenAllFieldsAreCorrectlyInitialized() {
         // Given

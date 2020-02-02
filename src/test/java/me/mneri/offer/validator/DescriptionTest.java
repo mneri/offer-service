@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Test {@link OfferDescription} validator.
+ * Test {@link Description} validator.
  * <p>
  * The following tests are performed:
  * <ul>
@@ -29,14 +29,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  *
  * @author mneri
  */
-class OfferDescriptionTest {
+class DescriptionTest {
     private static final int OFFER_DESCRIPTION_MAX_LENGTH = 8192;
     private static final int OFFER_DESCRIPTION_MIN_LENGTH = 1;
 
     @Data
     @AllArgsConstructor
     private static class Subject {
-        @OfferTitle
+        @Title
         private String description;
     }
 
@@ -55,7 +55,7 @@ class OfferDescriptionTest {
     }
 
     /**
-     * Test {@link OfferDescription} validator against an empty string.
+     * Test {@link Description} validator against an empty string.
      */
     @Test
     void givenEmptyDescription_whenValidationOccurs_thenErrorsAreProduced() {
@@ -70,7 +70,7 @@ class OfferDescriptionTest {
     }
 
     /**
-     * Test {@link OfferDescription} validator against legal string.
+     * Test {@link Description} validator against legal string.
      */
     @Test
     void givenLegalDescription_whenValidationOccurs_thenNoErrorsAreProduced() {
@@ -85,7 +85,7 @@ class OfferDescriptionTest {
     }
 
     /**
-     * Test {@link OfferDescription} validator against a long string.
+     * Test {@link Description} validator against a long string.
      */
     @Test
     void givenLongDescription_whenValidationOccurs_thenErrorsAreProduced() {
@@ -105,7 +105,7 @@ class OfferDescriptionTest {
     }
 
     /**
-     * Test {@link OfferDescription} validator against {@code null}.
+     * Test {@link Description} validator against {@code null}.
      */
     @Test
     void givenNullDescription_whenValidationOccurs_thenErrorsAreProduced() {
@@ -120,7 +120,7 @@ class OfferDescriptionTest {
     }
 
     /**
-     * Test {@link OfferDescription} validator against a short string.
+     * Test {@link Description} validator against a short string.
      */
     @Test
     void givenShortDescription_whenValidationOccurs_thenErrorsAreProduced() {

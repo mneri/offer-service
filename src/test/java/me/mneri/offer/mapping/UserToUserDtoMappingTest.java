@@ -11,6 +11,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * Tests for {@link User} to {@link UserDto} mapping.
+ *
+ * @author mneri
+ */
 @SpringBootTest
 class UserToUserDtoMappingTest {
     @Autowired
@@ -19,6 +24,9 @@ class UserToUserDtoMappingTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    /**
+     * Test the correct initialization of all the fields after the mapping.
+     */
     @Test
     void givenUser_whenUserIsMappedToUserDto_thenAllFieldsAreCorrectlyInitialized() {
         // Given
