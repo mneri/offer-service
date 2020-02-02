@@ -13,8 +13,13 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.util.Date;
 
+/**
+ * {@link CommandLineRunner} that initializes the demo data into the database.
+ *
+ * @author mneri
+ */
 @Component
-@Profile("!test")
+@Profile("!test") // Most of the tests rely on an empty initial database, we exclude this class from the test profile.
 public class OfferCommandLineRunner implements CommandLineRunner {
     @Autowired
     private UserService userService;
@@ -25,6 +30,11 @@ public class OfferCommandLineRunner implements CommandLineRunner {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    /**
+     * Return a 30 days forward date.
+     *
+     * @return A new {@link Date} object, 30 days into the future.
+     */
     private Date nextMonth() {
         return new Date(System.currentTimeMillis() + 30 * 24 * 60 * 60 * 1000L);
     }
