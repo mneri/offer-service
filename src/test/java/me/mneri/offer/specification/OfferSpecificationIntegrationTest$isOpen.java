@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static me.mneri.offer.specification.OfferSpecification.offerIsOpen;
@@ -33,6 +34,7 @@ import static org.springframework.data.jpa.domain.Specification.where;
  *
  * @author mneri
  */
+@ActiveProfiles("test")
 @DataJpaTest
 @ExtendWith(SpringExtension.class)
 class OfferSpecificationIntegrationTest$isOpen {

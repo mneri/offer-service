@@ -11,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.validation.ConstraintViolationException;
@@ -25,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  *
  * @author mneri
  */
+@ActiveProfiles("test")
 @DataJpaTest
 @ExtendWith(SpringExtension.class)
 class OfferRepositoryTest {

@@ -1,6 +1,5 @@
 package me.mneri.offer.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import lombok.val;
 import me.mneri.offer.entity.Offer;
@@ -9,7 +8,6 @@ import me.mneri.offer.exception.UserIdNotFoundException;
 import me.mneri.offer.exception.UserNotAuthorizedException;
 import me.mneri.offer.service.OfferService;
 import me.mneri.offer.service.UserService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Optional;
@@ -41,6 +40,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
  *
  * @author mneri
  */
+@ActiveProfiles("test")
 @AutoConfigureMockMvc
 @SpringBootTest
 public class OffersControllerTest$deleteOffer {
@@ -51,8 +51,6 @@ public class OffersControllerTest$deleteOffer {
     @Autowired
     private ModelMapper modelMapper;
 
-    private ObjectMapper objectMapper;
-
     @MockBean
     private OfferService offerService;
 
@@ -61,11 +59,6 @@ public class OffersControllerTest$deleteOffer {
 
     @MockBean
     private UserService userService;
-
-    @BeforeEach
-    private void beforeEach() {
-        objectMapper = new ObjectMapper();
-    }
 
     /**
      * Test the endpoint against a repository that doesn't contain the offer.

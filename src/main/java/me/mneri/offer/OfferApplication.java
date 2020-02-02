@@ -3,6 +3,11 @@ package me.mneri.offer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * Main class and starting point of the application.
+ *
+ * @author mneri
+ */
 @SpringBootApplication
 public class OfferApplication {
     /**
