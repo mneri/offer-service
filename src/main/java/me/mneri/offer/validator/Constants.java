@@ -10,7 +10,7 @@ import static lombok.AccessLevel.PRIVATE;
  * @author mneri
  */
 @NoArgsConstructor(access = PRIVATE)
-final class Constants {
+public final class Constants {
     /**
      * The maximum length for a description field.
      */

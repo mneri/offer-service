@@ -28,6 +28,8 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
 
     implementation 'org.modelmapper:modelmapper:2.3.5'
+    implementation 'org.springdoc:springdoc-openapi-core:1.1.49'
+    implementation 'org.springdoc:springdoc-openapi-ui:1.1.49'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-web'
