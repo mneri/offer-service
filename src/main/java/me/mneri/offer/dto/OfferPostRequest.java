@@ -3,8 +3,8 @@ package me.mneri.offer.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import me.mneri.offer.entity.Offer;
-import me.mneri.offer.validator.OfferDescription;
-import me.mneri.offer.validator.OfferTitle;
+import me.mneri.offer.validator.Description;
+import me.mneri.offer.validator.Title;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -20,11 +20,11 @@ import java.util.Date;
 @ToString
 public class OfferPostRequest {
     @NonNull
-    @OfferTitle
+    @Title
     private String title;
 
     @NonNull
-    @OfferDescription
+    @Description
     private String description;
 
     @NonNull

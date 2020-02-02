@@ -1,8 +1,8 @@
 package me.mneri.offer.entity;
 
 import lombok.*;
-import me.mneri.offer.validator.OfferDescription;
-import me.mneri.offer.validator.OfferTitle;
+import me.mneri.offer.validator.Description;
+import me.mneri.offer.validator.Title;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -48,12 +48,12 @@ public class Offer {
 
     @Column
     @NonNull
-    @OfferTitle
+    @Title
     private String title;
 
     @Column
     @NonNull
-    @OfferDescription
+    @Description
     private String description;
 
     @Column(precision = 16, scale = 2)

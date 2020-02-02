@@ -10,11 +10,11 @@ import java.lang.annotation.Target;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
-import static me.mneri.offer.validator.Constants.OFFER_TITLE_MAX_LENGTH;
-import static me.mneri.offer.validator.Constants.OFFER_TITLE_MIN_LENGTH;
+import static me.mneri.offer.validator.Constants.OFFER_DESCRIPTION_MAX_LENGTH;
+import static me.mneri.offer.validator.Constants.OFFER_DESCRIPTION_MIN_LENGTH;
 
 /**
- * Constraints to be applied to offer titles.
+ * Constraint to be applied to offer descriptions.
  *
  * @author mneri
  */
@@ -22,9 +22,9 @@ import static me.mneri.offer.validator.Constants.OFFER_TITLE_MIN_LENGTH;
 @Documented
 @NotEmpty
 @Retention(RUNTIME)
-@Size(min = OFFER_TITLE_MIN_LENGTH, max = OFFER_TITLE_MAX_LENGTH)
+@Size(min = OFFER_DESCRIPTION_MIN_LENGTH, max = OFFER_DESCRIPTION_MAX_LENGTH)
 @Target(FIELD)
-public @interface OfferTitle {
+public @interface Description {
     String message() default "";
 
     Class<?>[] groups() default {};

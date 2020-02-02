@@ -22,22 +22,11 @@ public class UserService {
     private UserRepository userRepository;
 
     /**
-     * Return whether or not an enabled {@link User} with the specified id exists.
-     *
-     * @param id The user's id.
-     * @return {@code true} if such a user exists, {@code false} otherwise.
-     */
-    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    public boolean existsEnabledById(String id) {
-        return userRepository.count(where(isEnabled()).and(idIsEqualTo(id))) == 1;
-    }
-
-    /**
      * Find all enabled {@link User}s.
      *
      * @return The list of all enabled users.
      */
-    public List<User> findEnabled() {
+    public List<User> findAllEnabled() {
         return userRepository.findAll(where(isEnabled()));
     }
 
