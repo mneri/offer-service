@@ -27,7 +27,7 @@ public class UserService {
      * @return The list of all enabled users.
      */
     public List<User> findAllEnabled() {
-        return userRepository.findAll(where(isEnabled()));
+        return userRepository.findAll(where(userIsEnabled()));
     }
 
     /**
@@ -38,7 +38,7 @@ public class UserService {
      * {@link Optional}.
      */
     public Optional<User> findEnabledById(String id) {
-        return userRepository.findOne(where(isEnabled()).and(idIsEqualTo(id)));
+        return userRepository.findOne(where(userIsEnabled()).and(userIdIsEqualTo(id)));
     }
 
     /**
@@ -49,7 +49,7 @@ public class UserService {
      * {@link Optional}.
      */
     public Optional<User> findEnabledByUsername(String username) {
-        return userRepository.findOne(where(isEnabled()).and(usernameIsEqualTo(username)));
+        return userRepository.findOne(where(userIsEnabled()).and(userUsernameIsEqualTo(username)));
     }
 
     /**

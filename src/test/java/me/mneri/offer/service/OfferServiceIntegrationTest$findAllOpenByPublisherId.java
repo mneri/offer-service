@@ -1,7 +1,9 @@
 package me.mneri.offer.service;
 
+import lombok.SneakyThrows;
 import lombok.val;
 import me.mneri.offer.entity.User;
+import me.mneri.offer.exception.UserIdNotFoundException;
 import me.mneri.offer.repository.OfferRepository;
 import me.mneri.offer.repository.UserRepository;
 import me.mneri.offer.specification.OfferSpecification;
@@ -15,8 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static me.mneri.offer.service.OfferServiceTestUtil.createClosedTestOffers;
 import static me.mneri.offer.service.OfferServiceTestUtil.createNonExpiredTestOffer;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Test the {@link OfferService#findAllOpenByPublisherId(String)} method.<br/>
@@ -54,6 +55,7 @@ class OfferServiceIntegrationTest$findAllOpenByPublisherId {
      * Test the method {@link OfferService#findAllOpenByPublisherId(String)} against an repository containing only
      * closed offers published by the specified user.
      */
+    @SneakyThrows
     @Test
     void givenClosedOffersPublishedByUser_whenFindAllOpenByPublisherIdIsCalled_thenNoOfferIsReturned() {
         // Given
@@ -77,6 +79,7 @@ class OfferServiceIntegrationTest$findAllOpenByPublisherId {
      * Test the method {@link OfferService#findAllOpenByPublisherId(String)} against an repository containing only
      * closed offers published by another user.
      */
+    @SneakyThrows
     @Test
     void givenClosedOffersPublishedByAnotherUser_whenFindAllOpenByPublisherIdIsCalled_thenNoOfferIsReturned() {
         // Given
@@ -90,32 +93,28 @@ class OfferServiceIntegrationTest$findAllOpenByPublisherId {
             offerRepository.save(offer);
         }
 
-        // When
-        val returned = offerService.findAllOpenByPublisherId(publisher.getId());
-
-        // Then
-        assertTrue(returned.isEmpty());
+        // When/Then
+        assertThrows(UserIdNotFoundException.class, () -> offerService.findAllOpenByPublisherId(publisher.getId()));
     }
 
     /**
      * Test the method {@link OfferService#findAllOpenByPublisherId(String)} against an empty repository.
      */
+    @SneakyThrows
     @Test
     void givenEmptyRepository_whenFindAllOpenByPublisherIdIsCalled_thenNoOfferIsReturned() {
         // Given
         val publisher = new User("user", "secret", passwordEncoder);
 
-        // When
-        val returned = offerService.findAllOpenByPublisherId(publisher.getId());
-
-        // Then
-        assertTrue(returned.isEmpty());
+        // When/Then
+        assertThrows(UserIdNotFoundException.class, () -> offerService.findAllOpenByPublisherId(publisher.getId()));
     }
 
     /**
      * Test the method {@link OfferService#findAllOpenByPublisherId(String)} against an repository containing a single
      * open offers published by another user.
      */
+    @SneakyThrows
     @Test
     void givenOpenOfferPublishedByAnotherUser_whenFindAllOpenByPublisherIdIsCalled_thenNoOfferIsReturned() {
         // Given
@@ -126,17 +125,15 @@ class OfferServiceIntegrationTest$findAllOpenByPublisherId {
         userRepository.save(other);
         offerRepository.save(offer);
 
-        // When
-        val returned = offerService.findAllOpenByPublisherId(publisher.getId());
-
-        // Then
-        assertTrue(returned.isEmpty());
+        // When/Then
+        assertThrows(UserIdNotFoundException.class, () -> offerService.findAllOpenByPublisherId(publisher.getId()));
     }
 
     /**
      * Test the method {@link OfferService#findAllOpenByPublisherId(String)} against an repository containing a single
      * open offers published by the specified user.
      */
+    @SneakyThrows
     @Test
     void givenOpenOfferPublishedByUser_whenFindAllOpenByPublisherIdIsCalled_thenOfferIsReturned() {
         // Given

@@ -13,14 +13,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import static me.mneri.offer.specification.OfferSpecification.isCanceled;
+import static me.mneri.offer.specification.OfferSpecification.offerIsCanceled;
 import static me.mneri.offer.specification.OfferSpecificationTestUtil.createNonExpiredTestOffer;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.data.jpa.domain.Specification.where;
 
 /**
- * Test the {@link OfferSpecification#isCanceled()} specification.<br/>
+ * Test the {@link OfferSpecification#offerIsCanceled()} specification.<br/>
  * We test 3 different cases:
  * <ul>
  *     <li>Empty repository;</li>
@@ -60,7 +60,7 @@ class OfferSpecificationIntegrationTest$isCanceled {
         offerRepository.save(offer);
 
         // When
-        val returned = offerRepository.findAll(where(isCanceled()));
+        val returned = offerRepository.findAll(where(offerIsCanceled()));
 
         // Then
         assertFalse(returned.isEmpty());
@@ -75,7 +75,7 @@ class OfferSpecificationIntegrationTest$isCanceled {
         // Empty repository
 
         // When
-        val returned = offerRepository.findAll(where(isCanceled()));
+        val returned = offerRepository.findAll(where(offerIsCanceled()));
 
         // Then
         assertTrue(returned.isEmpty());
@@ -94,7 +94,7 @@ class OfferSpecificationIntegrationTest$isCanceled {
         offerRepository.save(offer);
 
         // When
-        val returned = offerRepository.findAll(where(isCanceled()));
+        val returned = offerRepository.findAll(where(offerIsCanceled()));
 
         // Then
         assertTrue(returned.isEmpty());

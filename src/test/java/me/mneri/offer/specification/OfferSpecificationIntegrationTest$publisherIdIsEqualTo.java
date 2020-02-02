@@ -13,14 +13,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import static me.mneri.offer.specification.OfferSpecification.publisherIdIsEqualTo;
+import static me.mneri.offer.specification.OfferSpecification.offerPublisherIdIsEqualTo;
 import static me.mneri.offer.specification.OfferSpecificationTestUtil.createNonExpiredTestOffer;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.data.jpa.domain.Specification.where;
 
 /**
- * Test the {@link OfferSpecification#publisherIdIsEqualTo(String)} specification.<br/>
+ * Test the {@link OfferSpecification#offerPublisherIdIsEqualTo(String)} specification.<br/>
  * We test 3 different cases:
  * <ul>
  *     <li>Empty repository;</li>
@@ -55,7 +55,7 @@ class OfferSpecificationIntegrationTest$publisherIdIsEqualTo {
         val publisher = new User("user", "secret", passwordEncoder);
 
         // When
-        val returned = offerRepository.findAll(where(publisherIdIsEqualTo(publisher.getId())));
+        val returned = offerRepository.findAll(where(offerPublisherIdIsEqualTo(publisher.getId())));
 
         // Then
         assertTrue(returned.isEmpty());
@@ -76,7 +76,7 @@ class OfferSpecificationIntegrationTest$publisherIdIsEqualTo {
         offerRepository.save(offer);
 
         // When
-        val returned = offerRepository.findAll(where(publisherIdIsEqualTo(publisher.getId())));
+        val returned = offerRepository.findAll(where(offerPublisherIdIsEqualTo(publisher.getId())));
 
         // Then
         assertTrue(returned.isEmpty());
@@ -96,7 +96,7 @@ class OfferSpecificationIntegrationTest$publisherIdIsEqualTo {
         offerRepository.save(offer);
 
         // When
-        val returned = offerRepository.findAll(where(publisherIdIsEqualTo(publisher.getId())));
+        val returned = offerRepository.findAll(where(offerPublisherIdIsEqualTo(publisher.getId())));
 
         // Then
         assertEquals(1, returned.size());

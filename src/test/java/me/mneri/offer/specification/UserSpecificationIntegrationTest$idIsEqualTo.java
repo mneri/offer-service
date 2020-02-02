@@ -14,13 +14,13 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.UUID;
 
-import static me.mneri.offer.specification.UserSpecification.idIsEqualTo;
+import static me.mneri.offer.specification.UserSpecification.userIdIsEqualTo;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.data.jpa.domain.Specification.where;
 
 /**
- * Test the {@link UserSpecification#idIsEqualTo(String)} specification.<br/>
+ * Test the {@link UserSpecification#userIdIsEqualTo(String)} specification.<br/>
  * We test 3 different cases:
  * <ul>
  *     <li>Empty repository;</li>
@@ -58,7 +58,7 @@ public class UserSpecificationIntegrationTest$idIsEqualTo {
         userRepository.save(user);
 
         // When
-        val returned = userRepository.findAll(where(idIsEqualTo(user.getId())));
+        val returned = userRepository.findAll(where(userIdIsEqualTo(user.getId())));
 
         // Then
         assertTrue(returned.contains(user));
@@ -73,7 +73,7 @@ public class UserSpecificationIntegrationTest$idIsEqualTo {
         val id = UUID.randomUUID().toString();
 
         // When
-        val returned = userRepository.findAll(where(idIsEqualTo(id)));
+        val returned = userRepository.findAll(where(userIdIsEqualTo(id)));
 
         // Then
         assertTrue(returned.isEmpty());
@@ -91,7 +91,7 @@ public class UserSpecificationIntegrationTest$idIsEqualTo {
         userRepository.save(user);
 
         // When
-        val returned = userRepository.findAll(where(idIsEqualTo(id)));
+        val returned = userRepository.findAll(where(userIdIsEqualTo(id)));
 
         // Then
         assertFalse(returned.contains(user));

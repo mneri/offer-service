@@ -1,14 +1,24 @@
 package me.mneri.offer.exception;
 
-public class UserIdNotFoundException extends RuntimeException {
-    private String id;
+/**
+ * Thrown when the specified user id couldn't be found.
+ *
+ * @author mneri
+ */
+public class UserIdNotFoundException extends Exception {
+    private String userId;
 
-    public UserIdNotFoundException(String id) {
-        this.id = id;
+    /**
+     * Create a new instance.
+     *
+     * @param userId The user id.
+     */
+    public UserIdNotFoundException(String userId) {
+        this.userId = userId;
     }
 
     @Override
     public String getMessage() {
-        return String.format("User '%s' was not found.", id);
+        return String.format("Couldn't find user id '%s'", userId);
     }
 }

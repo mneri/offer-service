@@ -11,12 +11,38 @@ import static lombok.AccessLevel.PRIVATE;
  */
 @NoArgsConstructor(access = PRIVATE)
 final class Constants {
-    public static final int OFFER_DESCRIPTION_MAX_LENGTH = 8192;
-    public static final int OFFER_DESCRIPTION_MIN_LENGTH = 1;
-    public static final int OFFER_TITLE_MAX_LENGTH = 256;
-    public static final int OFFER_TITLE_MIN_LENGTH = 1;
+    /**
+     * The maximum length for a description field.
+     */
+    public static final int DESCRIPTION_MAX_LENGTH = 8192;
 
+    /**
+     * The minimum length for a description field.
+     */
+    public static final int DESCRIPTION_MIN_LENGTH = 1;
+
+    /**
+     * The maximum length for a title field.
+     */
+    public static final int TITLE_MAX_LENGTH = 256;
+
+    /**
+     * The minimum length for a description field.
+     */
+    public static final int TITLE_MIN_LENGTH = 1;
+
+    /**
+     * The maximum length for a username field.
+     */
     public static final int USERNAME_MAX_LENGTH = 24;
+
+    /**
+     * The minimum length for a username field.
+     */
     public static final int USERNAME_MIN_LENGTH = 3;
+
+    /**
+     * The regular expression defining the format of a username field.
+     */
     public static final String USERNAME_REGEXP = "[a-zA-Z0-9_]+";
 }

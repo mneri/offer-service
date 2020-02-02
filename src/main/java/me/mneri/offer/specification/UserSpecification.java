@@ -20,7 +20,7 @@ public final class UserSpecification {
      * @param value The value to match against the id.
      * @return The specification.
      */
-    public static Specification<User> idIsEqualTo(String value) {
+    public static Specification<User> userIdIsEqualTo(String value) {
         return (root, query, builder) -> builder.equal(root.get(id), value);
     }
 
@@ -29,7 +29,7 @@ public final class UserSpecification {
      *
      * @return The specification.
      */
-    public static Specification<User> isEnabled() {
+    public static Specification<User> userIsEnabled() {
         return (root, query, builder) -> builder.equal(root.get(enabled), true);
     }
 
@@ -39,7 +39,7 @@ public final class UserSpecification {
      * @param value The value to match against username.
      * @return The specification.
      */
-    public static Specification<User> usernameIsEqualTo(String value) {
+    public static Specification<User> userUsernameIsEqualTo(String value) {
         return (root, query, builder) -> builder.equal(root.get(username), value);
     }
 }

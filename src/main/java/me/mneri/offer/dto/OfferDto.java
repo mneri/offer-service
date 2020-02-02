@@ -32,7 +32,7 @@ public class OfferDto {
     @NonNull
     private String currency;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     @NonNull
     private Date end;
 }

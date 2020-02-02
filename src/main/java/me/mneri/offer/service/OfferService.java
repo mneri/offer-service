@@ -1,15 +1,20 @@
 package me.mneri.offer.service;
 
+import me.mneri.offer.exception.UserIdNotFoundException;
 import me.mneri.offer.entity.Offer;
 import me.mneri.offer.entity.User;
 import me.mneri.offer.repository.OfferRepository;
+import me.mneri.offer.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 import static me.mneri.offer.specification.OfferSpecification.*;
+import static me.mneri.offer.specification.UserSpecification.userIdIsEqualTo;
+import static me.mneri.offer.specification.UserSpecification.userIsEnabled;
 import static org.springframework.data.jpa.domain.Specification.where;
 
 /**
@@ -22,15 +27,8 @@ public class OfferService {
     @Autowired
     private OfferRepository offerRepository;
 
-    /**
-     * Return whether or not an open {@link Offer} with the specified id exists in the database.
-     *
-     * @param id The offer's id.
-     * @return {@code true} if such an offer exists, false otherwise.
-     */
-    public boolean existsOpenById(String id) {
-        return offerRepository.count(where(isOpen()).and(idIsEqualTo(id))) == 1;
-    }
+    @Autowired
+    private UserRepository userRepository;
 
     /**
      * Find all the open {@link Offer}s.
@@ -38,7 +36,7 @@ public class OfferService {
      * @return The list of the open offers.
      */
     public List<Offer> findAllOpen() {
-        return offerRepository.findAll(where(isOpen()));
+        return offerRepository.findAll(where(offerIsOpen()));
     }
 
     /**
@@ -47,8 +45,13 @@ public class OfferService {
      * @param id The id of the user.
      * @return The list of the open offers published by the specified user.
      */
-    public List<Offer> findAllOpenByPublisherId(String id) {
-        return offerRepository.findAll(where(isOpen()).and(publisherIdIsEqualTo(id)));
+    @Transactional
+    public List<Offer> findAllOpenByPublisherId(String id) throws UserIdNotFoundException {
+        if (userRepository.count(where(userIsEnabled()).and(userIdIsEqualTo(id))) == 0) {
+            throw new UserIdNotFoundException(id);
+        }
+
+        return offerRepository.findAll(where(offerIsOpen()).and(offerPublisherIdIsEqualTo(id)));
     }
 
     /**
@@ -58,7 +61,7 @@ public class OfferService {
      * @return The list of the open offers published by the specified user.
      */
     public List<Offer> findAllOpenByPublisherUsername(String username) {
-        return offerRepository.findAll(where(isOpen()).and(publisherUsernameIsEqualTo(username)));
+        return offerRepository.findAll(where(offerIsOpen()).and(offerPublisherUsernameIsEqualTo(username)));
     }
 
     /**
@@ -68,7 +71,7 @@ public class OfferService {
      * @return The offer with the specified id.
      */
     public Optional<Offer> findOpenById(String id) {
-        return offerRepository.findOne(where(isOpen()).and(idIsEqualTo(id)));
+        return offerRepository.findOne(where(offerIsOpen()).and(offerIdIsEqualTo(id)));
     }
 
     /**

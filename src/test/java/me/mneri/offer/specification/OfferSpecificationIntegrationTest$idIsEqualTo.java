@@ -15,14 +15,14 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.UUID;
 
-import static me.mneri.offer.specification.OfferSpecification.idIsEqualTo;
+import static me.mneri.offer.specification.OfferSpecification.offerIdIsEqualTo;
 import static me.mneri.offer.specification.OfferSpecificationTestUtil.createNonExpiredTestOffer;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.data.jpa.domain.Specification.where;
 
 /**
- * Test the {@link OfferSpecification#idIsEqualTo(String)} specification.<br/>
+ * Test the {@link OfferSpecification#offerIdIsEqualTo(String)} specification.<br/>
  * We test 3 different cases:
  * <ul>
  *     <li>Empty repository;</li>
@@ -61,7 +61,7 @@ class OfferSpecificationIntegrationTest$idIsEqualTo {
         offerRepository.save(offer);
 
         // When
-        val returned = offerRepository.findAll(where(idIsEqualTo(offer.getId())));
+        val returned = offerRepository.findAll(where(offerIdIsEqualTo(offer.getId())));
 
         // Then
         assertEquals(1, returned.size());
@@ -77,7 +77,7 @@ class OfferSpecificationIntegrationTest$idIsEqualTo {
         val id = UUID.randomUUID().toString();
 
         // When
-        val returned = offerRepository.findAll(where(idIsEqualTo(id)));
+        val returned = offerRepository.findAll(where(offerIdIsEqualTo(id)));
 
         // Then
         assertTrue(returned.isEmpty());
@@ -96,7 +96,7 @@ class OfferSpecificationIntegrationTest$idIsEqualTo {
         offerRepository.save(offer);
 
         // When
-        val returned = offerRepository.findAll(where(idIsEqualTo(UUID.randomUUID().toString())));
+        val returned = offerRepository.findAll(where(offerIdIsEqualTo(UUID.randomUUID().toString())));
 
         // Then
         assertTrue(returned.isEmpty());

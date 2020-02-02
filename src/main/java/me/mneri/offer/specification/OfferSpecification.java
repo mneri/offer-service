@@ -24,7 +24,7 @@ public final class OfferSpecification {
      * @param value The offer id.
      * @return The specification.
      */
-    public static Specification<Offer> idIsEqualTo(String value) {
+    public static Specification<Offer> offerIdIsEqualTo(String value) {
         return (root, query, builder) -> builder.equal(root.get(Offer_.id), value);
     }
 
@@ -33,7 +33,7 @@ public final class OfferSpecification {
      *
      * @return The specification.
      */
-    public static Specification<Offer> isCanceled() {
+    public static Specification<Offer> offerIsCanceled() {
         return (root, query, builder) -> builder.equal(root.get(Offer_.canceled), true);
     }
 
@@ -42,7 +42,7 @@ public final class OfferSpecification {
      *
      * @return The specification.
      */
-    public static Specification<Offer> isExpired() {
+    public static Specification<Offer> offerIsExpired() {
         return (root, query, builder) -> builder.lessThanOrEqualTo(root.get(Offer_.end), new Date());
     }
 
@@ -52,8 +52,8 @@ public final class OfferSpecification {
      *
      * @return The specification.
      */
-    public static Specification<Offer> isOpen() {
-        return not(isCanceled()).and(not(isExpired()));
+    public static Specification<Offer> offerIsOpen() {
+        return not(offerIsCanceled()).and(not(offerIsExpired()));
     }
 
     /**
@@ -62,7 +62,7 @@ public final class OfferSpecification {
      * @param value The publisher's id.
      * @return The specification.
      */
-    public static Specification<Offer> publisherIdIsEqualTo(String value) {
+    public static Specification<Offer> offerPublisherIdIsEqualTo(String value) {
         return (root, query, builder) -> builder.equal(root.join(Offer_.publisher).get(User_.id), value);
     }
 
@@ -72,7 +72,7 @@ public final class OfferSpecification {
      * @param value The publisher's username
      * @return The specification.
      */
-    public static Specification<Offer> publisherUsernameIsEqualTo(String value) {
+    public static Specification<Offer> offerPublisherUsernameIsEqualTo(String value) {
         return (root, query, builder) -> builder.equal(root.join(Offer_.publisher).get(User_.username), value);
     }
 }

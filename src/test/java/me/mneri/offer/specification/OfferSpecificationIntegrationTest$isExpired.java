@@ -13,14 +13,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import static me.mneri.offer.specification.OfferSpecification.isExpired;
+import static me.mneri.offer.specification.OfferSpecification.offerIsExpired;
 import static me.mneri.offer.specification.OfferSpecificationTestUtil.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.data.jpa.domain.Specification.where;
 
 /**
- * Test the {@link OfferSpecification#isExpired()} specification.<br/>
+ * Test the {@link OfferSpecification#offerIsExpired()} specification.<br/>
  * We test 3 different cases:
  * <ul>
  *     <li>Empty repository;</li>
@@ -59,7 +59,7 @@ class OfferSpecificationIntegrationTest$isExpired {
         offerRepository.save(offer);
 
         // When
-        val returned = offerRepository.findAll(where(isExpired()));
+        val returned = offerRepository.findAll(where(offerIsExpired()));
 
         // Then
         assertEquals(1, returned.size());
@@ -75,7 +75,7 @@ class OfferSpecificationIntegrationTest$isExpired {
         // Empty repository
 
         // When
-        val returned = offerRepository.findAll(where(isExpired()));
+        val returned = offerRepository.findAll(where(offerIsExpired()));
 
         // Then
         assertTrue(returned.isEmpty());
@@ -95,7 +95,7 @@ class OfferSpecificationIntegrationTest$isExpired {
         offerRepository.save(offer);
 
         // When
-        val returned = offerRepository.findAll(where(isExpired()));
+        val returned = offerRepository.findAll(where(offerIsExpired()));
 
         // Then
         assertTrue(returned.isEmpty());

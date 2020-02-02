@@ -13,7 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import static me.mneri.offer.specification.OfferSpecification.isOpen;
+import static me.mneri.offer.specification.OfferSpecification.offerIsOpen;
 import static me.mneri.offer.specification.OfferSpecificationTestUtil.createExpiredTestOffer;
 import static me.mneri.offer.specification.OfferSpecificationTestUtil.createNonExpiredTestOffer;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.data.jpa.domain.Specification.where;
 
 /**
- * Test the {@link OfferSpecification#isOpen()} specification.<br/>
+ * Test the {@link OfferSpecification#offerIsOpen()} specification.<br/>
  * We test 5 different cases:
  * <ul>
  *     <li>Empty repository;</li>
@@ -60,7 +60,7 @@ class OfferSpecificationIntegrationTest$isOpen {
         offerRepository.save(offer);
 
         // When
-        val returned = offerRepository.findAll(where(isOpen()));
+        val returned = offerRepository.findAll(where(offerIsOpen()));
 
         // Then
         assertTrue(returned.isEmpty());
@@ -77,14 +77,14 @@ class OfferSpecificationIntegrationTest$isOpen {
         offerRepository.save(offer);
 
         // When
-        val returned = offerRepository.findAll(where(isOpen()));
+        val returned = offerRepository.findAll(where(offerIsOpen()));
 
         // Then
         assertTrue(returned.isEmpty());
     }
 
     /**
-     * Test the {@link OfferSpecification#isOpen()} specification against an empty repository.
+     * Test the {@link OfferSpecification#offerIsOpen()} specification against an empty repository.
      */
     @Test
     void givenEmptyRepository_whenFindAll$isOpenIsCalled_thenNoOfferIsReturn() {
@@ -92,7 +92,7 @@ class OfferSpecificationIntegrationTest$isOpen {
         // Empty repository
 
         // When
-        val returned = offerRepository.findAll(where(isOpen()));
+        val returned = offerRepository.findAll(where(offerIsOpen()));
 
         // Then
         assertTrue(returned.isEmpty());
@@ -108,7 +108,7 @@ class OfferSpecificationIntegrationTest$isOpen {
         offerRepository.save(offer);
 
         // When
-        val returned = offerRepository.findAll(where(isOpen()));
+        val returned = offerRepository.findAll(where(offerIsOpen()));
 
         // Then
         assertEquals(1, returned.size());
@@ -125,7 +125,7 @@ class OfferSpecificationIntegrationTest$isOpen {
         offerRepository.save(offer);
 
         // When
-        val returned = offerRepository.findAll(where(isOpen()));
+        val returned = offerRepository.findAll(where(offerIsOpen()));
 
         // Then
         assertTrue(returned.isEmpty());

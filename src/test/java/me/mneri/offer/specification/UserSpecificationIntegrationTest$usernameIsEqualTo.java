@@ -12,13 +12,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import static me.mneri.offer.specification.UserSpecification.usernameIsEqualTo;
+import static me.mneri.offer.specification.UserSpecification.userUsernameIsEqualTo;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.data.jpa.domain.Specification.where;
 
 /**
- * Test the {@link UserSpecification#usernameIsEqualTo(String)} specification.<br/>
+ * Test the {@link UserSpecification#userUsernameIsEqualTo(String)} specification.<br/>
  * We test 3 different cases:
  * <ul>
  *     <li>Empty repository;</li>
@@ -56,7 +56,7 @@ public class UserSpecificationIntegrationTest$usernameIsEqualTo {
         userRepository.save(user);
 
         // When
-        val returned = userRepository.findAll(where(usernameIsEqualTo(user.getUsername())));
+        val returned = userRepository.findAll(where(userUsernameIsEqualTo(user.getUsername())));
 
         // Then
         assertTrue(returned.contains(user));
@@ -71,7 +71,7 @@ public class UserSpecificationIntegrationTest$usernameIsEqualTo {
         val username = "user";
 
         // When
-        val returned = userRepository.findAll(where(usernameIsEqualTo(username)));
+        val returned = userRepository.findAll(where(userUsernameIsEqualTo(username)));
 
         // Then
         assertTrue(returned.isEmpty());
@@ -88,7 +88,7 @@ public class UserSpecificationIntegrationTest$usernameIsEqualTo {
         userRepository.save(user);
 
         // When
-        val returned = userRepository.findAll(where(usernameIsEqualTo("another")));
+        val returned = userRepository.findAll(where(userUsernameIsEqualTo("another")));
 
         // Then
         assertFalse(returned.contains(user));

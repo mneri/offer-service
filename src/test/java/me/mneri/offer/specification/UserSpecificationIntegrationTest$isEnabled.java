@@ -12,13 +12,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import static me.mneri.offer.specification.UserSpecification.isEnabled;
+import static me.mneri.offer.specification.UserSpecification.userIsEnabled;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.data.jpa.domain.Specification.where;
 
 /**
- * Test the {@link UserSpecification#isEnabled()} specification.<br/>
+ * Test the {@link UserSpecification#userIsEnabled()} specification.<br/>
  * We test 3 different cases:
  * <ul>
  *     <li>Empty repository;</li>
@@ -56,7 +56,7 @@ class UserSpecificationIntegrationTest$isEnabled {
         userRepository.save(user);
 
         // When
-        val returned = userRepository.findAll(where(isEnabled()));
+        val returned = userRepository.findAll(where(userIsEnabled()));
 
         // Then
         assertEquals(1, returned.size());
@@ -72,7 +72,7 @@ class UserSpecificationIntegrationTest$isEnabled {
         // Empty repository
 
         // When
-        val returned = userRepository.findAll(where(isEnabled()));
+        val returned = userRepository.findAll(where(userIsEnabled()));
 
         // Then
         assertTrue(returned.isEmpty());
@@ -90,7 +90,7 @@ class UserSpecificationIntegrationTest$isEnabled {
         userRepository.save(user);
 
         // When
-        val returned = userRepository.findAll(where(isEnabled()));
+        val returned = userRepository.findAll(where(userIsEnabled()));
 
         // Then
         assertTrue(returned.isEmpty());
