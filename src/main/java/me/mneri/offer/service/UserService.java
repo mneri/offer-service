@@ -5,6 +5,11 @@ import me.mneri.offer.entity.User;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Service for accessing the user repository.
+ *
+ * @author mneri
+ */
 public interface UserService {
     /**
      * Find all enabled {@link User}s.

@@ -53,7 +53,7 @@ public class OfferRequest {
             required = true)
     private String currency;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     @NonNull
     @Schema(description = "The offer's end date.",
             example = "2020-12-32 00:00:00.000",

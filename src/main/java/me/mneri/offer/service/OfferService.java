@@ -8,6 +8,11 @@ import me.mneri.offer.exception.UserNotAuthorizedException;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Service for accessing the offer repository.
+ *
+ * @author mneri
+ */
 public interface OfferService {
     /**
      * Find all the open {@link Offer}s.
