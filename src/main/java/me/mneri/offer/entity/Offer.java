@@ -38,6 +38,14 @@ public class Offer {
         this.publisher = publisher;
     }
 
+    /*
+     * We want to give to the user an interface that talks about 'ttl' (time to live, duration of an offer) but querying
+     * the ttl is hard. It would be far more convenient to store an 'end_time' field and filter out the expired offers
+     * using it.
+     *
+     * Here, we create two transient getter and setter method publicly visible that mask the 'end_time' field.
+     */
+
     @Transient
     public long getTtl() {
         return endTime.getTime() - createTime.getTime();

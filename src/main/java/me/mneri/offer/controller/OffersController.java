@@ -142,6 +142,9 @@ public class OffersController {
     /**
      * Close (cancel) an existing open offer.
      *
+     * The deletion of an offer is only logical: the offer cancelled field is set to true and the object physically
+     * remains inside the repository and it will be filtered out by query predicates.
+     *
      * @param offerId The offer id.
      * @param userId  The id of the user attempting the modification.
      * @throws OfferIdNotFoundException   If an offer with the specified id is not found.
