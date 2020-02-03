@@ -34,16 +34,16 @@ Once the server is running, an OpenAPI Specification can be found at
 ## API
 The following table summarizes the implemented API.
 
-| API                | Endpoint                                    | Request body | Response body  |
-|--------------------|---------------------------------------------|--------------|----------------|
-| List of users      | `GET /users`                                |              | List<UserDto>  |
-| User details       | `GET /users/{userId}`                       |              | UserDto        |
-| Offers by user     | `GET /users/{userId}/offers`                |              | List<OfferDto> |
-| List of offers     | `GET /offers`                               |              | List<OfferDto> |
-| Offer details      | `GET /offers/{offerId}`                     |              | OfferDto       |
-| Create a new offer | `POST /offers?user.id={userId}`             | OfferRequest |                |
-| Modify an offer    | `PUT /offers/{offerId}?user.id={userId}`    | OfferRequest |                |
-| Delete an offer    | `DELETE /offers/{offerId}?user.id={userId}` |              |                |
+| API                | Endpoint                                    | Request body | Response body        |
+|--------------------|---------------------------------------------|--------------|----------------------|
+| List of users      | `GET /users`                                |              | List&lt;UserDto&gt;  |
+| User details       | `GET /users/{userId}`                       |              | UserDto              |
+| Offers by user     | `GET /users/{userId}/offers`                |              | List&lt;OfferDto&gt; |
+| List of offers     | `GET /offers`                               |              | List&lt;OfferDto&gt; |
+| Offer details      | `GET /offers/{offerId}`                     |              | OfferDto             |
+| Create a new offer | `POST /offers?user.id={userId}`             | OfferRequest |                      |
+| Modify an offer    | `PUT /offers/{offerId}?user.id={userId}`    | OfferRequest |                      |
+| Delete an offer    | `DELETE /offers/{offerId}?user.id={userId}` |              |                      |
 
 ## Tools and Libraries
 - Spring Initializr
