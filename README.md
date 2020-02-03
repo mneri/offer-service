@@ -4,7 +4,7 @@
 
 ## Prerequisites
 
-The project can run in any Java 1.8+ environment but for convenient a Docker image has been included.
+The project can run in any Java 1.8+ environment but for convenience a Docker image has been included.
 
 ## Compiling and Running
 
