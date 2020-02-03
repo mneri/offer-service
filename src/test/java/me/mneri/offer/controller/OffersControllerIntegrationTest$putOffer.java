@@ -19,9 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
-import static java.lang.System.currentTimeMillis;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -71,7 +69,7 @@ class OffersControllerIntegrationTest$putOffer {
         offerRequest.setDescription("New Description");
         offerRequest.setPrice(new BigDecimal("999.99"));
         offerRequest.setCurrency("EUR");
-        offerRequest.setEnd(new Date(currentTimeMillis() + 10000L));
+        offerRequest.setTtl(10000L);
         return offerRequest;
     }
 
@@ -100,6 +98,6 @@ class OffersControllerIntegrationTest$putOffer {
         assertEquals(offerRequest.getDescription(), result.getDescription());
         assertEquals(offerRequest.getPrice(), result.getPrice());
         assertEquals(offerRequest.getCurrency(), result.getCurrency());
-        assertEquals(offerRequest.getEnd(), result.getEnd());
+        assertEquals(offerRequest.getTtl(), result.getTtl());
     }
 }

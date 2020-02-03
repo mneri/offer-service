@@ -5,7 +5,6 @@ import me.mneri.offer.entity.Offer;
 import me.mneri.offer.entity.User;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 import static lombok.AccessLevel.PRIVATE;
 
@@ -18,7 +17,7 @@ final class ControllerTestUtil {
                 .price(new BigDecimal("100.00"))
                 .currency("GBP")
                 .publisher(publisher)
-                .end(new Date(System.currentTimeMillis() + 30 * 24 * 60 * 60 * 1000L))
+                .ttl(30 * 24 * 60 * 60 * 1000L)
                 .build();
     }
 }

@@ -6,12 +6,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
-import static java.lang.System.currentTimeMillis;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
@@ -38,7 +35,7 @@ class OfferTest {
         val description = "Awesome";
         val price = new BigDecimal("100.00");
         val currency = "GBP";
-        val end = new Date(currentTimeMillis() + 30 * 24 * 60 * 60 * 1000L);
+        val ttl = 30 * 24 * 60 * 60 * 1000L;
         val publisher = new User("user", "secret", passwordEncoder);
 
         // When
@@ -47,7 +44,7 @@ class OfferTest {
                 .description(description)
                 .price(price)
                 .currency(currency)
-                .end(end)
+                .ttl(ttl)
                 .publisher(publisher)
                 .build();
 
@@ -57,7 +54,7 @@ class OfferTest {
         assertEquals(description, instance.getDescription());
         assertEquals(0, price.compareTo(instance.getPrice()));
         assertEquals(currency, instance.getCurrency());
-        assertEquals(end, instance.getEnd());
+        assertEquals(ttl, instance.getTtl());
         assertFalse(instance.isCanceled());
         assertEquals(publisher, instance.getPublisher());
     }

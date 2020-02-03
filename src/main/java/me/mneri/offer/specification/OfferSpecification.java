@@ -43,7 +43,7 @@ public final class OfferSpecification {
      * @return The specification.
      */
     public static Specification<Offer> offerIsExpired() {
-        return (root, query, builder) -> builder.lessThanOrEqualTo(root.get(Offer_.end), new Date());
+        return (root, query, builder) -> builder.lessThanOrEqualTo(root.get(Offer_.endTime), new Date());
     }
 
     /**

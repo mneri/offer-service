@@ -16,9 +16,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.validation.ConstraintViolationException;
 import java.math.BigDecimal;
-import java.util.Date;
 
-import static java.lang.System.currentTimeMillis;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
@@ -55,7 +53,7 @@ class OfferRepositoryTest {
                 .description("Amazing")
                 .price(new BigDecimal("100.00"))
                 .currency("GBP")
-                .end(new Date(currentTimeMillis() + 30 * 24 * 60 * 60 * 1000L))
+                .ttl(30 * 24 * 60 * 60 * 1000L)
                 .publisher(publisher)
                 .build();
     }

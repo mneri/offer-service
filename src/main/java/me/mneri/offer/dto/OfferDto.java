@@ -61,8 +61,13 @@ public class OfferDto {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     @NonNull
-    @Schema(description = "The offer's end date.",
+    @Schema(description = "The offer's creation time.",
             example = "2020-12-32 00:00:00.000",
             required = true)
-    private Date end;
+    private Date createTime;
+
+    @Schema(description = "The offer's time to live in milliseconds.",
+            example = "60000",
+            required = true)
+    private long ttl;
 }

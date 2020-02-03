@@ -69,6 +69,6 @@ public class OfferServiceIntegrationTest$save {
         assertEquals(offer.getDescription(), returned.getDescription());
         assertEquals(offer.getPrice(), returned.getPrice());
         assertEquals(offer.getCurrency(), returned.getCurrency());
-        assertEquals(offer.getEnd(), returned.getEnd());
+        assertEquals(offer.getEndTime(), returned.getEndTime());
     }
 }

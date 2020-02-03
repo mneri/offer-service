@@ -1,7 +1,6 @@
 package me.mneri.offer.service.impl;
 
 import me.mneri.offer.entity.Offer;
-import me.mneri.offer.entity.User;
 import me.mneri.offer.exception.UserIdNotFoundException;
 import me.mneri.offer.exception.UserNotAuthorizedException;
 import me.mneri.offer.repository.OfferRepository;

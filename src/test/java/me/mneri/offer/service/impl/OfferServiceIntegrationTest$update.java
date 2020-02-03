@@ -19,10 +19,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.UUID;
 
-import static java.lang.System.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -73,9 +71,7 @@ public class OfferServiceIntegrationTest$update {
         offerRepository.save(offer);
 
         // When/Then
-        assertThrows(UserNotAuthorizedException.class, () -> {
-            offerService.update(offer, other.getId());
-        });
+        assertThrows(UserNotAuthorizedException.class, () -> offerService.update(offer, other.getId()));
     }
 
     /**
@@ -92,9 +88,7 @@ public class OfferServiceIntegrationTest$update {
         offerRepository.save(offer);
 
         // When/Then
-        assertThrows(UserIdNotFoundException.class, () -> {
-            offerService.update(offer, otherId);
-        });
+        assertThrows(UserIdNotFoundException.class, () -> offerService.update(offer, otherId));
     }
 
     /**
@@ -114,7 +108,7 @@ public class OfferServiceIntegrationTest$update {
         offer.setDescription("New description");
         offer.setPrice(new BigDecimal("999.99"));
         offer.setCurrency("EUR");
-        offer.setEnd(new Date(currentTimeMillis() + 10000L));
+        offer.setTtl(10000L);
 
         // When
         offerService.update(offer, publisher.getId());
@@ -130,6 +124,6 @@ public class OfferServiceIntegrationTest$update {
         assertEquals(offer.getDescription(), returned.getDescription());
         assertEquals(offer.getPrice(), returned.getPrice());
         assertEquals(offer.getCurrency(), returned.getCurrency());
-        assertEquals(offer.getEnd(), returned.getEnd());
+        assertEquals(offer.getEndTime(), returned.getEndTime());
     }
 }

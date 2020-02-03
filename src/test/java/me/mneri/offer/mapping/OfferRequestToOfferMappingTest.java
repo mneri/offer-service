@@ -11,9 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
-import static java.lang.System.currentTimeMillis;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -42,7 +40,7 @@ class OfferRequestToOfferMappingTest {
         request.setDescription("Awesome");
         request.setPrice(new BigDecimal("100.00"));
         request.setCurrency("GBP");
-        request.setEnd(new Date(currentTimeMillis() + 30 * 24 * 60 * 60 * 1000L));
+        request.setTtl(30 * 24 * 60 * 60 * 1000L);
         return request;
     }
 
@@ -63,6 +61,6 @@ class OfferRequestToOfferMappingTest {
         assertEquals(request.getDescription(), offer.getDescription());
         assertEquals(request.getPrice(), offer.getPrice());
         assertEquals(request.getCurrency(), offer.getCurrency());
-        assertEquals(request.getEnd(), offer.getEnd());
+        assertEquals(request.getTtl(), offer.getTtl());
     }
 }

@@ -15,7 +15,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static me.mneri.offer.specification.OfferSpecification.offerIsExpired;
-import static me.mneri.offer.specification.OfferSpecificationTestUtil.*;
+import static me.mneri.offer.specification.OfferSpecificationTestUtil.createExpiredTestOffer;
+import static me.mneri.offer.specification.OfferSpecificationTestUtil.createNonExpiredTestOffer;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.data.jpa.domain.Specification.where;

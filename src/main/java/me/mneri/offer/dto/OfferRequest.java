@@ -1,6 +1,5 @@
 package me.mneri.offer.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import me.mneri.offer.entity.Offer;
@@ -8,10 +7,8 @@ import me.mneri.offer.validator.Description;
 import me.mneri.offer.validator.Title;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 import static me.mneri.offer.validator.Constants.*;
-import static me.mneri.offer.validator.Constants.DESCRIPTION_MIN_LENGTH;
 
 /**
  * DTO for a user's request to create a new {@link Offer}.
@@ -53,10 +50,8 @@ public class OfferRequest {
             required = true)
     private String currency;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.SSS")
-    @NonNull
-    @Schema(description = "The offer's end date.",
-            example = "2020-12-32 00:00:00.000",
+    @Schema(description = "The offer's time to live in milliseconds.",
+            example = "60000",
             required = true)
-    private Date end;
+    private long ttl;
 }

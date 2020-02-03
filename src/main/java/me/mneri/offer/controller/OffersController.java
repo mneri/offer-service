@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static me.mneri.offer.mapping.Types.OFFER_DTO_LIST_TYPE;
-import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 
 /**

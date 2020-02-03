@@ -19,7 +19,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -73,7 +72,7 @@ class OffersControllerTest$getOfferById {
                 .price(new BigDecimal("100.00"))
                 .currency("GBP")
                 .publisher(publisher)
-                .end(new Date(System.currentTimeMillis() + 30 * 42 * 60 * 60 * 1000L))
+                .ttl(30 * 42 * 60 * 60 * 1000L)
                 .build();
     }
 

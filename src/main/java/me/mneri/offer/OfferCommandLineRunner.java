@@ -35,12 +35,12 @@ public class OfferCommandLineRunner implements CommandLineRunner {
      *
      * @return A new {@link Date} object, 30 days into the future.
      */
-    private Date nextMonth() {
-        return new Date(System.currentTimeMillis() + 30 * 24 * 60 * 60 * 1000L);
+    private long nextMonth() {
+        return 30 * 24 * 60 * 60 * 1000L;
     }
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         User mneri = new User("mneri", "secret", passwordEncoder);
         User jkaczmarczyk = new User("jkaczmarczyk", "secret", passwordEncoder);
 
@@ -53,7 +53,7 @@ public class OfferCommandLineRunner implements CommandLineRunner {
                 .price(new BigDecimal("2.00"))
                 .currency("GBP")
                 .publisher(mneri)
-                .end(nextMonth())
+                .ttl(nextMonth())
                 .build();
         Offer freeChocolate = Offer.builder()
                 .title("Buy one chocolate, get one free")
@@ -61,7 +61,7 @@ public class OfferCommandLineRunner implements CommandLineRunner {
                 .price(new BigDecimal("2.50"))
                 .currency("GBP")
                 .publisher(jkaczmarczyk)
-                .end(nextMonth())
+                .ttl(nextMonth())
                 .build();
 
         offerService.save(freeCoffee);

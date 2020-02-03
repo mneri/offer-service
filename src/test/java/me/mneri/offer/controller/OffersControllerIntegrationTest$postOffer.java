@@ -81,6 +81,6 @@ class OffersControllerIntegrationTest$postOffer {
         assertEquals(offer.getDescription(), result.getDescription());
         assertEquals(offer.getPrice(), result.getPrice());
         assertEquals(offer.getCurrency(), result.getCurrency());
-        assertEquals(offer.getEnd(), result.getEnd());
+        assertEquals(offer.getTtl(), result.getTtl());
     }
 }
