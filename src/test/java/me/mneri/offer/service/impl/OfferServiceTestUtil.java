@@ -1,4 +1,4 @@
-package me.mneri.offer.service;
+package me.mneri.offer.service.impl;
 
 import lombok.NoArgsConstructor;
 import lombok.val;

@@ -1,4 +1,4 @@
-package me.mneri.offer.service;
+package me.mneri.offer.service.impl;
 
 import lombok.SneakyThrows;
 import lombok.val;
@@ -16,8 +16,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
-import static me.mneri.offer.service.OfferServiceTestUtil.createClosedTestOffers;
-import static me.mneri.offer.service.OfferServiceTestUtil.createNonExpiredTestOffer;
+import static me.mneri.offer.service.impl.OfferServiceTestUtil.createClosedTestOffers;
+import static me.mneri.offer.service.impl.OfferServiceTestUtil.createNonExpiredTestOffer;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
