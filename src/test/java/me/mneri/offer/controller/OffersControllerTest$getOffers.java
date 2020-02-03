@@ -71,7 +71,7 @@ class OffersControllerTest$getOffers {
      */
     @SneakyThrows
     @Test
-    void givenEmptyRepository_whenGetUsersIsCalled_thenNoUserIsReturned() {
+    void givenEmptyRepository_whenGetOffersIsCalled_thenNoOfferIsReturned() {
         // Given
         List<Offer> offers = Collections.emptyList();
 
@@ -98,7 +98,7 @@ class OffersControllerTest$getOffers {
      */
     @SneakyThrows
     @Test
-    void givenEnabledUser_whenGetUsersIsCalled_thenUserIsReturned() {
+    void givenOpenOffer_whenGetOffersIsCalled_thenOfferIsReturned() {
         // Given
         val publisher = new User("user", "secret", passwordEncoder);
         val offer = ControllerTestUtil.createTestOffer(publisher);
