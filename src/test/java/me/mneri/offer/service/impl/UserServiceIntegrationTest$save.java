@@ -50,8 +50,13 @@ public class UserServiceIntegrationTest$save {
         userService.save(user);
 
         // Then
-        val returned = userRepository.findById(user.getId());
-        assertTrue(returned.isPresent());
-        assertEquals(user, returned.get());
+        val optional = userRepository.findById(user.getId());
+        assertTrue(optional.isPresent());
+
+        val returned = optional.get();
+        assertEquals(user.getId(), returned.getId());
+        assertEquals(user.getUsername(), returned.getUsername());
+        assertEquals(user.getEncodedPassword(), returned.getEncodedPassword());
+        assertEquals(user.isEnabled(), returned.isEnabled());
     }
 }
