@@ -1,15 +1,14 @@
 package me.mneri.offer.validator;
 
+import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-
-import static lombok.AccessLevel.PRIVATE;
 
 /**
  * Contains all the constants for validation in a single centralized point.
  *
  * @author mneri
  */
-@NoArgsConstructor(access = PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class Constants {
     /**
      * The maximum length for a description field.

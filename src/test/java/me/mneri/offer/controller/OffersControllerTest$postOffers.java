@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
@@ -23,8 +24,6 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 /**
@@ -90,7 +89,7 @@ class OffersControllerTest$postOffers {
                 .getResponse();
 
         // Then
-        assertEquals(NOT_FOUND.value(), response.getStatus());
+        assertEquals(HttpStatus.NOT_FOUND.value(), response.getStatus());
     }
 
     /**
@@ -118,6 +117,6 @@ class OffersControllerTest$postOffers {
                 .getResponse();
 
         // Then
-        assertEquals(CREATED.value(), response.getStatus());
+        assertEquals(HttpStatus.CREATED.value(), response.getStatus());
     }
 }

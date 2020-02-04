@@ -1,15 +1,14 @@
 package me.mneri.offer.util;
 
+import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-
-import static lombok.AccessLevel.PRIVATE;
 
 /**
  * Utility class for strings and text.
  *
  * @author mneri
  */
-@NoArgsConstructor(access = PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class TextUtil {
     /**
      * Return {@code true} if the string is {@code null} or empty, {@code false} otherwise.

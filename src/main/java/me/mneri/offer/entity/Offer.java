@@ -10,9 +10,6 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.UUID;
 
-import static javax.persistence.FetchType.LAZY;
-import static lombok.AccessLevel.PROTECTED;
-
 /**
  * ORM for {@code offer} table.
  * <p>
@@ -23,7 +20,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Data
 @Entity
 @EqualsAndHashCode(of = "id")
-@NoArgsConstructor(access = PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
 public class Offer {
     @Builder
@@ -59,7 +56,7 @@ public class Offer {
     @Id
     @NonNull
     @NotBlank
-    @Setter(PROTECTED)
+    @Setter(AccessLevel.PROTECTED)
     private String id;
 
     @Column
@@ -82,18 +79,18 @@ public class Offer {
 
     @Column(name = "create_time")
     @NonNull
-    @Setter(PROTECTED)
+    @Setter(AccessLevel.PROTECTED)
     private Date createTime;
 
     @Column(name = "end_time")
     @NonNull
-    @Setter(PROTECTED)
+    @Setter(AccessLevel.PROTECTED)
     private Date endTime;
 
     @Column
     private boolean canceled;
 
-    @ManyToOne(fetch = LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @NonNull
     private User publisher;
 }

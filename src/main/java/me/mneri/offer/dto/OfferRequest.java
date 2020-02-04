@@ -3,12 +3,11 @@ package me.mneri.offer.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import me.mneri.offer.entity.Offer;
+import me.mneri.offer.validator.Constants;
 import me.mneri.offer.validator.Description;
 import me.mneri.offer.validator.Title;
 
 import java.math.BigDecimal;
-
-import static me.mneri.offer.validator.Constants.*;
 
 /**
  * DTO for a user's request to create a new {@link Offer}.
@@ -23,8 +22,8 @@ public class OfferRequest {
     @NonNull
     @Schema(description = "Offer's title.",
             example = "Buy 1 get 1 for free.",
-            maxLength = TITLE_MAX_LENGTH,
-            minLength = TITLE_MIN_LENGTH,
+            maxLength = Constants.TITLE_MAX_LENGTH,
+            minLength = Constants.TITLE_MIN_LENGTH,
             required = true)
     @Title
     private String title;
@@ -32,8 +31,8 @@ public class OfferRequest {
     @NonNull
     @Schema(description = "Offer's description.",
             example = "Order 1 bag of coffee and get one free.",
-            maxLength = DESCRIPTION_MAX_LENGTH,
-            minLength = DESCRIPTION_MIN_LENGTH,
+            maxLength = Constants.DESCRIPTION_MAX_LENGTH,
+            minLength = Constants.DESCRIPTION_MIN_LENGTH,
             required = true)
     @Description
     private String description;

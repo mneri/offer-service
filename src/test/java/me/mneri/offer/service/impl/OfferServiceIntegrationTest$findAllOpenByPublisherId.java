@@ -18,7 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static me.mneri.offer.service.impl.OfferServiceTestUtil.createClosedTestOffers;
 import static me.mneri.offer.service.impl.OfferServiceTestUtil.createNonExpiredTestOffer;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Test the {@link OfferService#findAllOpenByPublisherId(String)} method.<br/>

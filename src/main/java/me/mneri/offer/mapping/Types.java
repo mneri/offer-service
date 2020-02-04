@@ -1,5 +1,6 @@
 package me.mneri.offer.mapping;
 
+import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import me.mneri.offer.dto.OfferDto;
 import me.mneri.offer.dto.UserDto;
@@ -8,14 +9,12 @@ import org.modelmapper.TypeToken;
 import java.lang.reflect.Type;
 import java.util.List;
 
-import static lombok.AccessLevel.PRIVATE;
-
 /**
  * {@link Type} constants for mapping generic objects.
  *
  * @author mneri
  */
-@NoArgsConstructor(access = PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class Types {
     //@formatter:off
     public static final Type OFFER_DTO_LIST_TYPE = new TypeToken<List<OfferDto>>() {}.getType();

@@ -3,9 +3,8 @@ package me.mneri.offer.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import me.mneri.offer.entity.User;
+import me.mneri.offer.validator.Constants;
 import me.mneri.offer.validator.Username;
-
-import static me.mneri.offer.validator.Constants.*;
 
 /**
  * DTO for {@link User} objects.
@@ -26,9 +25,9 @@ public class UserDto {
 
     @Schema(description = "User's username.",
             example = "john_doe",
-            maxLength = USERNAME_MAX_LENGTH,
-            minLength = USERNAME_MIN_LENGTH,
-            pattern = USERNAME_REGEXP,
+            maxLength = Constants.USERNAME_MAX_LENGTH,
+            minLength = Constants.USERNAME_MIN_LENGTH,
+            pattern = Constants.USERNAME_REGEXP,
             required = true)
     @NonNull
     @Username

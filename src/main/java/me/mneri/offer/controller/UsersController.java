@@ -4,15 +4,18 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.extern.log4j.Log4j2;
 import me.mneri.offer.dto.OfferDto;
 import me.mneri.offer.dto.UserDto;
 import me.mneri.offer.entity.Offer;
 import me.mneri.offer.entity.User;
 import me.mneri.offer.exception.UserIdNotFoundException;
+import me.mneri.offer.mapping.Types;
 import me.mneri.offer.service.OfferService;
 import me.mneri.offer.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,15 +24,12 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Optional;
 
-import static me.mneri.offer.mapping.Types.OFFER_DTO_LIST_TYPE;
-import static me.mneri.offer.mapping.Types.USER_DTO_LIST_TYPE;
-import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
-
 /**
  * REST controller for paths starting with {@code /users}.
  *
  * @author mneri
  */
+@Log4j2
 @RequestMapping("/users")
 @RestController
 @Tag(name = "users", description = "The User API")
@@ -50,11 +50,11 @@ public class UsersController {
      */
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful operation.")})
-    @GetMapping(produces = APPLICATION_JSON_VALUE)
+    @GetMapping(produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
     @Operation(summary = "Return the list of enabled users.",
                description = "Return the list of enabled users.")
     public List<UserDto> getUsers() {
-        return modelMapper.map(userService.findAllEnabled(), USER_DTO_LIST_TYPE);
+        return modelMapper.map(userService.findAllEnabled(), Types.USER_DTO_LIST_TYPE);
     }
 
     /**
@@ -67,13 +67,14 @@ public class UsersController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful operation."),
             @ApiResponse(responseCode = "404", description = "If the user doesn't exist or it's disabled.")})
-    @GetMapping(value = "/{userId}", produces = APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{userId}", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
     @Operation(summary = "Return the user identified by the specified id.",
                description = "Return the user given its id or return an error if such user doesn't exist or it's disabled.")
     public UserDto getUserById(@PathVariable String userId) throws UserIdNotFoundException {
         Optional<User> optional = userService.findEnabledById(userId);
 
         if (!optional.isPresent()) {
+            log.debug("No enabled user with the specified id was found; userId: {}", userId);
             throw new UserIdNotFoundException(userId);
         }
 
@@ -90,11 +91,11 @@ public class UsersController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful operation."),
             @ApiResponse(responseCode = "404", description = "If the user doesn't exist or it's disabled.")})
-    @GetMapping(value = "/{userId}/offers", produces = APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{userId}/offers", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
     @Operation(summary = "Return the list of offers published by the user identified by the specified id.",
                description = "Return a user's offers or return an error if the user doesn't exist or it's disabled.")
     public List<OfferDto> getOffersByPublisherId(@PathVariable String userId) throws UserIdNotFoundException {
         List<Offer> offers = offerService.findAllOpenByPublisherId(userId);
-        return modelMapper.map(offers, OFFER_DTO_LIST_TYPE);
+        return modelMapper.map(offers, Types.OFFER_DTO_LIST_TYPE);
     }
 }

@@ -1,5 +1,6 @@
 package me.mneri.offer.specification;
 
+import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import me.mneri.offer.entity.Offer;
 import me.mneri.offer.entity.Offer_;
@@ -8,7 +9,6 @@ import org.springframework.data.jpa.domain.Specification;
 
 import java.util.Date;
 
-import static lombok.AccessLevel.PRIVATE;
 import static org.springframework.data.jpa.domain.Specification.not;
 
 /**
@@ -16,7 +16,7 @@ import static org.springframework.data.jpa.domain.Specification.not;
  *
  * @author mneri
  */
-@NoArgsConstructor(access = PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class OfferSpecification {
     /**
      * Return a {@link Specification} for the SQL predicate {@code offer.id = 'value'}.

@@ -8,6 +8,7 @@ import me.mneri.offer.dto.OfferDto;
 import me.mneri.offer.entity.Offer;
 import me.mneri.offer.entity.User;
 import me.mneri.offer.exception.UserIdNotFoundException;
+import me.mneri.offer.mapping.Types;
 import me.mneri.offer.service.OfferService;
 import me.mneri.offer.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
@@ -26,11 +28,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-import static me.mneri.offer.mapping.Types.OFFER_DTO_LIST_TYPE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
-import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 /**
@@ -93,7 +92,7 @@ class UsersControllerTest$getOffersByUserId {
                 .getResponse();
 
         // Then
-        assertEquals(NOT_FOUND.value(), response.getStatus());
+        assertEquals(HttpStatus.NOT_FOUND.value(), response.getStatus());
     }
 
     /**
@@ -118,10 +117,10 @@ class UsersControllerTest$getOffersByUserId {
                 .getResponse();
 
         // Then
-        List<OfferDto> expected = modelMapper.map(offers, OFFER_DTO_LIST_TYPE);
+        List<OfferDto> expected = modelMapper.map(offers, Types.OFFER_DTO_LIST_TYPE);
         List<OfferDto> result = objectMapper.readValue(response.getContentAsString(), new TypeReference<List<OfferDto>>() {});
 
-        assertEquals(OK.value(), response.getStatus());
+        assertEquals(HttpStatus.OK.value(), response.getStatus());
         assertEquals(expected, result);
     }
 
@@ -147,10 +146,10 @@ class UsersControllerTest$getOffersByUserId {
                 .getResponse();
 
         // Then
-        List<OfferDto> expected = modelMapper.map(offers, OFFER_DTO_LIST_TYPE);
+        List<OfferDto> expected = modelMapper.map(offers, Types.OFFER_DTO_LIST_TYPE);
         List<OfferDto> result = objectMapper.readValue(response.getContentAsString(), new TypeReference<List<OfferDto>>() {});
 
-        assertEquals(OK.value(), response.getStatus());
+        assertEquals(HttpStatus.OK.value(), response.getStatus());
         assertEquals(expected, result);
     }
 }

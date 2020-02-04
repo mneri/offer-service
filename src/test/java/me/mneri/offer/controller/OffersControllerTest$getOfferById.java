@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -24,9 +26,6 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
-import static org.springframework.http.HttpStatus.OK;
-import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 /**
@@ -92,12 +91,12 @@ class OffersControllerTest$getOfferById {
         // When
         val response = mvc
                 .perform(get(String.format(PATH, id))
-                        .contentType(APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andReturn()
                 .getResponse();
 
         // Then
-        assertEquals(NOT_FOUND.value(), response.getStatus());
+        assertEquals(HttpStatus.NOT_FOUND.value(), response.getStatus());
     }
 
     /**
@@ -118,7 +117,7 @@ class OffersControllerTest$getOfferById {
         // When
         val response = mvc
                 .perform(get(String.format(PATH, id))
-                        .contentType(APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andReturn()
                 .getResponse();
 
@@ -126,7 +125,7 @@ class OffersControllerTest$getOfferById {
         OfferDto result = objectMapper.readValue(response.getContentAsString(), OfferDto.class);
         OfferDto expected = modelMapper.map(offer, OfferDto.class);
 
-        assertEquals(OK.value(), response.getStatus());
+        assertEquals(HttpStatus.OK.value(), response.getStatus());
         assertEquals(expected, result);
     }
 }

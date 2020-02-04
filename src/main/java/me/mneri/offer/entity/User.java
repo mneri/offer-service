@@ -9,8 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.UUID;
 
-import static lombok.AccessLevel.PROTECTED;
-
 /**
  * ORM for {@code user} table.
  * <p>
@@ -21,7 +19,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Data
 @Entity
 @EqualsAndHashCode(of = "id")
-@NoArgsConstructor(access = PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
 public class User {
     /**
@@ -51,7 +49,7 @@ public class User {
     @Column
     @Id
     @NonNull
-    @Setter(PROTECTED)
+    @Setter(AccessLevel.PROTECTED)
     private String id;
 
     @Column(unique = true)
@@ -65,7 +63,7 @@ public class User {
      */
     @Column(name = "password")
     @NonNull
-    @Setter(PROTECTED)
+    @Setter(AccessLevel.PROTECTED)
     private String encodedPassword;
 
     @Column

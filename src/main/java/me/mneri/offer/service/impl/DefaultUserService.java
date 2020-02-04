@@ -1,5 +1,6 @@
 package me.mneri.offer.service.impl;
 
+import lombok.extern.log4j.Log4j2;
 import me.mneri.offer.entity.User;
 import me.mneri.offer.repository.UserRepository;
 import me.mneri.offer.service.UserService;
@@ -17,6 +18,7 @@ import static org.springframework.data.jpa.domain.Specification.where;
  *
  * @author mneri
  */
+@Log4j2
 @Service
 public class DefaultUserService implements UserService {
     @Autowired
@@ -48,5 +50,6 @@ public class DefaultUserService implements UserService {
      */
     public void save(User user) {
         userRepository.save(user);
+        log.debug("User created; userId: {}", user.getId());
     }
 }

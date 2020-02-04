@@ -1,5 +1,6 @@
 package me.mneri.offer.specification;
 
+import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.val;
 import me.mneri.offer.entity.Offer;
@@ -7,14 +8,12 @@ import me.mneri.offer.entity.User;
 
 import java.math.BigDecimal;
 
-import static lombok.AccessLevel.PRIVATE;
-
 /**
  * Utility class for {@code OfferSpecificationIntegrationTest$}* classes.
  *
  * @author mneri
  */
-@NoArgsConstructor(access = PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 final class OfferSpecificationTestUtil {
     /**
      * Create an {@link Offer} for testing.
