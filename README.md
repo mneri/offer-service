@@ -67,6 +67,7 @@ OfferRequest {
 
 ### API
 The following table summarizes the implemented API:
+
 | API                | Endpoint                                    | Request body   | Response body    |
 |--------------------|---------------------------------------------|----------------|------------------|
 | List of users      | `GET /users`                                |                | `List<UserDto>`  |
