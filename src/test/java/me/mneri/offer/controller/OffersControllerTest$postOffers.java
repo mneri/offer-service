@@ -3,6 +3,7 @@ package me.mneri.offer.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import lombok.val;
+import me.mneri.offer.TestUtil;
 import me.mneri.offer.dto.OfferRequest;
 import me.mneri.offer.entity.User;
 import me.mneri.offer.service.OfferService;
@@ -74,7 +75,7 @@ class OffersControllerTest$postOffers {
         val user = new User("user", "secret", passwordEncoder);
         Optional<User> optionalUser = Optional.empty();
         val userId = user.getId();
-        val offer = ControllerTestUtil.createTestOffer(user);
+        val offer = TestUtil.createNonExpiredOffer(user);
         val offerPostRequest = modelMapper.map(offer, OfferRequest.class);
 
         given(userService.findEnabledById(userId))
@@ -102,7 +103,7 @@ class OffersControllerTest$postOffers {
         val user = new User("user", "secret", passwordEncoder);
         val optionalUser = Optional.of(user);
         val userId = user.getId();
-        val offer = ControllerTestUtil.createTestOffer(user);
+        val offer = TestUtil.createNonExpiredOffer(user);
         val offerPostRequest = modelMapper.map(offer, OfferRequest.class);
 
         given(userService.findEnabledById(userId))

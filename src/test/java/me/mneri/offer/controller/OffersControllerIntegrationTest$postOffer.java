@@ -3,6 +3,7 @@ package me.mneri.offer.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import lombok.val;
+import me.mneri.offer.TestUtil;
 import me.mneri.offer.dto.OfferRequest;
 import me.mneri.offer.entity.User;
 import me.mneri.offer.repository.OfferRepository;
@@ -65,7 +66,7 @@ class OffersControllerIntegrationTest$postOffer {
     void givenOffer_whenPostOfferIsCalled_thenOfferIsPresentInRepository() {
         // Given
         val publisher = new User("user", "secret", passwordEncoder);
-        val offer = ControllerTestUtil.createTestOffer(publisher);
+        val offer = TestUtil.createNonExpiredOffer(publisher);
         val offerRequest = modelMapper.map(offer, OfferRequest.class);
 
         userRepository.save(publisher);

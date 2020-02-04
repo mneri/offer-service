@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import lombok.val;
+import me.mneri.offer.TestUtil;
 import me.mneri.offer.dto.OfferDto;
 import me.mneri.offer.entity.Offer;
 import me.mneri.offer.entity.User;
@@ -86,7 +87,8 @@ class OffersControllerTest$getOffers {
                 .getResponse();
 
         // Then
-        val result = objectMapper.readValue(response.getContentAsString(), new TypeReference<List<OfferDto>>() {});
+        val result = objectMapper.readValue(response.getContentAsString(), new TypeReference<List<OfferDto>>() {
+        });
         val expected = Collections.emptyList();
 
         assertEquals(HttpStatus.OK.value(), response.getStatus());
@@ -101,7 +103,7 @@ class OffersControllerTest$getOffers {
     void givenOpenOffer_whenGetOffersIsCalled_thenOfferIsReturned() {
         // Given
         val publisher = new User("user", "secret", passwordEncoder);
-        val offer = ControllerTestUtil.createTestOffer(publisher);
+        val offer = TestUtil.createNonExpiredOffer(publisher);
         val offers = Collections.singletonList(offer);
 
         given(offerService.findAllOpen())
@@ -115,7 +117,8 @@ class OffersControllerTest$getOffers {
                 .getResponse();
 
         // Then
-        val result = objectMapper.readValue(response.getContentAsString(), new TypeReference<List<OfferDto>>() {});
+        val result = objectMapper.readValue(response.getContentAsString(), new TypeReference<List<OfferDto>>() {
+        });
         val expected = modelMapper.map(offers, Types.OFFER_DTO_LIST_TYPE);
 
         assertEquals(HttpStatus.OK.value(), response.getStatus());

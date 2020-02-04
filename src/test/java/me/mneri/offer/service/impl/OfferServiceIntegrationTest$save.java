@@ -1,6 +1,7 @@
 package me.mneri.offer.service.impl;
 
 import lombok.val;
+import me.mneri.offer.TestUtil;
 import me.mneri.offer.entity.Offer;
 import me.mneri.offer.entity.User;
 import me.mneri.offer.repository.OfferRepository;
@@ -50,7 +51,7 @@ public class OfferServiceIntegrationTest$save {
     void givenOffer_whenSaveIsInvoked_thenOfferIsRetrievable() {
         // Given
         val publisher = new User("user", "secret", passwordEncoder);
-        val offer = OfferServiceTestUtil.createNonExpiredTestOffer(publisher);
+        val offer = TestUtil.createNonExpiredOffer(publisher);
 
         userRepository.save(publisher);
 

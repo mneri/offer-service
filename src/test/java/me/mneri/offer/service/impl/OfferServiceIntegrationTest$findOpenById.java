@@ -1,6 +1,7 @@
 package me.mneri.offer.service.impl;
 
 import lombok.val;
+import me.mneri.offer.TestUtil;
 import me.mneri.offer.entity.User;
 import me.mneri.offer.repository.OfferRepository;
 import me.mneri.offer.repository.UserRepository;
@@ -60,7 +61,7 @@ class OfferServiceIntegrationTest$findOpenById {
     void givenClosedOfferInRepository_whenFindOpenByIdIsCalled_thenNoOfferIsReturned() {
         // Given
         val publisher = new User("user", "secret", passwordEncoder);
-        val offer = OfferServiceTestUtil.createExpiredTestOffer(publisher);
+        val offer = TestUtil.createExpiredOffer(publisher);
 
         userRepository.save(publisher);
         offerRepository.save(offer);
@@ -94,7 +95,7 @@ class OfferServiceIntegrationTest$findOpenById {
     void givenOpenOfferInRepository_whenFindOpenByIdIsCalled_thenOfferIsReturned() {
         // Given
         val publisher = new User("user", "secret", passwordEncoder);
-        val offer = OfferServiceTestUtil.createNonExpiredTestOffer(publisher);
+        val offer = TestUtil.createNonExpiredOffer(publisher);
 
         userRepository.save(publisher);
         offerRepository.save(offer);
@@ -113,7 +114,7 @@ class OfferServiceIntegrationTest$findOpenById {
     void givenOpenOfferWithDifferentIdInRepository_whenFindOpenByIdIsCalled_thenNoOfferIsReturned() {
         // Given
         val publisher = new User("user", "secret", passwordEncoder);
-        val offer = OfferServiceTestUtil.createNonExpiredTestOffer(publisher);
+        val offer = TestUtil.createNonExpiredOffer(publisher);
         val offerId = UUID.randomUUID().toString();
 
         userRepository.save(publisher);

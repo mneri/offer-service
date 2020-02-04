@@ -1,6 +1,7 @@
 package me.mneri.offer.specification;
 
 import lombok.val;
+import me.mneri.offer.TestUtil;
 import me.mneri.offer.entity.User;
 import me.mneri.offer.repository.OfferRepository;
 import me.mneri.offer.repository.UserRepository;
@@ -17,7 +18,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.UUID;
 
 import static me.mneri.offer.specification.OfferSpecification.offerIdIsEqualTo;
-import static me.mneri.offer.specification.OfferSpecificationTestUtil.createNonExpiredTestOffer;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.data.jpa.domain.Specification.where;
@@ -57,7 +57,7 @@ class OfferSpecificationIntegrationTest$idIsEqualTo {
     void givenOffer_whenFindAll$idIsEqualToIdCalled_thenOfferIsReturned() {
         // Given
         val publisher = new User("user", "secret", passwordEncoder);
-        val offer = createNonExpiredTestOffer(publisher);
+        val offer = TestUtil.createNonExpiredOffer(publisher);
 
         userRepository.save(publisher);
         offerRepository.save(offer);
@@ -92,7 +92,7 @@ class OfferSpecificationIntegrationTest$idIsEqualTo {
     void givenOfferWithDifferentId_whenFindAll$idIsEqualToIsCalled_thenNoOfferIsReturned() {
         // Given
         val publisher = new User("user", "secret", passwordEncoder);
-        val offer = createNonExpiredTestOffer(publisher);
+        val offer = TestUtil.createNonExpiredOffer(publisher);
 
         userRepository.save(publisher);
         offerRepository.save(offer);

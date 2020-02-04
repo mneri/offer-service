@@ -1,6 +1,7 @@
 package me.mneri.offer.specification;
 
 import lombok.val;
+import me.mneri.offer.TestUtil;
 import me.mneri.offer.entity.User;
 import me.mneri.offer.repository.OfferRepository;
 import me.mneri.offer.repository.UserRepository;
@@ -15,8 +16,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static me.mneri.offer.specification.OfferSpecification.offerIsOpen;
-import static me.mneri.offer.specification.OfferSpecificationTestUtil.createExpiredTestOffer;
-import static me.mneri.offer.specification.OfferSpecificationTestUtil.createNonExpiredTestOffer;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.data.jpa.domain.Specification.where;
@@ -55,7 +54,7 @@ class OfferSpecificationIntegrationTest$isOpen {
     void givenCanceledAndExpiredOffer_whenFindAll$isOpenIsCalled_thenOfferIsReturned() {
         // Given
         val publisher = new User("user", "secret", passwordEncoder);
-        val offer = createExpiredTestOffer(publisher);
+        val offer = TestUtil.createExpiredOffer(publisher);
 
         userRepository.save(publisher);
         offer.setCanceled(true);
@@ -72,7 +71,7 @@ class OfferSpecificationIntegrationTest$isOpen {
     void givenCanceledButNonExpiredOffer_whenFindAll$isOpenIsCalled_thenOfferIsReturned() {
         // Given
         val publisher = new User("user", "secret", passwordEncoder);
-        val offer = createNonExpiredTestOffer(publisher);
+        val offer = TestUtil.createNonExpiredOffer(publisher);
 
         userRepository.save(publisher);
         offer.setCanceled(true);
@@ -104,7 +103,7 @@ class OfferSpecificationIntegrationTest$isOpen {
     void givenNonCanceledAndNonExpiredOffer_whenFindAll$isOpenIsCalled_thenOfferIsReturned() {
         // Given
         val publisher = new User("user", "secret", passwordEncoder);
-        val offer = createNonExpiredTestOffer(publisher);
+        val offer = TestUtil.createNonExpiredOffer(publisher);
 
         userRepository.save(publisher);
         offerRepository.save(offer);
@@ -121,7 +120,7 @@ class OfferSpecificationIntegrationTest$isOpen {
     void givenNonCanceledButExpiredOffer_whenFindAll$isOpenIsCalled_thenOfferIsReturned() {
         // Given
         val publisher = new User("user", "secret", passwordEncoder);
-        val offer = createExpiredTestOffer(publisher);
+        val offer = TestUtil.createExpiredOffer(publisher);
 
         userRepository.save(publisher);
         offerRepository.save(offer);

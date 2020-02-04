@@ -1,6 +1,7 @@
 package me.mneri.offer.mapping;
 
 import lombok.val;
+import me.mneri.offer.TestUtil;
 import me.mneri.offer.dto.OfferRequest;
 import me.mneri.offer.entity.Offer;
 import org.junit.jupiter.api.Test;
@@ -9,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
-
-import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -30,27 +29,12 @@ class OfferRequestToOfferMappingTest {
     private PasswordEncoder passwordEncoder;
 
     /**
-     * Create a test {@link OfferRequest}.
-     *
-     * @return The offer.
-     */
-    private OfferRequest createTestOfferPostRequest() {
-        OfferRequest request = new OfferRequest();
-        request.setTitle("Bazinga");
-        request.setDescription("Awesome");
-        request.setPrice(new BigDecimal("100.00"));
-        request.setCurrency("GBP");
-        request.setTtl(30 * 24 * 60 * 60 * 1000L);
-        return request;
-    }
-
-    /**
      * Test the correct initialization of all the fields after the mapping.
      */
     @Test
     void givenOfferPostRequest_whenOfferPostRequestIsMappedToOffer_thenAllFieldsAreCorrectlyInitialized() {
         // Given
-        val request = createTestOfferPostRequest();
+        val request = TestUtil.createOfferRequest();
 
         // When
         val offer = modelMapper.map(request, Offer.class);

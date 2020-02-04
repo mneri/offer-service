@@ -2,6 +2,7 @@ package me.mneri.offer.controller;
 
 import lombok.SneakyThrows;
 import lombok.val;
+import me.mneri.offer.TestUtil;
 import me.mneri.offer.entity.User;
 import me.mneri.offer.repository.OfferRepository;
 import me.mneri.offer.repository.UserRepository;
@@ -50,7 +51,7 @@ class OffersControllerIntegrationTest$deleteOffer {
     void givenOfferInRepository_whenDeleteOfferIsCalled_thenOfferStateIsSetToCanceled() {
         // Given
         val publisher = new User("user", "secret", passwordEncoder);
-        val offer = ControllerTestUtil.createTestOffer(publisher);
+        val offer = TestUtil.createNonExpiredOffer(publisher);
 
         userRepository.save(publisher);
         offerRepository.save(offer);

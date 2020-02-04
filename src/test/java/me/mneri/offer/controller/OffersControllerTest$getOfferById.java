@@ -3,6 +3,7 @@ package me.mneri.offer.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import lombok.val;
+import me.mneri.offer.TestUtil;
 import me.mneri.offer.dto.OfferDto;
 import me.mneri.offer.entity.Offer;
 import me.mneri.offer.entity.User;
@@ -20,7 +21,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -64,17 +64,6 @@ class OffersControllerTest$getOfferById {
         objectMapper = new ObjectMapper();
     }
 
-    private Offer createTestOffer(User publisher) {
-        return Offer.builder()
-                .title("Bazinga")
-                .description("Amazing")
-                .price(new BigDecimal("100.00"))
-                .currency("GBP")
-                .publisher(publisher)
-                .ttl(30 * 42 * 60 * 60 * 1000L)
-                .build();
-    }
-
     /**
      * Test the endpoint against an empty repository.
      */
@@ -107,7 +96,7 @@ class OffersControllerTest$getOfferById {
     void givenEnabledUser_whenGetUsersIsCalled_thenUserIsReturned() {
         // Given
         val publisher = new User("user", "secret", passwordEncoder);
-        val offer = createTestOffer(publisher);
+        val offer = TestUtil.createNonExpiredOffer(publisher);
         val id = offer.getId();
         Optional<Offer> optional = Optional.of(offer);
 

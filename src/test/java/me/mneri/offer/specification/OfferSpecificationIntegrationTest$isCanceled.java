@@ -1,6 +1,7 @@
 package me.mneri.offer.specification;
 
 import lombok.val;
+import me.mneri.offer.TestUtil;
 import me.mneri.offer.entity.User;
 import me.mneri.offer.repository.OfferRepository;
 import me.mneri.offer.repository.UserRepository;
@@ -15,7 +16,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static me.mneri.offer.specification.OfferSpecification.offerIsCanceled;
-import static me.mneri.offer.specification.OfferSpecificationTestUtil.createNonExpiredTestOffer;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.data.jpa.domain.Specification.where;
@@ -55,7 +55,7 @@ class OfferSpecificationIntegrationTest$isCanceled {
     void givenCanceledOffer_whenFindAll$isCanceledIsCalled_thenOfferIsReturned() {
         // Given
         val publisher = new User("user", "secret", passwordEncoder);
-        val offer = createNonExpiredTestOffer(publisher);
+        val offer = TestUtil.createNonExpiredOffer(publisher);
 
         userRepository.save(publisher);
         offer.setCanceled(true);
@@ -90,7 +90,7 @@ class OfferSpecificationIntegrationTest$isCanceled {
     void givenEnabledOffer_whenFindAll$isCanceledIsCalled_thenNoOfferIsReturned() {
         // Given
         val publisher = new User("user", "secret", passwordEncoder);
-        val offer = createNonExpiredTestOffer(publisher);
+        val offer = TestUtil.createNonExpiredOffer(publisher);
 
         userRepository.save(publisher);
         offerRepository.save(offer);

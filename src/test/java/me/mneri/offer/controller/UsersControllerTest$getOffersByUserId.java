@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import lombok.val;
+import me.mneri.offer.TestUtil;
 import me.mneri.offer.dto.OfferDto;
 import me.mneri.offer.entity.Offer;
 import me.mneri.offer.entity.User;
@@ -133,7 +134,7 @@ class UsersControllerTest$getOffersByUserId {
         // Given
         val user = new User("user", "secret", passwordEncoder);
         val userId = user.getId();
-        List<Offer> offers = Collections.singletonList(ControllerTestUtil.createTestOffer(user));
+        List<Offer> offers = Collections.singletonList(TestUtil.createNonExpiredOffer(user));
 
         given(offerService.findAllOpenByPublisherId(userId))
                 .willReturn(offers);

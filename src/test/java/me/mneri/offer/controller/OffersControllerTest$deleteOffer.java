@@ -2,6 +2,7 @@ package me.mneri.offer.controller;
 
 import lombok.SneakyThrows;
 import lombok.val;
+import me.mneri.offer.TestUtil;
 import me.mneri.offer.entity.Offer;
 import me.mneri.offer.entity.User;
 import me.mneri.offer.exception.UserIdNotFoundException;
@@ -69,7 +70,7 @@ class OffersControllerTest$deleteOffer {
         // Given
         val user = new User("user", "secret", passwordEncoder);
         val userId = user.getId();
-        val offer = ControllerTestUtil.createTestOffer(user);
+        val offer = TestUtil.createNonExpiredOffer(user);
         val offerId = offer.getId();
         Optional<Offer> optionalOffer = Optional.empty();
 
@@ -96,7 +97,7 @@ class OffersControllerTest$deleteOffer {
         // Given
         val user = new User("user", "secret", passwordEncoder);
         val userId = user.getId();
-        val offer = ControllerTestUtil.createTestOffer(user);
+        val offer = TestUtil.createNonExpiredOffer(user);
         val offerId = offer.getId();
         val optionalOffer = Optional.of(offer);
 
@@ -126,7 +127,7 @@ class OffersControllerTest$deleteOffer {
         // Given
         val user = new User("user", "secret", passwordEncoder);
         val userId = user.getId();
-        val offer = ControllerTestUtil.createTestOffer(user);
+        val offer = TestUtil.createNonExpiredOffer(user);
         val offerId = offer.getId();
         val optionalOffer = Optional.of(offer);
 
@@ -156,7 +157,7 @@ class OffersControllerTest$deleteOffer {
         // Given
         val user = new User("user", "secret", passwordEncoder);
         val userId = user.getId();
-        val offer = ControllerTestUtil.createTestOffer(user);
+        val offer = TestUtil.createNonExpiredOffer(user);
         val offerId = offer.getId();
         val optionalOffer = Optional.of(offer);
 

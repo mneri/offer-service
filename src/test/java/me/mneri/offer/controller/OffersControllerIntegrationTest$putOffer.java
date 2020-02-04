@@ -3,6 +3,7 @@ package me.mneri.offer.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import lombok.val;
+import me.mneri.offer.TestUtil;
 import me.mneri.offer.dto.OfferRequest;
 import me.mneri.offer.entity.User;
 import me.mneri.offer.repository.OfferRepository;
@@ -18,8 +19,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -58,20 +57,6 @@ class OffersControllerIntegrationTest$putOffer {
         objectMapper = new ObjectMapper();
     }
 
-    /**
-     * Create a new test {@link OfferRequest}.
-     *
-     * @return The {@code OfferRequest}.
-     */
-    private OfferRequest createTestOfferRequest() {
-        OfferRequest offerRequest = new OfferRequest();
-        offerRequest.setTitle("New Title");
-        offerRequest.setDescription("New Description");
-        offerRequest.setPrice(new BigDecimal("999.99"));
-        offerRequest.setCurrency("EUR");
-        offerRequest.setTtl(10000L);
-        return offerRequest;
-    }
 
     /**
      * Modify an offer and checks if modification were correct.
@@ -81,8 +66,8 @@ class OffersControllerIntegrationTest$putOffer {
     void givenOffer_whenPostOfferIsCalled_thenOfferIsPresentInRepository() {
         // Given
         val publisher = new User("user", "secret", passwordEncoder);
-        val offer = ControllerTestUtil.createTestOffer(publisher);
-        val offerRequest = createTestOfferRequest();
+        val offer = TestUtil.createNonExpiredOffer(publisher);
+        val offerRequest = TestUtil.createOfferRequest();
 
         userRepository.save(publisher);
         offerRepository.save(offer);

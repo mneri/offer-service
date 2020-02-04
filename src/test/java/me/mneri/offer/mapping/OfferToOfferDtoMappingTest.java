@@ -1,6 +1,7 @@
 package me.mneri.offer.mapping;
 
 import lombok.val;
+import me.mneri.offer.TestUtil;
 import me.mneri.offer.dto.OfferDto;
 import me.mneri.offer.entity.Offer;
 import me.mneri.offer.entity.User;
@@ -30,23 +31,6 @@ class OfferToOfferDtoMappingTest {
     private PasswordEncoder passwordEncoder;
 
     /**
-     * Create a test {@link Offer}.
-     *
-     * @param publisher The publisher of the offer.
-     * @return The offer.
-     */
-    private Offer createTestOffer(User publisher) {
-        return Offer.builder()
-                .title("Bazinga")
-                .description("Amazing")
-                .price(new BigDecimal("100.00"))
-                .currency("GBP")
-                .ttl(30 * 24 * 60 * 60 * 1000L)
-                .publisher(publisher)
-                .build();
-    }
-
-    /**
      * Create a test {@link User}.
      *
      * @return The user.
@@ -62,7 +46,7 @@ class OfferToOfferDtoMappingTest {
     void givenOffer_whenOfferIsMappedToOfferDto_thenAllFieldsAreCorrectlyInitialized() {
         // Given
         val publisher = createTestPublisher();
-        val offer = createTestOffer(publisher);
+        val offer = TestUtil.createNonExpiredOffer(publisher);
 
         // When
         val dto = modelMapper.map(offer, OfferDto.class);

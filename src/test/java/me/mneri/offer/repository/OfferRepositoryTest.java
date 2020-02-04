@@ -1,6 +1,7 @@
 package me.mneri.offer.repository;
 
 import lombok.val;
+import me.mneri.offer.TestUtil;
 import me.mneri.offer.entity.Offer;
 import me.mneri.offer.entity.User;
 import org.junit.jupiter.api.BeforeEach;
@@ -42,23 +43,6 @@ class OfferRepositoryTest {
     }
 
     /**
-     * Create a test {@link Offer}.
-     *
-     * @param publisher The {@link User} who published the offer.
-     * @return The offer.
-     */
-    private Offer createLegitTestOffer(User publisher) {
-        return Offer.builder()
-                .title("Bazinga")
-                .description("Amazing")
-                .price(new BigDecimal("100.00"))
-                .currency("GBP")
-                .ttl(30 * 24 * 60 * 60 * 1000L)
-                .publisher(publisher)
-                .build();
-    }
-
-    /**
      * Create a test {@link User}.
      *
      * @return A new user.
@@ -74,7 +58,7 @@ class OfferRepositoryTest {
     void givenBlankDescription_whenOfferIsPersisted_thenConstraintViolationExceptionIsThrown() {
         // Given
         val publisher = createTestPublisher();
-        val offer = createLegitTestOffer(publisher);
+        val offer = TestUtil.createNonExpiredOffer(publisher);
 
         testEntityManager.persist(publisher);
         offer.setDescription("");
@@ -93,7 +77,7 @@ class OfferRepositoryTest {
     void givenBlankTitle_whenOfferIsPersisted_thenConstraintViolationExceptionIsThrown() {
         // Given
         val publisher = createTestPublisher();
-        val offer = createLegitTestOffer(publisher);
+        val offer = TestUtil.createNonExpiredOffer(publisher);
 
         testEntityManager.persist(publisher);
         offer.setTitle("");
@@ -109,7 +93,7 @@ class OfferRepositoryTest {
     void givenLegitOffer_whenOfferIsPersisted_thenNoExceptionIsThrown() {
         // Given
         val publisher = createTestPublisher();
-        val offer = createLegitTestOffer(publisher);
+        val offer = TestUtil.createNonExpiredOffer(publisher);
 
         testEntityManager.persist(publisher);
 

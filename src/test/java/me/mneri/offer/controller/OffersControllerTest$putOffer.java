@@ -3,6 +3,7 @@ package me.mneri.offer.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import lombok.val;
+import me.mneri.offer.TestUtil;
 import me.mneri.offer.dto.OfferDto;
 import me.mneri.offer.entity.Offer;
 import me.mneri.offer.entity.User;
@@ -80,7 +81,7 @@ class OffersControllerTest$putOffer {
         // Given
         val user = new User("user", "secret", passwordEncoder);
         val userId = user.getId();
-        val offer = ControllerTestUtil.createTestOffer(user);
+        val offer = TestUtil.createNonExpiredOffer(user);
         val offerId = offer.getId();
         Optional<Offer> optionalOffer = Optional.empty();
         val offerDto = modelMapper.map(offer, OfferDto.class);
@@ -109,7 +110,7 @@ class OffersControllerTest$putOffer {
         // Given
         val user = new User("user", "secret", passwordEncoder);
         val userId = user.getId();
-        val offer = ControllerTestUtil.createTestOffer(user);
+        val offer = TestUtil.createNonExpiredOffer(user);
         val offerId = offer.getId();
         val optionalOffer = Optional.of(offer);
         val offerDto = modelMapper.map(offer, OfferDto.class);
@@ -141,7 +142,7 @@ class OffersControllerTest$putOffer {
         // Given
         val user = new User("user", "secret", passwordEncoder);
         val userId = user.getId();
-        val offer = ControllerTestUtil.createTestOffer(user);
+        val offer = TestUtil.createNonExpiredOffer(user);
         val offerId = offer.getId();
         val optionalOffer = Optional.of(offer);
         val offerDto = modelMapper.map(offer, OfferDto.class);
@@ -173,7 +174,7 @@ class OffersControllerTest$putOffer {
         // Given
         val user = new User("user", "secret", passwordEncoder);
         val userId = user.getId();
-        val offer = ControllerTestUtil.createTestOffer(user);
+        val offer = TestUtil.createNonExpiredOffer(user);
         val offerId = offer.getId();
         val optionalOffer = Optional.of(offer);
         val offerDto = modelMapper.map(offer, OfferDto.class);

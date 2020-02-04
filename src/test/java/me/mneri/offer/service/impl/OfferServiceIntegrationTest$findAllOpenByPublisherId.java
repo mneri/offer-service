@@ -2,6 +2,7 @@ package me.mneri.offer.service.impl;
 
 import lombok.SneakyThrows;
 import lombok.val;
+import me.mneri.offer.TestUtil;
 import me.mneri.offer.entity.User;
 import me.mneri.offer.exception.UserIdNotFoundException;
 import me.mneri.offer.repository.OfferRepository;
@@ -16,8 +17,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
-import static me.mneri.offer.service.impl.OfferServiceTestUtil.createClosedTestOffers;
-import static me.mneri.offer.service.impl.OfferServiceTestUtil.createNonExpiredTestOffer;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -64,7 +63,7 @@ class OfferServiceIntegrationTest$findAllOpenByPublisherId {
     void givenClosedOffersPublishedByUser_whenFindAllOpenByPublisherIdIsCalled_thenNoOfferIsReturned() {
         // Given
         val publisher = new User("user", "secret", passwordEncoder);
-        val offers = createClosedTestOffers(publisher);
+        val offers = TestUtil.createClosedOfferList(publisher);
 
         userRepository.save(publisher);
 
@@ -89,7 +88,7 @@ class OfferServiceIntegrationTest$findAllOpenByPublisherId {
         // Given
         val publisher = new User("user", "secret", passwordEncoder);
         val other = new User("other", "secret", passwordEncoder);
-        val offers = createClosedTestOffers(other);
+        val offers = TestUtil.createClosedOfferList(other);
 
         userRepository.save(other);
 
@@ -124,7 +123,7 @@ class OfferServiceIntegrationTest$findAllOpenByPublisherId {
         // Given
         val publisher = new User("user", "secret", passwordEncoder);
         val other = new User("other", "secret", passwordEncoder);
-        val offer = createNonExpiredTestOffer(other);
+        val offer = TestUtil.createNonExpiredOffer(other);
 
         userRepository.save(other);
         offerRepository.save(offer);
@@ -142,7 +141,7 @@ class OfferServiceIntegrationTest$findAllOpenByPublisherId {
     void givenOpenOfferPublishedByUser_whenFindAllOpenByPublisherIdIsCalled_thenOfferIsReturned() {
         // Given
         val publisher = new User("user", "secret", passwordEncoder);
-        val offer = createNonExpiredTestOffer(publisher);
+        val offer = TestUtil.createNonExpiredOffer(publisher);
 
         userRepository.save(publisher);
         offerRepository.save(offer);

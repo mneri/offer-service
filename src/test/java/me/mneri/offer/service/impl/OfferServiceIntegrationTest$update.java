@@ -2,6 +2,7 @@ package me.mneri.offer.service.impl;
 
 import lombok.SneakyThrows;
 import lombok.val;
+import me.mneri.offer.TestUtil;
 import me.mneri.offer.entity.Offer;
 import me.mneri.offer.entity.User;
 import me.mneri.offer.exception.UserIdNotFoundException;
@@ -66,7 +67,7 @@ public class OfferServiceIntegrationTest$update {
         // Given
         val publisher = new User("user", "secret", passwordEncoder);
         val other = new User("other", "secret", passwordEncoder);
-        val offer = OfferServiceTestUtil.createNonExpiredTestOffer(publisher);
+        val offer = TestUtil.createNonExpiredOffer(publisher);
 
         userRepository.save(publisher);
         userRepository.save(other);
@@ -84,7 +85,7 @@ public class OfferServiceIntegrationTest$update {
         // Given
         val publisher = new User("user", "secret", passwordEncoder);
         val otherId = UUID.randomUUID().toString();
-        val offer = OfferServiceTestUtil.createNonExpiredTestOffer(publisher);
+        val offer = TestUtil.createNonExpiredOffer(publisher);
 
         userRepository.save(publisher);
         offerRepository.save(offer);
@@ -101,7 +102,7 @@ public class OfferServiceIntegrationTest$update {
     void givenUserId_whenUpdateIsInvoked_thenOfferIsUpdatedThrown() {
         // Given
         val publisher = new User("user", "secret", passwordEncoder);
-        val offer = OfferServiceTestUtil.createNonExpiredTestOffer(publisher);
+        val offer = TestUtil.createNonExpiredOffer(publisher);
 
         userRepository.save(publisher);
         offerRepository.save(offer);
