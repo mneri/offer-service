@@ -1,3 +1,5 @@
+#!/bin/bash
+
 chmod +x gradlew                && \
 sh gradlew build                && \
 mkdir -p build/dependency       && \

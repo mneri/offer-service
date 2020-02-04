@@ -25,9 +25,6 @@ class OfferRequestToOfferMappingTest {
     @Autowired
     private ModelMapper modelMapper;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
     /**
      * Test the correct initialization of all the fields after the mapping.
      */

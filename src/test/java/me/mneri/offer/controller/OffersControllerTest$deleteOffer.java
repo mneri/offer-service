@@ -49,9 +49,6 @@ class OffersControllerTest$deleteOffer {
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private ModelMapper modelMapper;
-
     @MockBean
     private OfferService offerService;
 

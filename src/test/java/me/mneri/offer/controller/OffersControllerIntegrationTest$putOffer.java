@@ -38,9 +38,6 @@ class OffersControllerIntegrationTest$putOffer {
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private ModelMapper modelMapper;
-
     private ObjectMapper objectMapper;
 
     @Autowired
