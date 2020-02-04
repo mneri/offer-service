@@ -28,25 +28,14 @@ chmod +x gradlew && sh gradlew build && java -jar build/libs/offer-0.0.1-SNAPSHO
 
 ## Documentation
 ### Online documentation
-Once the server is running, an OpenAPI Specification can be found at
-[http://localhost:8080/v3/api-docs](http://localhost:8080/v3/api-docs) or in Swagger UI at
-[http://localhost:8080/swagger-ui.html#/](http://localhost:8080/swagger-ui.html#/).
+Once the service is up and running, an in depth documentation can be found at
+[http://localhost:8080/swagger-ui.html#/](http://localhost:8080/swagger-ui.html#/); the OpenAPI specification can be
+found at [http://localhost:8080/v3/api-docs](http://localhost:8080/v3/api-docs).
 
-### API
-The following table summarizes the implemented API:
 
-| API                | Endpoint                                    | Request body   | Response body    |
-|--------------------|---------------------------------------------|----------------|------------------|
-| List of users      | `GET /users`                                |                | `List<UserDto>`  |
-| User details       | `GET /users/{userId}`                       |                | `UserDto`        |
-| Offers by user     | `GET /users/{userId}/offers`                |                | `List<OfferDto>` |
-| List of offers     | `GET /offers`                               |                | `List<OfferDto>` |
-| Offer details      | `GET /offers/{offerId}`                     |                | `OfferDto`       |
-| Create a new offer | `POST /offers?user.id={userId}`             | `OfferRequest` |                  |
-| Modify an offer    | `PUT /offers/{offerId}?user.id={userId}`    | `OfferRequest` |                  |
-| Delete an offer    | `DELETE /offers/{offerId}?user.id={userId}` |                |                  |
+### Schema
+The API revolves around three different messages `UserDto`, `OfferDto`, `OfferRequest`, shown below.
 
-Below, you can find a brief definition of the schema:
 ```
 UserDto {
     id: string
@@ -75,19 +64,33 @@ OfferRequest {
     ttl: integer
 }
 ```
+
+### API
+The following table summarizes the implemented API:
+| API                | Endpoint                                    | Request body   | Response body    |
+|--------------------|---------------------------------------------|----------------|------------------|
+| List of users      | `GET /users`                                |                | `List<UserDto>`  |
+| User details       | `GET /users/{userId}`                       |                | `UserDto`        |
+| Offers by user     | `GET /users/{userId}/offers`                |                | `List<OfferDto>` |
+| List of offers     | `GET /offers`                               |                | `List<OfferDto>` |
+| Offer details      | `GET /offers/{offerId}`                     |                | `OfferDto`       |
+| Create a new offer | `POST /offers?user.id={userId}`             | `OfferRequest` |                  |
+| Modify an offer    | `PUT /offers/{offerId}?user.id={userId}`    | `OfferRequest` |                  |
+| Delete an offer    | `DELETE /offers/{offerId}?user.id={userId}` |                |                  |
+
 ## Tools and Libraries
-- Spring Initializr
-- Spring Boot
-- Spring MVC
-- Project Lombok
-- Spring Data JPA
-- JPA Static Metamodel Generator
-- Criteria Queries
-- Hibernate
-- ModelMapper
-- Spring Security
-- H2 Database Engine
-- SpringDoc Open API
-- Gradle
-- Git
-- Mockito
+- [Criteria Queries](https://docs.jboss.org/hibernate/entitymanager/3.5/reference/en/html/querycriteria.html)
+- [Git](https://git-scm.com/)
+- [Gradle](https://gradle.org/)
+- [H2 Database Engine](https://www.h2database.com/html/main.html)
+- [Hibernate](https://hibernate.org/)
+- [JPA Static Metamodel Generator](https://docs.jboss.org/hibernate/orm/5.0/topical/html/metamodelgen/MetamodelGenerator.html)
+- [Mockito](https://site.mockito.org/)
+- [ModelMapper](http://modelmapper.org/)
+- [Project Lombok](https://projectlombok.org/)
+- [Spring Boot](https://spring.io/projects/spring-boot)
+- [Spring Data JPA](https://spring.io/projects/spring-data-jpa)
+- [Spring Initializr](https://start.spring.io/)
+- [Spring MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html)
+- [Spring Security](https://spring.io/projects/spring-security)
+- [SpringDoc Open API](https://springdoc.github.io/springdoc-openapi-demos/)
