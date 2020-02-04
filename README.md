@@ -86,6 +86,7 @@ The following table summarizes the implemented API:
 - [H2 Database Engine](https://www.h2database.com/html/main.html)
 - [Hibernate](https://hibernate.org/)
 - [JPA Static Metamodel Generator](https://docs.jboss.org/hibernate/orm/5.0/topical/html/metamodelgen/MetamodelGenerator.html)
+- [Log4j](https://logging.apache.org/log4j/2.x/)
 - [Mockito](https://site.mockito.org/)
 - [ModelMapper](http://modelmapper.org/)
 - [Project Lombok](https://projectlombok.org/)
