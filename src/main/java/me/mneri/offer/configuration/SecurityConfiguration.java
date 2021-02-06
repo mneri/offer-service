@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package me.mneri.offer.security;
+package me.mneri.offer.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -16,8 +16,10 @@
  * limitations under the License.
  */
 
-package me.mneri.offer.mapping;
+package me.mneri.offer.configuration;
 
+import me.mneri.offer.mapping.OfferMapper;
+import me.mneri.offer.mapping.UserMapper;
 import org.mapstruct.factory.Mappers;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
