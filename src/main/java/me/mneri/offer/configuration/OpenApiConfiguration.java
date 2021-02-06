@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package me.mneri.offer.documentation;
+package me.mneri.offer.configuration;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
