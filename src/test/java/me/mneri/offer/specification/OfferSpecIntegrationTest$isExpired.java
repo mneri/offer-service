@@ -28,35 +28,37 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.UUID;
-
-import static me.mneri.offer.specification.OfferSpecification.offerIdIsEqualTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.data.jpa.domain.Specification.where;
 
 /**
- * Test the {@link OfferSpecification#offerIdIsEqualTo(String)} specification.<br/>
+ * Test the {@link OfferSpec#isExpired()} specification.<br/>
  * We test 3 different cases:
  * <ul>
  *     <li>Empty repository;</li>
- *     <li>Repository containing an offer with the specified id;</li>
- *     <li>Repository containing an offer with a different id.</li>
+ *     <li>Repository containing an expired offer;</li>
+ *     <li>Repository containing a single non-expired offer.</li>
  * </ul>
  *
  * @author mneri
  */
 @ActiveProfiles("test")
-@DataJpaTest
-@ExtendWith(SpringExtension.class)
-class OfferSpecificationIntegrationTest$idIsEqualTo {
+@SpringBootTest
+@Transactional
+class OfferSpecIntegrationTest$isExpired {
     @Autowired
     private OfferRepository offerRepository;
+
+    @Autowired
+    private OfferSpec offerSpec;
 
     private PasswordEncoder passwordEncoder;
 
@@ -69,19 +71,19 @@ class OfferSpecificationIntegrationTest$idIsEqualTo {
     }
 
     /**
-     * Test the SQL predicate {@code offer.id = 'vaule'} against a repository containing an offer with the specified id.
+     * Test the SQL predicate {@code offer.end_time <= NOW()} against a repository containing a single expired offer.
      */
     @Test
-    void givenOffer_whenFindAll$idIsEqualToIdCalled_thenOfferIsReturned() {
+    void givenExpiredOffer_whenFindAll$isExpiredIsCalled_thenOfferIsReturned() {
         // Given
         val publisher = new User("user", "secret", passwordEncoder);
-        val offer = TestUtil.createNonExpiredOffer(publisher);
+        val offer = TestUtil.createExpiredOffer(publisher);
 
         userRepository.save(publisher);
         offerRepository.save(offer);
 
         // When
-        val returned = offerRepository.findAll(where(offerIdIsEqualTo(offer.getId())));
+        val returned = offerRepository.findAll(where(offerSpec.isExpired()));
 
         // Then
         assertEquals(1, returned.size());
@@ -89,25 +91,26 @@ class OfferSpecificationIntegrationTest$idIsEqualTo {
     }
 
     /**
-     * Test the SQL predicate {@code offer.id = 'value'} against an empty repository.
+     * Test the SQL predicate {@code offer.end_time <= NOW()} against an empty repository.
      */
     @Test
     void givenEmptyRepository_whenFindAll$isCanceledIsCalled_thenNoOfferIsReturn() {
         // Given
-        val id = UUID.randomUUID().toString();
+        // Empty repository
 
         // When
-        val returned = offerRepository.findAll(where(offerIdIsEqualTo(id)));
+        val returned = offerRepository.findAll(where(offerSpec.isExpired()));
 
         // Then
         assertTrue(returned.isEmpty());
     }
 
     /**
-     * Test the SQL predicate {@code offer.id = 'value'} against a repository containing an offer with a different id.
+     * Test the SQL predicate {@code offer.end_time <= NOW()} against a repository containing a single non-expired
+     * offer.
      */
     @Test
-    void givenOfferWithDifferentId_whenFindAll$idIsEqualToIsCalled_thenNoOfferIsReturned() {
+    void givenNonExpiredOffer_whenFindAll$isExpiredIsCalled_thenNoOfferIsReturned() {
         // Given
         val publisher = new User("user", "secret", passwordEncoder);
         val offer = TestUtil.createNonExpiredOffer(publisher);
@@ -116,7 +119,7 @@ class OfferSpecificationIntegrationTest$idIsEqualTo {
         offerRepository.save(offer);
 
         // When
-        val returned = offerRepository.findAll(where(offerIdIsEqualTo(UUID.randomUUID().toString())));
+        val returned = offerRepository.findAll(where(offerSpec.isExpired()));
 
         // Then
         assertTrue(returned.isEmpty());

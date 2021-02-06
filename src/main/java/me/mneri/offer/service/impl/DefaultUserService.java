@@ -22,13 +22,13 @@ import lombok.extern.log4j.Log4j2;
 import me.mneri.offer.entity.User;
 import me.mneri.offer.repository.UserRepository;
 import me.mneri.offer.service.UserService;
+import me.mneri.offer.specification.UserSpec;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-import static me.mneri.offer.specification.UserSpecification.*;
 import static org.springframework.data.jpa.domain.Specification.where;
 
 /**
@@ -42,25 +42,28 @@ public class DefaultUserService implements UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private UserSpec userSpec;
+
     /**
      * {@inheritDoc}
      */
     public List<User> findAllEnabled() {
-        return userRepository.findAll(where(userIsEnabled()));
+        return userRepository.findAll(where(userSpec.isEnabled()));
     }
 
     /**
      * {@inheritDoc}
      */
     public Optional<User> findEnabledById(String id) {
-        return userRepository.findOne(where(userIsEnabled()).and(userIdIsEqualTo(id)));
+        return userRepository.findOne(where(userSpec.isEnabled()).and(userSpec.idIsEqualTo(id)));
     }
 
     /**
      * {@inheritDoc}
      */
     public Optional<User> findEnabledByUsername(String username) {
-        return userRepository.findOne(where(userIsEnabled()).and(userUsernameIsEqualTo(username)));
+        return userRepository.findOne(where(userSpec.isEnabled()).and(userSpec.usernameIsEqualTo(username)));
     }
 
     /**

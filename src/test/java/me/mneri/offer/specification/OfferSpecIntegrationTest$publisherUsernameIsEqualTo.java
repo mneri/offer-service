@@ -28,35 +28,37 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.annotation.Transactional;
 
-import static me.mneri.offer.specification.OfferSpecification.offerIsOpen;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.data.jpa.domain.Specification.where;
 
 /**
- * Test the {@link OfferSpecification#offerIsOpen()} specification.<br/>
- * We test 5 different cases:
+ * Test the {@link OfferSpec#publisherUsernameIsEqualTo(String)} specification.<br/>
+ * We test 3 different cases:
  * <ul>
  *     <li>Empty repository;</li>
- *     <li>Repository containing a non-canceled and non-expired offer;</li>
- *     <li>Repository containing a non-canceled but expired offer;</li>
- *     <li>Repository containing a canceled but non-expired offer;</li>
- *     <li>Repository containing a canceled and expired offer;</li>
+ *     <li>Repository containing an offer published by the specified user;</li>
+ *     <li>Repository containing an offer published by another user.</li>
  * </ul>
  *
  * @author mneri
  */
 @ActiveProfiles("test")
-@DataJpaTest
-@ExtendWith(SpringExtension.class)
-class OfferSpecificationIntegrationTest$isOpen {
+@SpringBootTest
+@Transactional
+class OfferSpecIntegrationTest$publisherUsernameIsEqualTo {
     @Autowired
     private OfferRepository offerRepository;
+
+    @Autowired
+    private OfferSpec offerSpec;
 
     private PasswordEncoder passwordEncoder;
 
@@ -68,57 +70,50 @@ class OfferSpecificationIntegrationTest$isOpen {
         passwordEncoder = new BCryptPasswordEncoder();
     }
 
+    /**
+     * Test the SQL predicate {@code user.username = 'value'} against an empty repository.
+     */
     @Test
-    void givenCanceledAndExpiredOffer_whenFindAll$isOpenIsCalled_thenOfferIsReturned() {
+    void givenEmptyRepository_whenFindAll$isCanceledIsCalled_thenNoOfferIsReturn() {
         // Given
         val publisher = new User("user", "secret", passwordEncoder);
-        val offer = TestUtil.createExpiredOffer(publisher);
-
-        userRepository.save(publisher);
-        offer.setCanceled(true);
-        offerRepository.save(offer);
 
         // When
-        val returned = offerRepository.findAll(where(offerIsOpen()));
-
-        // Then
-        assertTrue(returned.isEmpty());
-    }
-
-    @Test
-    void givenCanceledButNonExpiredOffer_whenFindAll$isOpenIsCalled_thenOfferIsReturned() {
-        // Given
-        val publisher = new User("user", "secret", passwordEncoder);
-        val offer = TestUtil.createNonExpiredOffer(publisher);
-
-        userRepository.save(publisher);
-        offer.setCanceled(true);
-        offerRepository.save(offer);
-
-        // When
-        val returned = offerRepository.findAll(where(offerIsOpen()));
+        val returned = offerRepository.findAll(
+                where(offerSpec.publisherUsernameIsEqualTo(publisher.getUsername())));
 
         // Then
         assertTrue(returned.isEmpty());
     }
 
     /**
-     * Test the {@link OfferSpecification#offerIsOpen()} specification against an empty repository.
+     * Test the SQL predicate {@code user.username = 'value'} against a repository containing an offer published by a
+     * different user.
      */
     @Test
-    void givenEmptyRepository_whenFindAll$isOpenIsCalled_thenNoOfferIsReturn() {
+    void givenOfferPublishedByAnotherUser_whenFindAll$publisherIdIsEqualToIsCalled_thenNoOfferIsReturned() {
         // Given
-        // Empty repository
+        val publisher = new User("user", "secret", passwordEncoder);
+        val other = new User("other", "secret", passwordEncoder);
+        val offer = TestUtil.createNonExpiredOffer(other);
+
+        userRepository.save(other);
+        offerRepository.save(offer);
 
         // When
-        val returned = offerRepository.findAll(where(offerIsOpen()));
+        val returned = offerRepository.findAll(
+                where(offerSpec.publisherUsernameIsEqualTo(publisher.getUsername())));
 
         // Then
         assertTrue(returned.isEmpty());
     }
 
+    /**
+     * Test the SQL predicate {@code user.username = 'value'} against a repository containing an offer published by the same
+     * user.
+     */
     @Test
-    void givenNonCanceledAndNonExpiredOffer_whenFindAll$isOpenIsCalled_thenOfferIsReturned() {
+    void givenOfferPublishedByUser_whenFindAll$publisherIdIsEqualToIsCalled_thenOfferIsReturned() {
         // Given
         val publisher = new User("user", "secret", passwordEncoder);
         val offer = TestUtil.createNonExpiredOffer(publisher);
@@ -127,26 +122,11 @@ class OfferSpecificationIntegrationTest$isOpen {
         offerRepository.save(offer);
 
         // When
-        val returned = offerRepository.findAll(where(offerIsOpen()));
+        val returned = offerRepository.findAll(where(
+                offerSpec.publisherUsernameIsEqualTo(publisher.getUsername())));
 
         // Then
         assertEquals(1, returned.size());
-        assertTrue(returned.contains(offer));
-    }
-
-    @Test
-    void givenNonCanceledButExpiredOffer_whenFindAll$isOpenIsCalled_thenOfferIsReturned() {
-        // Given
-        val publisher = new User("user", "secret", passwordEncoder);
-        val offer = TestUtil.createExpiredOffer(publisher);
-
-        userRepository.save(publisher);
-        offerRepository.save(offer);
-
-        // When
-        val returned = offerRepository.findAll(where(offerIsOpen()));
-
-        // Then
-        assertTrue(returned.isEmpty());
+        assertEquals(offer, returned.get(0));
     }
 }
