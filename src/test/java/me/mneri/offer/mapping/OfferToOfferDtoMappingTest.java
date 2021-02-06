@@ -24,7 +24,6 @@ import me.mneri.offer.dto.OfferDto;
 import me.mneri.offer.entity.Offer;
 import me.mneri.offer.entity.User;
 import org.junit.jupiter.api.Test;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -41,7 +40,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 class OfferToOfferDtoMappingTest {
     @Autowired
-    private ModelMapper modelMapper;
+    private OfferMapper offerMapper;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -65,7 +64,7 @@ class OfferToOfferDtoMappingTest {
         val offer = TestUtil.createNonExpiredOffer(publisher);
 
         // When
-        val dto = modelMapper.map(offer, OfferDto.class);
+        val dto = offerMapper.entityToDto(offer);
 
         // Then
         assertEquals(offer.getId(), dto.getId());

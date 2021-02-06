@@ -25,10 +25,10 @@ import me.mneri.offer.TestUtil;
 import me.mneri.offer.dto.OfferDto;
 import me.mneri.offer.entity.Offer;
 import me.mneri.offer.entity.User;
+import me.mneri.offer.mapping.OfferMapper;
 import me.mneri.offer.service.OfferService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -66,10 +66,10 @@ class OffersControllerTest$getOfferById {
     @Autowired
     private MockMvc mvc;
 
-    @Autowired
-    private ModelMapper modelMapper;
-
     private ObjectMapper objectMapper;
+
+    @Autowired
+    private OfferMapper offerMapper;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -130,7 +130,7 @@ class OffersControllerTest$getOfferById {
 
         // Then
         OfferDto result = objectMapper.readValue(response.getContentAsString(), OfferDto.class);
-        OfferDto expected = modelMapper.map(offer, OfferDto.class);
+        OfferDto expected = offerMapper.entityToDto(offer);
 
         assertEquals(HttpStatus.OK.value(), response.getStatus());
         assertEquals(expected, result);

@@ -23,10 +23,10 @@ import lombok.SneakyThrows;
 import lombok.val;
 import me.mneri.offer.dto.UserDto;
 import me.mneri.offer.entity.User;
+import me.mneri.offer.mapping.UserMapper;
 import me.mneri.offer.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -64,13 +64,13 @@ class UsersControllerTest$getUserById {
     @Autowired
     private MockMvc mvc;
 
-    @Autowired
-    private ModelMapper modelMapper;
-
     private ObjectMapper objectMapper;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @MockBean
     private UserService userService;
@@ -127,7 +127,7 @@ class UsersControllerTest$getUserById {
 
         // Then
         UserDto result = objectMapper.readValue(response.getContentAsString(), UserDto.class);
-        UserDto expected = modelMapper.map(user, UserDto.class);
+        UserDto expected = userMapper.entityToDto(user);
 
         assertEquals(HttpStatus.OK.value(), response.getStatus());
         assertEquals(expected, result);

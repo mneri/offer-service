@@ -28,10 +28,10 @@ import me.mneri.offer.dto.UserDto;
 import me.mneri.offer.entity.Offer;
 import me.mneri.offer.entity.User;
 import me.mneri.offer.exception.UserIdNotFoundException;
-import me.mneri.offer.mapping.Types;
+import me.mneri.offer.mapping.OfferMapper;
+import me.mneri.offer.mapping.UserMapper;
 import me.mneri.offer.service.OfferService;
 import me.mneri.offer.service.UserService;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,7 +39,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -53,10 +52,13 @@ import java.util.Optional;
 @Tag(name = "users", description = "The User API")
 public class UsersController {
     @Autowired
-    private ModelMapper modelMapper;
+    private OfferMapper offerMapper;
 
     @Autowired
     private OfferService offerService;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Autowired
     private UserService userService;
@@ -70,9 +72,9 @@ public class UsersController {
             @ApiResponse(responseCode = "200", description = "Successful operation.")})
     @GetMapping(produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
     @Operation(summary = "Return the list of enabled users.",
-               description = "Return the list of enabled users.")
-    public List<UserDto> getUsers() {
-        return modelMapper.map(userService.findAllEnabled(), Types.USER_DTO_LIST_TYPE);
+            description = "Return the list of enabled users.")
+    public Iterable<UserDto> getUsers() {
+        return userMapper.entityToDto(userService.findAllEnabled());
     }
 
     /**
@@ -87,7 +89,7 @@ public class UsersController {
             @ApiResponse(responseCode = "404", description = "If the user doesn't exist or it's disabled.")})
     @GetMapping(value = "/{userId}", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
     @Operation(summary = "Return the user identified by the specified id.",
-               description = "Return the user given its id or return an error if such user doesn't exist or it's disabled.")
+            description = "Return the user given its id or return an error if such user doesn't exist or it's disabled.")
     public UserDto getUserById(@PathVariable String userId) throws UserIdNotFoundException {
         Optional<User> optional = userService.findEnabledById(userId);
 
@@ -96,7 +98,7 @@ public class UsersController {
             throw new UserIdNotFoundException(userId);
         }
 
-        return optional.map(user -> modelMapper.map(user, UserDto.class)).get();
+        return optional.map(user -> userMapper.entityToDto(user)).get();
     }
 
     /**
@@ -111,9 +113,8 @@ public class UsersController {
             @ApiResponse(responseCode = "404", description = "If the user doesn't exist or it's disabled.")})
     @GetMapping(value = "/{userId}/offers", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
     @Operation(summary = "Return the list of offers published by the user identified by the specified id.",
-               description = "Return a user's offers or return an error if the user doesn't exist or it's disabled.")
-    public List<OfferDto> getOffersByPublisherId(@PathVariable String userId) throws UserIdNotFoundException {
-        List<Offer> offers = offerService.findAllOpenByPublisherId(userId);
-        return modelMapper.map(offers, Types.OFFER_DTO_LIST_TYPE);
+            description = "Return a user's offers or return an error if the user doesn't exist or it's disabled.")
+    public Iterable<OfferDto> getOffersByPublisherId(@PathVariable String userId) throws UserIdNotFoundException {
+        return offerMapper.entityToDto(offerService.findAllOpenByPublisherId(userId));
     }
 }

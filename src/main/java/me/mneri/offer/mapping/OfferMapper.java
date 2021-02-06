@@ -18,24 +18,24 @@
 
 package me.mneri.offer.mapping;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 import me.mneri.offer.dto.OfferDto;
-import me.mneri.offer.dto.UserDto;
-import org.modelmapper.TypeToken;
-
-import java.lang.reflect.Type;
-import java.util.List;
+import me.mneri.offer.dto.OfferRequest;
+import me.mneri.offer.entity.Offer;
+import org.mapstruct.*;
 
 /**
- * {@link Type} constants for mapping generic objects.
+ * Mapper for the {@link Offer} entity.
  *
  * @author mneri
  */
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class Types {
-    //@formatter:off
-    public static final Type OFFER_DTO_LIST_TYPE = new TypeToken<List<OfferDto>>() {}.getType();
-    public static final Type USER_DTO_LIST_TYPE  = new TypeToken<List<UserDto>>() {}.getType();
-    //@formatter:on
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
+public interface OfferMapper {
+    Iterable<OfferDto> entityToDto(Iterable<Offer> offers);
+
+    OfferDto entityToDto(Offer offer);
+
+    OfferRequest entityToRequest(Offer offer);
+
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void mergeRequestToEntity(@MappingTarget Offer offer, OfferRequest request);
 }

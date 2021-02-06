@@ -27,12 +27,11 @@ import me.mneri.offer.dto.OfferDto;
 import me.mneri.offer.entity.Offer;
 import me.mneri.offer.entity.User;
 import me.mneri.offer.exception.UserIdNotFoundException;
-import me.mneri.offer.mapping.Types;
+import me.mneri.offer.mapping.OfferMapper;
 import me.mneri.offer.service.OfferService;
 import me.mneri.offer.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -72,10 +71,10 @@ class UsersControllerTest$getOffersByUserId {
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private ModelMapper modelMapper;
-
     private ObjectMapper objectMapper;
+
+    @Autowired
+    private OfferMapper offerMapper;
 
     @MockBean
     private OfferService offerService;
@@ -136,7 +135,7 @@ class UsersControllerTest$getOffersByUserId {
                 .getResponse();
 
         // Then
-        List<OfferDto> expected = modelMapper.map(offers, Types.OFFER_DTO_LIST_TYPE);
+        Iterable<OfferDto> expected = offerMapper.entityToDto(offers);
         List<OfferDto> result = objectMapper.readValue(response.getContentAsString(), new TypeReference<List<OfferDto>>() {});
 
         assertEquals(HttpStatus.OK.value(), response.getStatus());
@@ -165,7 +164,7 @@ class UsersControllerTest$getOffersByUserId {
                 .getResponse();
 
         // Then
-        List<OfferDto> expected = modelMapper.map(offers, Types.OFFER_DTO_LIST_TYPE);
+        Iterable<OfferDto> expected = offerMapper.entityToDto(offers);
         List<OfferDto> result = objectMapper.readValue(response.getContentAsString(), new TypeReference<List<OfferDto>>() {});
 
         assertEquals(HttpStatus.OK.value(), response.getStatus());

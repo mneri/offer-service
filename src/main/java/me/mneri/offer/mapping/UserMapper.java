@@ -18,24 +18,18 @@
 
 package me.mneri.offer.mapping;
 
-import org.mapstruct.factory.Mappers;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import me.mneri.offer.dto.UserDto;
+import me.mneri.offer.entity.User;
+import org.mapstruct.Mapper;
 
 /**
- * Application wide configuration for object mapping.
+ * Mapper for the {@link User} entity.
  *
  * @author mneri
  */
-@Configuration
-public class MappingConfiguration {
-    @Bean
-    public OfferMapper offerMapper() {
-        return Mappers.getMapper(OfferMapper.class);
-    }
+@Mapper
+public interface UserMapper {
+    Iterable<UserDto> entityToDto(Iterable<User> users);
 
-    @Bean
-    public UserMapper userMapper() {
-        return Mappers.getMapper(UserMapper.class);
-    }
+    UserDto entityToDto(User user);
 }
