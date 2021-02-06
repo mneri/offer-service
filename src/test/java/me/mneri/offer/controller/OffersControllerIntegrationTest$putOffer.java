@@ -22,7 +22,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import lombok.val;
 import me.mneri.offer.TestUtil;
-import me.mneri.offer.dto.OfferRequest;
 import me.mneri.offer.entity.User;
 import me.mneri.offer.repository.OfferRepository;
 import me.mneri.offer.repository.UserRepository;
@@ -41,7 +40,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 
 /**
- * Integration tests for the method {@link OffersController#putOffer(String, OfferRequest, String)}.
+ * Integration tests for the method {@link OffersController#putOffer(String, me.mneri.offer.dto.OfferUpdateDto, String)}.
  *
  * @author mneri
  */
@@ -81,7 +80,7 @@ class OffersControllerIntegrationTest$putOffer {
         // Given
         val publisher = new User("user", "secret", passwordEncoder);
         val offer = TestUtil.createNonExpiredOffer(publisher);
-        val offerRequest = TestUtil.createOfferRequest();
+        val offerRequest = TestUtil.createOfferUpdateDto();
 
         userRepository.save(publisher);
         offerRepository.save(offer);

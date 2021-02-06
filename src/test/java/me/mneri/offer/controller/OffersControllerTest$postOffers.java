@@ -93,7 +93,7 @@ class OffersControllerTest$postOffers {
         Optional<User> optionalUser = Optional.empty();
         val userId = user.getId();
         val offer = TestUtil.createNonExpiredOffer(user);
-        val offerPostRequest = offerMapper.entityToRequest(offer);
+        val offerPostRequest = offerMapper.entityToCreateDto(offer);
 
         given(userService.findEnabledById(userId))
                 .willReturn(optionalUser);
@@ -121,7 +121,7 @@ class OffersControllerTest$postOffers {
         val optionalUser = Optional.of(user);
         val userId = user.getId();
         val offer = TestUtil.createNonExpiredOffer(user);
-        val offerPostRequest = offerMapper.entityToRequest(offer);
+        val offerPostRequest = offerMapper.entityToCreateDto(offer);
 
         given(userService.findEnabledById(userId))
                 .willReturn(optionalUser);

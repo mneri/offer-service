@@ -21,7 +21,8 @@ package me.mneri.offer;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.val;
-import me.mneri.offer.dto.OfferRequest;
+import me.mneri.offer.dto.OfferCreateDto;
+import me.mneri.offer.dto.OfferUpdateDto;
 import me.mneri.offer.entity.Offer;
 import me.mneri.offer.entity.User;
 
@@ -96,17 +97,32 @@ public final class TestUtil {
     }
 
     /**
-     * Create a new test {@link OfferRequest}.
+     * Create a new test {@link OfferCreateDto}.
+     *
+     * @return The {@code OfferCreateDto}.
+     */
+    public static OfferCreateDto createOfferCreateDto() {
+        OfferCreateDto offerCreateDto = new OfferCreateDto();
+        offerCreateDto.setTitle("New Title");
+        offerCreateDto.setDescription("New Description");
+        offerCreateDto.setPrice(new BigDecimal("999.99"));
+        offerCreateDto.setCurrency("EUR");
+        offerCreateDto.setTtl(10000L);
+        return offerCreateDto;
+    }
+
+    /**
+     * Create a new test {@link OfferUpdateDto}.
      *
      * @return The {@code OfferRequest}.
      */
-    public static OfferRequest createOfferRequest() {
-        OfferRequest offerRequest = new OfferRequest();
-        offerRequest.setTitle("New Title");
-        offerRequest.setDescription("New Description");
-        offerRequest.setPrice(new BigDecimal("999.99"));
-        offerRequest.setCurrency("EUR");
-        offerRequest.setTtl(10000L);
-        return offerRequest;
+    public static OfferUpdateDto createOfferUpdateDto() {
+        OfferUpdateDto offerCreateDto = new OfferUpdateDto();
+        offerCreateDto.setTitle("New Title");
+        offerCreateDto.setDescription("New Description");
+        offerCreateDto.setPrice(new BigDecimal("999.99"));
+        offerCreateDto.setCurrency("EUR");
+        offerCreateDto.setTtl(10000L);
+        return offerCreateDto;
     }
 }

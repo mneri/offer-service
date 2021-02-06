@@ -18,8 +18,9 @@
 
 package me.mneri.offer.mapping;
 
+import me.mneri.offer.dto.OfferCreateDto;
 import me.mneri.offer.dto.OfferDto;
-import me.mneri.offer.dto.OfferRequest;
+import me.mneri.offer.dto.OfferUpdateDto;
 import me.mneri.offer.entity.Offer;
 import org.mapstruct.*;
 
@@ -34,8 +35,11 @@ public interface OfferMapper {
 
     OfferDto entityToDto(Offer offer);
 
-    OfferRequest entityToRequest(Offer offer);
+    OfferCreateDto entityToCreateDto(Offer offer);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void mergeRequestToEntity(@MappingTarget Offer offer, OfferRequest request);
+    void mergeCreateDtoToEntity(@MappingTarget Offer offer, OfferCreateDto createDto);
+
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void mergeUpdateDtoToEntity(@MappingTarget Offer offer, OfferUpdateDto offerUpdateDto);
 }

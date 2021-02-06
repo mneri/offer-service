@@ -22,7 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import lombok.val;
 import me.mneri.offer.TestUtil;
-import me.mneri.offer.dto.OfferRequest;
+import me.mneri.offer.dto.OfferCreateDto;
 import me.mneri.offer.entity.User;
 import me.mneri.offer.mapping.OfferMapper;
 import me.mneri.offer.repository.OfferRepository;
@@ -33,7 +33,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
@@ -45,7 +44,7 @@ import static org.springframework.data.jpa.domain.Specification.where;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 /**
- * Integration tests for the method {@link OffersController#postOffer(OfferRequest, String)}.
+ * Integration tests for the method {@link OffersController#postOffer(OfferCreateDto, String)}.
  *
  * @author mneri
  */
@@ -90,7 +89,7 @@ class OffersControllerIntegrationTest$postOffer {
         // Given
         val publisher = new User("user", "secret", passwordEncoder);
         val offer = TestUtil.createNonExpiredOffer(publisher);
-        val offerRequest = offerMapper.entityToRequest(offer);
+        val offerRequest = offerMapper.entityToCreateDto(offer);
 
         userRepository.save(publisher);
 
