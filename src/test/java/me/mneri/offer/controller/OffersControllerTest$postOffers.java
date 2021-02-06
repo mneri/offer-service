@@ -22,13 +22,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import lombok.val;
 import me.mneri.offer.TestUtil;
-import me.mneri.offer.dto.OfferRequest;
 import me.mneri.offer.entity.User;
+import me.mneri.offer.mapping.OfferMapper;
 import me.mneri.offer.service.OfferService;
 import me.mneri.offer.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -64,10 +63,10 @@ class OffersControllerTest$postOffers {
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private ModelMapper modelMapper;
-
     private ObjectMapper objectMapper;
+
+    @Autowired
+    private OfferMapper offerMapper;
 
     @MockBean
     private OfferService offerService;
@@ -88,13 +87,13 @@ class OffersControllerTest$postOffers {
      */
     @SneakyThrows
     @Test
-    void givenInvalidUserIdAndOfferPostRequest_whenPostOffersIsCalled_thenHttp201ResponseIsReturned() {
+    void givenInvalidUserIdAndOfferPostRequest_whenPostOffersIsCalled_thenHttp404ResponseIsReturned() {
         // Given
         val user = new User("user", "secret", passwordEncoder);
         Optional<User> optionalUser = Optional.empty();
         val userId = user.getId();
         val offer = TestUtil.createNonExpiredOffer(user);
-        val offerPostRequest = modelMapper.map(offer, OfferRequest.class);
+        val offerPostRequest = offerMapper.entityToRequest(offer);
 
         given(userService.findEnabledById(userId))
                 .willReturn(optionalUser);
@@ -122,7 +121,7 @@ class OffersControllerTest$postOffers {
         val optionalUser = Optional.of(user);
         val userId = user.getId();
         val offer = TestUtil.createNonExpiredOffer(user);
-        val offerPostRequest = modelMapper.map(offer, OfferRequest.class);
+        val offerPostRequest = offerMapper.entityToRequest(offer);
 
         given(userService.findEnabledById(userId))
                 .willReturn(optionalUser);

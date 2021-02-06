@@ -24,11 +24,11 @@ import lombok.val;
 import me.mneri.offer.TestUtil;
 import me.mneri.offer.dto.OfferRequest;
 import me.mneri.offer.entity.User;
+import me.mneri.offer.mapping.OfferMapper;
 import me.mneri.offer.repository.OfferRepository;
 import me.mneri.offer.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -57,10 +57,10 @@ class OffersControllerIntegrationTest$postOffer {
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private ModelMapper modelMapper;
-
     private ObjectMapper objectMapper;
+
+    @Autowired
+    private OfferMapper offerMapper;
 
     @Autowired
     private OfferRepository offerRepository;
@@ -85,7 +85,7 @@ class OffersControllerIntegrationTest$postOffer {
         // Given
         val publisher = new User("user", "secret", passwordEncoder);
         val offer = TestUtil.createNonExpiredOffer(publisher);
-        val offerRequest = modelMapper.map(offer, OfferRequest.class);
+        val offerRequest = offerMapper.entityToRequest(offer);
 
         userRepository.save(publisher);
 

@@ -30,17 +30,15 @@ import me.mneri.offer.entity.User;
 import me.mneri.offer.exception.OfferIdNotFoundException;
 import me.mneri.offer.exception.UserIdNotFoundException;
 import me.mneri.offer.exception.UserNotAuthorizedException;
-import me.mneri.offer.mapping.Types;
+import me.mneri.offer.mapping.OfferMapper;
 import me.mneri.offer.service.OfferService;
 import me.mneri.offer.service.UserService;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -52,10 +50,10 @@ import java.util.Optional;
 @RequestMapping("/offers")
 @RestController
 @Tag(name = "offers",
-     description = "The Offer API")
+        description = "The Offer API")
 public class OffersController {
     @Autowired
-    private ModelMapper modelMapper;
+    private OfferMapper offerMapper;
 
     @Autowired
     private OfferService offerService;
@@ -72,9 +70,9 @@ public class OffersController {
     @ApiResponses(value = @ApiResponse(responseCode = "200", description = "Successful operation."))
     @GetMapping(produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
     @Operation(summary = "Return the list of open offers.",
-               description = "Return the list of the non-expired, non-canceled offers.")
-    public List<OfferDto> getOffers() {
-        return modelMapper.map(offerService.findAllOpen(), Types.OFFER_DTO_LIST_TYPE);
+            description = "Return the list of the non-expired, non-canceled offers.")
+    public Iterable<OfferDto> getOffers() {
+        return offerMapper.entityToDto(offerService.findAllOpen());
     }
 
     /**
@@ -90,7 +88,7 @@ public class OffersController {
             @ApiResponse(responseCode = "404", description = "If the offer doesn't exist or it's closed.")})
     @GetMapping(value = "/{offerId}", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
     @Operation(summary = "Return the user identified by the specified id.",
-               description = "Return the offer given its id or return an error if such offer doesn't exist or it's closed.")
+            description = "Return the offer given its id or return an error if such offer doesn't exist or it's closed.")
     public OfferDto getOfferById(@PathVariable String offerId) throws OfferIdNotFoundException {
         Optional<Offer> optional = offerService.findOpenById(offerId);
 
@@ -99,7 +97,7 @@ public class OffersController {
             throw new OfferIdNotFoundException(offerId);
         }
 
-        return optional.map(offer -> modelMapper.map(offer, OfferDto.class)).get();
+        return optional.map(offer -> offerMapper.entityToDto(offer)).get();
     }
 
     /**
@@ -113,7 +111,7 @@ public class OffersController {
             @ApiResponse(responseCode = "201", description = "Successful operation."),
             @ApiResponse(responseCode = "404", description = "If the user doesn't exist or it's not enabled.")})
     @Operation(summary = "Insert a new open offer.",
-               description = "Insert a new open offer in the repository.")
+            description = "Insert a new open offer in the repository.")
     @PostMapping(consumes = MimeTypeUtils.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public void postOffer(@Valid @RequestBody OfferRequest request, @RequestParam("user.id") String userId)
@@ -125,7 +123,8 @@ public class OffersController {
             throw new UserIdNotFoundException(userId);
         }
 
-        Offer offer = modelMapper.map(request, Offer.class);
+        Offer offer = Offer.builder().build();
+        offerMapper.mergeRequestToEntity(offer, request);
         offer.setPublisher(optional.get());
 
         offerService.save(offer);
@@ -144,7 +143,7 @@ public class OffersController {
             @ApiResponse(responseCode = "401", description = "If the user has no rights to modify the offer."),
             @ApiResponse(responseCode = "404", description = "If the user or the offer don't exist or they are not enabled.")})
     @Operation(summary = "Modify an open offer.",
-               description = "Modify an open offer in the repository.")
+            description = "Modify an open offer in the repository.")
     @PutMapping(value = "/{offerId}", consumes = MimeTypeUtils.APPLICATION_JSON_VALUE)
     public void putOffer(@PathVariable String offerId, @Valid @RequestBody OfferRequest request, @RequestParam("user.id") String userId)
             throws OfferIdNotFoundException, UserIdNotFoundException, UserNotAuthorizedException {
@@ -156,14 +155,14 @@ public class OffersController {
         }
 
         Offer offer = offerOptional.get();
-        modelMapper.map(request, offer);
+        offerMapper.mergeRequestToEntity(offer, request);
 
         offerService.update(offer, userId);
     }
 
     /**
      * Close (cancel) an existing open offer.
-     *
+     * <p>
      * The deletion of an offer is only logical: the offer cancelled field is set to true and the object physically
      * remains inside the repository and it will be filtered out by query predicates.
      *
@@ -178,7 +177,7 @@ public class OffersController {
             @ApiResponse(responseCode = "401", description = "If the user has no rights to modify the offer."),
             @ApiResponse(responseCode = "404", description = "If the user or the offer don't exist or they are not enabled.")})
     @Operation(summary = "Delete an open offer.",
-               description = "Delete an open offer in the repository.")
+            description = "Delete an open offer in the repository.")
     @DeleteMapping(value = "/{offerId}", consumes = MimeTypeUtils.APPLICATION_JSON_VALUE)
     public void deleteOffer(@PathVariable String offerId, @RequestParam("user.id") String userId)
             throws OfferIdNotFoundException, UserIdNotFoundException, UserNotAuthorizedException {

@@ -22,14 +22,14 @@ import lombok.val;
 import me.mneri.offer.TestUtil;
 import me.mneri.offer.dto.OfferRequest;
 import me.mneri.offer.entity.Offer;
+import me.mneri.offer.entity.User;
 import org.junit.jupiter.api.Test;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Tests for {@link OfferRequest} to {@link Offer} mapping.
@@ -40,7 +40,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @SpringBootTest
 class OfferRequestToOfferMappingTest {
     @Autowired
-    private ModelMapper modelMapper;
+    private OfferMapper offerMapper;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     /**
      * Test the correct initialization of all the fields after the mapping.
@@ -49,12 +52,12 @@ class OfferRequestToOfferMappingTest {
     void givenOfferPostRequest_whenOfferPostRequestIsMappedToOffer_thenAllFieldsAreCorrectlyInitialized() {
         // Given
         val request = TestUtil.createOfferRequest();
+        val offer = TestUtil.createNonExpiredOffer(new User("user", "password", passwordEncoder));
 
         // When
-        val offer = modelMapper.map(request, Offer.class);
+        offerMapper.mergeRequestToEntity(offer, request);
 
         // Then
-        assertNotNull(offer.getId());
         assertEquals(request.getTitle(), offer.getTitle());
         assertEquals(request.getDescription(), offer.getDescription());
         assertEquals(request.getPrice(), offer.getPrice());
