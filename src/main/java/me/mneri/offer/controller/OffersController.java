@@ -23,8 +23,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.log4j.Log4j2;
+import me.mneri.offer.dto.OfferCreateDto;
 import me.mneri.offer.dto.OfferDto;
-import me.mneri.offer.dto.OfferRequest;
+import me.mneri.offer.dto.OfferUpdateDto;
 import me.mneri.offer.entity.Offer;
 import me.mneri.offer.entity.User;
 import me.mneri.offer.exception.OfferIdNotFoundException;
@@ -103,8 +104,8 @@ public class OffersController {
     /**
      * Create a new {@link Offer}.
      *
-     * @param request The offer.
-     * @param userId  The user id of the publisher of the offer.
+     * @param createDto The offer.
+     * @param userId    The user id of the publisher of the offer.
      * @throws UserIdNotFoundException If the user is not found.
      */
     @ApiResponses(value = {
@@ -114,7 +115,7 @@ public class OffersController {
             description = "Insert a new open offer in the repository.")
     @PostMapping(consumes = MimeTypeUtils.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public void postOffer(@Valid @RequestBody OfferRequest request, @RequestParam("user.id") String userId)
+    public void postOffer(@Valid @RequestBody OfferCreateDto createDto, @RequestParam("user.id") String userId)
             throws UserIdNotFoundException {
         Optional<User> optional = userService.findEnabledById(userId);
 
@@ -124,7 +125,7 @@ public class OffersController {
         }
 
         Offer offer = Offer.builder().build();
-        offerMapper.mergeRequestToEntity(offer, request);
+        offerMapper.mergeCreateDtoToEntity(offer, createDto);
         offer.setPublisher(optional.get());
 
         offerService.save(offer);
@@ -133,8 +134,9 @@ public class OffersController {
     /**
      * Modify the specified {@link Offer}.
      *
-     * @param request The offer.
-     * @param userId  The user id of the publisher of the offer.
+     * @param offerId   The offer id.
+     * @param updateDto The update data.
+     * @param userId    The user id of the publisher of the offer.
      * @throws UserIdNotFoundException    If the user has no rights to modify the offer.
      * @throws UserNotAuthorizedException If the user is not found.
      */
@@ -145,7 +147,9 @@ public class OffersController {
     @Operation(summary = "Modify an open offer.",
             description = "Modify an open offer in the repository.")
     @PutMapping(value = "/{offerId}", consumes = MimeTypeUtils.APPLICATION_JSON_VALUE)
-    public void putOffer(@PathVariable String offerId, @Valid @RequestBody OfferRequest request, @RequestParam("user.id") String userId)
+    public void putOffer(@PathVariable String offerId,
+                         @Valid @RequestBody OfferUpdateDto updateDto,
+                         @RequestParam("user.id") String userId)
             throws OfferIdNotFoundException, UserIdNotFoundException, UserNotAuthorizedException {
         Optional<Offer> offerOptional = offerService.findOpenById(offerId);
 
@@ -155,7 +159,7 @@ public class OffersController {
         }
 
         Offer offer = offerOptional.get();
-        offerMapper.mergeRequestToEntity(offer, request);
+        offerMapper.mergeUpdateDtoToEntity(offer, updateDto);
 
         offerService.update(offer, userId);
     }

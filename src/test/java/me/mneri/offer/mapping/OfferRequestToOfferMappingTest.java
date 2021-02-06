@@ -20,7 +20,8 @@ package me.mneri.offer.mapping;
 
 import lombok.val;
 import me.mneri.offer.TestUtil;
-import me.mneri.offer.dto.OfferRequest;
+import me.mneri.offer.dto.OfferCreateDto;
+import me.mneri.offer.dto.OfferUpdateDto;
 import me.mneri.offer.entity.Offer;
 import me.mneri.offer.entity.User;
 import org.junit.jupiter.api.Test;
@@ -49,13 +50,33 @@ class OfferRequestToOfferMappingTest {
      * Test the correct initialization of all the fields after the mapping.
      */
     @Test
-    void givenOfferPostRequest_whenOfferPostRequestIsMappedToOffer_thenAllFieldsAreCorrectlyInitialized() {
+    void givenOfferCreateDto_whenOfferCreateDtoIsMappedToOffer_thenAllFieldsAreCorrectlyInitialized() {
         // Given
-        val request = TestUtil.createOfferRequest();
+        val request = TestUtil.createOfferCreateDto();
         val offer = TestUtil.createNonExpiredOffer(new User("user", "password", passwordEncoder));
 
         // When
-        offerMapper.mergeRequestToEntity(offer, request);
+        offerMapper.mergeCreateDtoToEntity(offer, request);
+
+        // Then
+        assertEquals(request.getTitle(), offer.getTitle());
+        assertEquals(request.getDescription(), offer.getDescription());
+        assertEquals(request.getPrice(), offer.getPrice());
+        assertEquals(request.getCurrency(), offer.getCurrency());
+        assertEquals(request.getTtl(), offer.getTtl());
+    }
+
+    /**
+     * Test the correct initialization of all the fields after the mapping.
+     */
+    @Test
+    void givenOfferUpdateDto_whenOfferUpdateDtoIsMappedToOffer_thenAllFieldsAreCorrectlyInitialized() {
+        // Given
+        val request = TestUtil.createOfferCreateDto();
+        val offer = TestUtil.createNonExpiredOffer(new User("user", "password", passwordEncoder));
+
+        // When
+        offerMapper.mergeCreateDtoToEntity(offer, request);
 
         // Then
         assertEquals(request.getTitle(), offer.getTitle());

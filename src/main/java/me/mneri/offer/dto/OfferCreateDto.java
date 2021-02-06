@@ -19,12 +19,17 @@
 package me.mneri.offer.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import me.mneri.offer.entity.Offer;
 import me.mneri.offer.validator.Constants;
 import me.mneri.offer.validator.Description;
 import me.mneri.offer.validator.Title;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 /**
@@ -36,8 +41,8 @@ import java.math.BigDecimal;
 @EqualsAndHashCode
 @NoArgsConstructor
 @ToString
-public class OfferRequest {
-    @NonNull
+public class OfferCreateDto {
+    @NotEmpty
     @Schema(description = "Offer's title.",
             example = "Buy 1 get 1 for free.",
             maxLength = Constants.TITLE_MAX_LENGTH,
@@ -46,7 +51,7 @@ public class OfferRequest {
     @Title
     private String title;
 
-    @NonNull
+    @NotEmpty
     @Schema(description = "Offer's description.",
             example = "Order 1 bag of coffee and get one free.",
             maxLength = Constants.DESCRIPTION_MAX_LENGTH,
@@ -55,13 +60,13 @@ public class OfferRequest {
     @Description
     private String description;
 
-    @NonNull
+    @NotNull
     @Schema(description = "Offer's price.",
             example = "100.00",
             required = true)
     private BigDecimal price;
 
-    @NonNull
+    @NotEmpty
     @Schema(description = "The currency of the offer's price.",
             example = "GBP",
             required = true)
