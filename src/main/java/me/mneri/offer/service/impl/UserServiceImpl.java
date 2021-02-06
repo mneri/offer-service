@@ -38,7 +38,7 @@ import static org.springframework.data.jpa.domain.Specification.where;
  */
 @Log4j2
 @Service
-public class DefaultUserService implements UserService {
+public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
