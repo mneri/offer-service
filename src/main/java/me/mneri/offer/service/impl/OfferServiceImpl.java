@@ -44,7 +44,7 @@ import static org.springframework.data.jpa.domain.Specification.where;
  */
 @Log4j2
 @Service
-public class DefaultOfferService implements OfferService {
+public class OfferServiceImpl implements OfferService {
     @Autowired
     private OfferRepository offerRepository;
 
