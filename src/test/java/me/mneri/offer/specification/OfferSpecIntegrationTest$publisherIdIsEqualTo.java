@@ -28,18 +28,19 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.annotation.Transactional;
 
-import static me.mneri.offer.specification.OfferSpecification.offerPublisherUsernameIsEqualTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.data.jpa.domain.Specification.where;
 
 /**
- * Test the {@link OfferSpecification#offerPublisherUsernameIsEqualTo(String)} specification.<br/>
+ * Test the {@link OfferSpec#publisherIdIsEqualTo(String)} specification.<br/>
  * We test 3 different cases:
  * <ul>
  *     <li>Empty repository;</li>
@@ -50,11 +51,14 @@ import static org.springframework.data.jpa.domain.Specification.where;
  * @author mneri
  */
 @ActiveProfiles("test")
-@DataJpaTest
-@ExtendWith(SpringExtension.class)
-class OfferSpecificationIntegrationTest$publisherUsernameIsEqualTo {
+@SpringBootTest
+@Transactional
+class OfferSpecIntegrationTest$publisherIdIsEqualTo {
     @Autowired
     private OfferRepository offerRepository;
+
+    @Autowired
+    private OfferSpec offerSpec;
 
     private PasswordEncoder passwordEncoder;
 
@@ -67,7 +71,7 @@ class OfferSpecificationIntegrationTest$publisherUsernameIsEqualTo {
     }
 
     /**
-     * Test the SQL predicate {@code user.username = 'value'} against an empty repository.
+     * Test the SQL predicate {@code user.id = 'value'} against an empty repository.
      */
     @Test
     void givenEmptyRepository_whenFindAll$isCanceledIsCalled_thenNoOfferIsReturn() {
@@ -75,14 +79,14 @@ class OfferSpecificationIntegrationTest$publisherUsernameIsEqualTo {
         val publisher = new User("user", "secret", passwordEncoder);
 
         // When
-        val returned = offerRepository.findAll(where(offerPublisherUsernameIsEqualTo(publisher.getUsername())));
+        val returned = offerRepository.findAll(where(offerSpec.publisherIdIsEqualTo(publisher.getId())));
 
         // Then
         assertTrue(returned.isEmpty());
     }
 
     /**
-     * Test the SQL predicate {@code user.username = 'value'} against a repository containing an offer published by a
+     * Test the SQL predicate {@code user.id = 'value'} against a repository containing an offer published by a
      * different user.
      */
     @Test
@@ -96,14 +100,14 @@ class OfferSpecificationIntegrationTest$publisherUsernameIsEqualTo {
         offerRepository.save(offer);
 
         // When
-        val returned = offerRepository.findAll(where(offerPublisherUsernameIsEqualTo(publisher.getUsername())));
+        val returned = offerRepository.findAll(where(offerSpec.publisherIdIsEqualTo(publisher.getId())));
 
         // Then
         assertTrue(returned.isEmpty());
     }
 
     /**
-     * Test the SQL predicate {@code user.username = 'value'} against a repository containing an offer published by the same
+     * Test the SQL predicate {@code user.id = 'value'} against a repository containing an offer published by the same
      * user.
      */
     @Test
@@ -116,7 +120,7 @@ class OfferSpecificationIntegrationTest$publisherUsernameIsEqualTo {
         offerRepository.save(offer);
 
         // When
-        val returned = offerRepository.findAll(where(offerPublisherUsernameIsEqualTo(publisher.getUsername())));
+        val returned = offerRepository.findAll(where(offerSpec.publisherIdIsEqualTo(publisher.getId())));
 
         // Then
         assertEquals(1, returned.size());

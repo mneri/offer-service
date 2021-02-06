@@ -27,19 +27,21 @@ import me.mneri.offer.entity.User;
 import me.mneri.offer.mapping.OfferMapper;
 import me.mneri.offer.repository.OfferRepository;
 import me.mneri.offer.repository.UserRepository;
+import me.mneri.offer.specification.OfferSpec;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import static me.mneri.offer.specification.OfferSpecification.offerPublisherIdIsEqualTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.data.jpa.domain.Specification.where;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 /**
@@ -64,6 +66,9 @@ class OffersControllerIntegrationTest$postOffer {
 
     @Autowired
     private OfferRepository offerRepository;
+
+    @Autowired
+    private OfferSpec offerSpec;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -95,7 +100,10 @@ class OffersControllerIntegrationTest$postOffer {
                 .content(objectMapper.writeValueAsString(offerRequest)));
 
         // Then
-        val result = offerRepository.findOne(offerPublisherIdIsEqualTo(publisher.getId())).orElseThrow(RuntimeException::new);
+        val result = offerRepository
+                .findOne(where(offerSpec.publisherIdIsEqualTo(publisher.getId())))
+                .orElseThrow(RuntimeException::new);
+
         assertEquals(offer.getTitle(), result.getTitle());
         assertEquals(offer.getDescription(), result.getDescription());
         assertEquals(offer.getPrice(), result.getPrice());

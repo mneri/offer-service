@@ -26,18 +26,19 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.annotation.Transactional;
 
-import static me.mneri.offer.specification.UserSpecification.userIsEnabled;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.data.jpa.domain.Specification.where;
 
 /**
- * Test the {@link UserSpecification#userIsEnabled()} specification.<br/>
+ * Test the {@link UserSpec#isEnabled()} specification.<br/>
  * We test 3 different cases:
  * <ul>
  *     <li>Empty repository;</li>
@@ -48,13 +49,16 @@ import static org.springframework.data.jpa.domain.Specification.where;
  * @author mneri
  */
 @ActiveProfiles("test")
-@DataJpaTest
-@ExtendWith(SpringExtension.class)
+@SpringBootTest
+@Transactional
 class UserSpecificationIntegrationTest$isEnabled {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UserSpec userSpec;
 
     @BeforeEach
     void beforeEach() {
@@ -76,7 +80,7 @@ class UserSpecificationIntegrationTest$isEnabled {
         userRepository.save(user);
 
         // When
-        val returned = userRepository.findAll(where(userIsEnabled()));
+        val returned = userRepository.findAll(where(userSpec.isEnabled()));
 
         // Then
         assertEquals(1, returned.size());
@@ -92,7 +96,7 @@ class UserSpecificationIntegrationTest$isEnabled {
         // Empty repository
 
         // When
-        val returned = userRepository.findAll(where(userIsEnabled()));
+        val returned = userRepository.findAll(where(userSpec.isEnabled()));
 
         // Then
         assertTrue(returned.isEmpty());
@@ -110,7 +114,7 @@ class UserSpecificationIntegrationTest$isEnabled {
         userRepository.save(user);
 
         // When
-        val returned = userRepository.findAll(where(userIsEnabled()));
+        val returned = userRepository.findAll(where(userSpec.isEnabled()));
 
         // Then
         assertTrue(returned.isEmpty());

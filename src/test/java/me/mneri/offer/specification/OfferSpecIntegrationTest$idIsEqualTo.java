@@ -28,33 +28,39 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.annotation.Transactional;
 
-import static me.mneri.offer.specification.OfferSpecification.offerIsCanceled;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.data.jpa.domain.Specification.where;
 
 /**
- * Test the {@link OfferSpecification#offerIsCanceled()} specification.<br/>
+ * Test the {@link OfferSpec#idIsEqualTo(String)} specification.<br/>
  * We test 3 different cases:
  * <ul>
  *     <li>Empty repository;</li>
- *     <li>Repository containing a canceled offer;</li>
- *     <li>Repository containing a single non-canceled offer.</li>
+ *     <li>Repository containing an offer with the specified id;</li>
+ *     <li>Repository containing an offer with a different id.</li>
  * </ul>
  *
  * @author mneri
  */
 @ActiveProfiles("test")
-@DataJpaTest
-@ExtendWith(SpringExtension.class)
-class OfferSpecificationIntegrationTest$isCanceled {
+@SpringBootTest
+@Transactional
+class OfferSpecIntegrationTest$idIsEqualTo {
     @Autowired
     private OfferRepository offerRepository;
+
+    @Autowired
+    private OfferSpec offerSpec;
 
     private PasswordEncoder passwordEncoder;
 
@@ -67,45 +73,45 @@ class OfferSpecificationIntegrationTest$isCanceled {
     }
 
     /**
-     * Test the SQL predicate {@code offer.canceled = 1} against a repository containing a canceled offer.
+     * Test the SQL predicate {@code offer.id = 'vaule'} against a repository containing an offer with the specified id.
      */
     @Test
-    void givenCanceledOffer_whenFindAll$isCanceledIsCalled_thenOfferIsReturned() {
+    void givenOffer_whenFindAll$idIsEqualToIdCalled_thenOfferIsReturned() {
         // Given
         val publisher = new User("user", "secret", passwordEncoder);
         val offer = TestUtil.createNonExpiredOffer(publisher);
 
         userRepository.save(publisher);
-        offer.setCanceled(true);
         offerRepository.save(offer);
 
         // When
-        val returned = offerRepository.findAll(where(offerIsCanceled()));
+        val returned = offerRepository.findAll(where(offerSpec.idIsEqualTo(offer.getId())));
 
         // Then
-        assertFalse(returned.isEmpty());
+        assertEquals(1, returned.size());
+        assertEquals(offer, returned.get(0));
     }
 
     /**
-     * Test the SQL predicate {@code offer.canceled = 1} against an empty repository.
+     * Test the SQL predicate {@code offer.id = 'value'} against an empty repository.
      */
     @Test
     void givenEmptyRepository_whenFindAll$isCanceledIsCalled_thenNoOfferIsReturn() {
         // Given
-        // Empty repository
+        val id = UUID.randomUUID().toString();
 
         // When
-        val returned = offerRepository.findAll(where(offerIsCanceled()));
+        val returned = offerRepository.findAll(where(offerSpec.idIsEqualTo(id)));
 
         // Then
         assertTrue(returned.isEmpty());
     }
 
     /**
-     * Test the SQL predicate {@code offer.canceled = 1} against a repository containing a single enabled offer.
+     * Test the SQL predicate {@code offer.id = 'value'} against a repository containing an offer with a different id.
      */
     @Test
-    void givenEnabledOffer_whenFindAll$isCanceledIsCalled_thenNoOfferIsReturned() {
+    void givenOfferWithDifferentId_whenFindAll$idIsEqualToIsCalled_thenNoOfferIsReturned() {
         // Given
         val publisher = new User("user", "secret", passwordEncoder);
         val offer = TestUtil.createNonExpiredOffer(publisher);
@@ -114,7 +120,7 @@ class OfferSpecificationIntegrationTest$isCanceled {
         offerRepository.save(offer);
 
         // When
-        val returned = offerRepository.findAll(where(offerIsCanceled()));
+        val returned = offerRepository.findAll(where(offerSpec.idIsEqualTo(UUID.randomUUID().toString())));
 
         // Then
         assertTrue(returned.isEmpty());

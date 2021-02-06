@@ -26,18 +26,19 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.annotation.Transactional;
 
-import static me.mneri.offer.specification.UserSpecification.userUsernameIsEqualTo;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.data.jpa.domain.Specification.where;
 
 /**
- * Test the {@link UserSpecification#userUsernameIsEqualTo(String)} specification.<br/>
+ * Test the {@link UserSpec#usernameIsEqualTo(String)} specification.<br/>
  * We test 3 different cases:
  * <ul>
  *     <li>Empty repository;</li>
@@ -48,13 +49,16 @@ import static org.springframework.data.jpa.domain.Specification.where;
  * @author mneri
  */
 @ActiveProfiles("test")
-@DataJpaTest
-@ExtendWith(SpringExtension.class)
+@SpringBootTest
+@Transactional
 public class UserSpecificationIntegrationTest$usernameIsEqualTo {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UserSpec userSpec;
 
     @BeforeEach
     void beforeEach() {
@@ -76,7 +80,7 @@ public class UserSpecificationIntegrationTest$usernameIsEqualTo {
         userRepository.save(user);
 
         // When
-        val returned = userRepository.findAll(where(userUsernameIsEqualTo(user.getUsername())));
+        val returned = userRepository.findAll(where(userSpec.usernameIsEqualTo(user.getUsername())));
 
         // Then
         assertTrue(returned.contains(user));
@@ -91,7 +95,7 @@ public class UserSpecificationIntegrationTest$usernameIsEqualTo {
         val username = "user";
 
         // When
-        val returned = userRepository.findAll(where(userUsernameIsEqualTo(username)));
+        val returned = userRepository.findAll(where(userSpec.usernameIsEqualTo(username)));
 
         // Then
         assertTrue(returned.isEmpty());
@@ -108,7 +112,7 @@ public class UserSpecificationIntegrationTest$usernameIsEqualTo {
         userRepository.save(user);
 
         // When
-        val returned = userRepository.findAll(where(userUsernameIsEqualTo("another")));
+        val returned = userRepository.findAll(where(userSpec.usernameIsEqualTo("another")));
 
         // Then
         assertFalse(returned.contains(user));

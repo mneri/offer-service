@@ -26,6 +26,8 @@ import me.mneri.offer.exception.UserNotAuthorizedException;
 import me.mneri.offer.repository.OfferRepository;
 import me.mneri.offer.repository.UserRepository;
 import me.mneri.offer.service.OfferService;
+import me.mneri.offer.specification.OfferSpec;
+import me.mneri.offer.specification.UserSpec;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,9 +35,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
-import static me.mneri.offer.specification.OfferSpecification.*;
-import static me.mneri.offer.specification.UserSpecification.userIdIsEqualTo;
-import static me.mneri.offer.specification.UserSpecification.userIsEnabled;
 import static org.springframework.data.jpa.domain.Specification.where;
 
 /**
@@ -50,7 +49,13 @@ public class DefaultOfferService implements OfferService {
     private OfferRepository offerRepository;
 
     @Autowired
+    private OfferSpec offerSpec;
+
+    @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UserSpec userSpec;
 
     /**
      * Return {@code true} if an enabled {@link User} with the specified id exists in the repository.
@@ -60,14 +65,14 @@ public class DefaultOfferService implements OfferService {
      */
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private boolean enabledUserExistsById(String userId) {
-        return userRepository.count(where(userIsEnabled()).and(userIdIsEqualTo(userId))) > 0;
+        return userRepository.count(where(userSpec.isEnabled()).and(userSpec.idIsEqualTo(userId))) > 0;
     }
 
     /**
      * {@inheritDoc}
      */
     public List<Offer> findAllOpen() {
-        return offerRepository.findAll(where(offerIsOpen()));
+        return offerRepository.findAll(where(offerSpec.isOpen()));
     }
 
     /**
@@ -80,21 +85,21 @@ public class DefaultOfferService implements OfferService {
             throw new UserIdNotFoundException(userId);
         }
 
-        return offerRepository.findAll(where(offerIsOpen()).and(offerPublisherIdIsEqualTo(userId)));
+        return offerRepository.findAll(where(offerSpec.isOpen()).and(offerSpec.publisherIdIsEqualTo(userId)));
     }
 
     /**
      * {@inheritDoc}
      */
     public List<Offer> findAllOpenByPublisherUsername(String username) {
-        return offerRepository.findAll(where(offerIsOpen()).and(offerPublisherUsernameIsEqualTo(username)));
+        return offerRepository.findAll(where(offerSpec.isOpen()).and(offerSpec.publisherUsernameIsEqualTo(username)));
     }
 
     /**
      * {@inheritDoc}
      */
     public Optional<Offer> findOpenById(String id) {
-        return offerRepository.findOne(where(offerIsOpen()).and(offerIdIsEqualTo(id)));
+        return offerRepository.findOne(where(offerSpec.isOpen()).and(offerSpec.idIsEqualTo(id)));
     }
 
     /**
@@ -107,7 +112,7 @@ public class DefaultOfferService implements OfferService {
             throw new UserIdNotFoundException(userId);
         }
 
-        if (offerRepository.count(where(offerIdIsEqualTo(offer.getId())).and(offerPublisherIdIsEqualTo(userId))) == 0) {
+        if (offerRepository.count(where(offerSpec.idIsEqualTo(offer.getId())).and(offerSpec.publisherIdIsEqualTo(userId))) == 0) {
             log.debug("The user is not authorized to update the offer; offerId: {}; userId: {}", offer.getId(), userId);
             throw new UserNotAuthorizedException(userId);
         }
