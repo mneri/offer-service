@@ -23,8 +23,8 @@ import me.mneri.offer.bean.OfferCreate;
 import me.mneri.offer.bean.OfferUpdate;
 import me.mneri.offer.entity.Offer;
 import me.mneri.offer.entity.User;
-import me.mneri.offer.exception.OfferIdNotFoundException;
-import me.mneri.offer.exception.UserIdNotFoundException;
+import me.mneri.offer.exception.OfferNotFoundException;
+import me.mneri.offer.exception.UserNotFoundException;
 import me.mneri.offer.exception.UserNotAuthorizedException;
 import me.mneri.offer.mapping.OfferMapper;
 import me.mneri.offer.repository.OfferRepository;
@@ -68,10 +68,10 @@ public class OfferServiceImpl implements OfferService {
      * {@inheritDoc}
      */
     @Override
-    public void delete(Offer offer, String userId) throws UserIdNotFoundException, UserNotAuthorizedException {
+    public void delete(Offer offer, String userId) throws UserNotFoundException, UserNotAuthorizedException {
         if (!enabledUserExistsById(userId)) {
             log.debug("No enabled user with the specified id was found; userId: {}", userId);
-            throw new UserIdNotFoundException(userId);
+            throw new UserNotFoundException(userId);
         }
 
         if (offerRepository.count(where(offerSpec.idIsEqualTo(offer.getId())).and(offerSpec.publisherIdIsEqualTo(userId))) == 0) {
@@ -104,10 +104,10 @@ public class OfferServiceImpl implements OfferService {
      * {@inheritDoc}
      */
     @Transactional
-    public List<Offer> findAllOpenByPublisherId(String userId) throws UserIdNotFoundException {
+    public List<Offer> findAllOpenByPublisherId(String userId) throws UserNotFoundException {
         if (!enabledUserExistsById(userId)) {
             log.debug("No enabled user with the specified id was found; userId: {}", userId);
-            throw new UserIdNotFoundException(userId);
+            throw new UserNotFoundException(userId);
         }
 
         return offerRepository.findAll(where(offerSpec.isOpen()).and(offerSpec.publisherIdIsEqualTo(userId)));
@@ -133,17 +133,17 @@ public class OfferServiceImpl implements OfferService {
     @Override
     @Transactional
     public void update(String offerId, OfferUpdate update, String userId)
-            throws OfferIdNotFoundException, UserIdNotFoundException, UserNotAuthorizedException {
+            throws OfferNotFoundException, UserNotFoundException, UserNotAuthorizedException {
         if (!enabledUserExistsById(userId)) {
             log.debug("No enabled user with the specified id was found; userId: {}", userId);
-            throw new UserIdNotFoundException(userId);
+            throw new UserNotFoundException(userId);
         }
 
         Optional<Offer> optional = offerRepository.findOne(where(offerSpec.isOpen()).and(offerSpec.idIsEqualTo(offerId)));
 
         if (!optional.isPresent()) {
             log.debug("No open offer with the specified id was found; offerId: {}", offerId);
-            throw new OfferIdNotFoundException(offerId);
+            throw new OfferNotFoundException(offerId);
         }
 
         Offer offer = optional.get();

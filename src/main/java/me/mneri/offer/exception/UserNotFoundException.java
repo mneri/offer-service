@@ -23,20 +23,20 @@ package me.mneri.offer.exception;
  *
  * @author mneri
  */
-public class UserIdNotFoundException extends Exception {
-    private String userId;
+public class UserNotFoundException extends Exception {
+    private final String userId;
 
     /**
      * Create a new instance.
      *
      * @param userId The user id.
      */
-    public UserIdNotFoundException(String userId) {
+    public UserNotFoundException(String userId) {
         this.userId = userId;
     }
 
     @Override
     public String getMessage() {
-        return String.format("Couldn't find user id '%s'", userId);
+        return String.format("Couldn't find the specified user: userId=%s", userId);
     }
 }

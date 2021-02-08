@@ -26,7 +26,7 @@ import me.mneri.offer.TestUtil;
 import me.mneri.offer.dto.OfferDto;
 import me.mneri.offer.entity.Offer;
 import me.mneri.offer.entity.User;
-import me.mneri.offer.exception.UserIdNotFoundException;
+import me.mneri.offer.exception.UserNotFoundException;
 import me.mneri.offer.mapping.OfferMapper;
 import me.mneri.offer.service.OfferService;
 import me.mneri.offer.service.UserService;
@@ -100,7 +100,7 @@ class UsersControllerTest$getOffersByUserId {
         val userId = UUID.randomUUID().toString();
 
         given(offerService.findAllOpenByPublisherId(userId))
-                .willThrow(new UserIdNotFoundException(userId));
+                .willThrow(new UserNotFoundException(userId));
 
         // When
         val response = mockMvc

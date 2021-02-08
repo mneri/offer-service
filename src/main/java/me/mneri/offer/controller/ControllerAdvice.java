@@ -18,9 +18,7 @@
 
 package me.mneri.offer.controller;
 
-import me.mneri.offer.exception.OfferIdNotFoundException;
-import me.mneri.offer.exception.UserIdNotFoundException;
-import me.mneri.offer.exception.UserNotAuthorizedException;
+import me.mneri.offer.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -34,19 +32,35 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class ControllerAdvice {
     /**
-     * Handler for {@link OfferIdNotFoundException}.
+     * Handler for {@link OfferIsCancelledException}.
      */
-    @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "The specified offer id was not found.")
-    @ExceptionHandler(OfferIdNotFoundException.class)
-    public void offerIdNotFound() {
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "The specified offer was cancelled.")
+    @ExceptionHandler(OfferIsCancelledException.class)
+    public void offerIsCancelled() {
     }
 
     /**
-     * Handler for {@link UserIdNotFoundException}.
+     * Handler for {@link OfferIsExpiredException}.
+     */
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "The specified offer is expired.")
+    @ExceptionHandler(OfferIsExpiredException.class)
+    public void offerIsExpired() {
+    }
+
+    /**
+     * Handler for {@link OfferNotFoundException}.
+     */
+    @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "The specified offer id was not found.")
+    @ExceptionHandler(OfferNotFoundException.class)
+    public void offerNotFound() {
+    }
+
+    /**
+     * Handler for {@link UserNotFoundException}.
      */
     @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "The specified user id was not found.")
-    @ExceptionHandler(UserIdNotFoundException.class)
-    public void userIdNotFound() {
+    @ExceptionHandler(UserNotFoundException.class)
+    public void userNotFound() {
     }
 
     /**

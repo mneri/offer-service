@@ -23,20 +23,20 @@ package me.mneri.offer.exception;
  *
  * @author mneri
  */
-public class OfferIdNotFoundException extends Throwable {
-    private String offerId;
+public class OfferNotFoundException extends Throwable {
+    private final String offerId;
 
     /**
      * Create a new instance.
      *
      * @param offerId The offer id.
      */
-    public OfferIdNotFoundException(String offerId) {
+    public OfferNotFoundException(String offerId) {
         this.offerId = offerId;
     }
 
     @Override
     public String getMessage() {
-        return String.format("Couldn't find the offer id '%s'", offerId);
+        return String.format("Couldn't find the specified offer: offerId=%s", offerId);
     }
 }

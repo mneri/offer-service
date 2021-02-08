@@ -23,7 +23,7 @@ import lombok.val;
 import me.mneri.offer.TestUtil;
 import me.mneri.offer.bean.OfferUpdate;
 import me.mneri.offer.entity.User;
-import me.mneri.offer.exception.UserIdNotFoundException;
+import me.mneri.offer.exception.UserNotFoundException;
 import me.mneri.offer.exception.UserNotAuthorizedException;
 import me.mneri.offer.repository.OfferRepository;
 import me.mneri.offer.repository.UserRepository;
@@ -108,7 +108,7 @@ public class OfferServiceIntegrationTest$update {
         offerRepository.save(offer);
 
         // When/Then
-        assertThrows(UserIdNotFoundException.class, () -> offerService.update(offer.getId(), update, otherId));
+        assertThrows(UserNotFoundException.class, () -> offerService.update(offer.getId(), update, otherId));
     }
 
     /**

@@ -22,8 +22,8 @@ import me.mneri.offer.bean.OfferCreate;
 import me.mneri.offer.bean.OfferUpdate;
 import me.mneri.offer.entity.Offer;
 import me.mneri.offer.entity.User;
-import me.mneri.offer.exception.OfferIdNotFoundException;
-import me.mneri.offer.exception.UserIdNotFoundException;
+import me.mneri.offer.exception.OfferNotFoundException;
+import me.mneri.offer.exception.UserNotFoundException;
 import me.mneri.offer.exception.UserNotAuthorizedException;
 
 import java.util.List;
@@ -41,7 +41,7 @@ public interface OfferService {
      * @param offer  The offer.
      * @param userId The id of the modifier.
      */
-    void delete(Offer offer, String userId) throws UserIdNotFoundException, UserNotAuthorizedException;
+    void delete(Offer offer, String userId) throws UserNotFoundException, UserNotAuthorizedException;
 
     /**
      * Find all the open {@link Offer}s.
@@ -56,7 +56,7 @@ public interface OfferService {
      * @param id The id of the user.
      * @return The list of the open offers published by the specified user.
      */
-    List<Offer> findAllOpenByPublisherId(String id) throws UserIdNotFoundException;
+    List<Offer> findAllOpenByPublisherId(String id) throws UserNotFoundException;
 
     /**
      * Find all the open {@link Offer}s published by the specified {@link User}.
@@ -82,12 +82,12 @@ public interface OfferService {
      * @param offerId The id of the offer to update.
      * @param update  The data to update the offer with.
      * @param userId  The user id of the modifier.
-     * @throws OfferIdNotFoundException   If the offer with the specified id was not found in the repository.
-     * @throws UserIdNotFoundException    If a user with the specified id was not found in the repository.
+     * @throws OfferNotFoundException   If the offer with the specified id was not found in the repository.
+     * @throws UserNotFoundException    If a user with the specified id was not found in the repository.
      * @throws UserNotAuthorizedException If the specified user id doesn't belong to the publisher of the offer.
      */
     void update(String offerId, OfferUpdate update, String userId)
-            throws OfferIdNotFoundException, UserIdNotFoundException, UserNotAuthorizedException;
+            throws OfferNotFoundException, UserNotFoundException, UserNotAuthorizedException;
 
     /**
      * Persist an offer into the database.
