@@ -23,10 +23,9 @@ import lombok.SneakyThrows;
 import lombok.val;
 import me.mneri.offer.TestUtil;
 import me.mneri.offer.bean.OfferUpdate;
-import me.mneri.offer.entity.Offer;
 import me.mneri.offer.entity.User;
-import me.mneri.offer.exception.OfferIdNotFoundException;
-import me.mneri.offer.exception.UserIdNotFoundException;
+import me.mneri.offer.exception.OfferNotFoundException;
+import me.mneri.offer.exception.UserNotFoundException;
 import me.mneri.offer.exception.UserNotAuthorizedException;
 import me.mneri.offer.mapping.OfferMapper;
 import me.mneri.offer.service.OfferService;
@@ -105,7 +104,7 @@ class OffersControllerTest$putOffer {
         val offerId = offer.getId();
         val offerDto = offerMapper.entityToDto(offer);
 
-        doThrow(new OfferIdNotFoundException(offerId))
+        doThrow(new OfferNotFoundException(offerId))
                 .when(offerService).update(Mockito.eq(offerId), Mockito.any(OfferUpdate.class), Mockito.eq(userId));
 
         // When
@@ -137,7 +136,7 @@ class OffersControllerTest$putOffer {
         given(offerService.findOpenById(offerId))
                 .willReturn(optionalOffer);
 
-        doThrow(new UserIdNotFoundException(userId))
+        doThrow(new UserNotFoundException(userId))
                 .when(offerService).delete(offer, userId);
 
         // When

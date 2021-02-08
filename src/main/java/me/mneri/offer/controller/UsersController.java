@@ -27,7 +27,7 @@ import me.mneri.offer.dto.OfferDto;
 import me.mneri.offer.dto.UserDto;
 import me.mneri.offer.entity.Offer;
 import me.mneri.offer.entity.User;
-import me.mneri.offer.exception.UserIdNotFoundException;
+import me.mneri.offer.exception.UserNotFoundException;
 import me.mneri.offer.mapping.OfferMapper;
 import me.mneri.offer.mapping.UserMapper;
 import me.mneri.offer.service.OfferService;
@@ -82,7 +82,7 @@ public class UsersController {
      *
      * @param userId The id to look for.
      * @return The user.
-     * @throws UserIdNotFoundException The specified user was not found.
+     * @throws UserNotFoundException The specified user was not found.
      */
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful operation."),
@@ -90,12 +90,12 @@ public class UsersController {
     @GetMapping(value = "/{userId}", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
     @Operation(summary = "Return the user identified by the specified id.",
             description = "Return the user given its id or return an error if such user doesn't exist or it's disabled.")
-    public UserDto getUserById(@PathVariable String userId) throws UserIdNotFoundException {
+    public UserDto getUserById(@PathVariable String userId) throws UserNotFoundException {
         Optional<User> optional = userService.findEnabledById(userId);
 
         if (!optional.isPresent()) {
             log.debug("No enabled user with the specified id was found; userId: {}", userId);
-            throw new UserIdNotFoundException(userId);
+            throw new UserNotFoundException(userId);
         }
 
         return optional.map(user -> userMapper.entityToDto(user)).get();
@@ -106,7 +106,7 @@ public class UsersController {
      *
      * @param userId The id of the user.
      * @return The list of offers published by the specified user.
-     * @throws UserIdNotFoundException The specified user was not found.
+     * @throws UserNotFoundException The specified user was not found.
      */
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful operation."),
@@ -114,7 +114,7 @@ public class UsersController {
     @GetMapping(value = "/{userId}/offers", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
     @Operation(summary = "Return the list of offers published by the user identified by the specified id.",
             description = "Return a user's offers or return an error if the user doesn't exist or it's disabled.")
-    public Iterable<OfferDto> getOffersByPublisherId(@PathVariable String userId) throws UserIdNotFoundException {
+    public Iterable<OfferDto> getOffersByPublisherId(@PathVariable String userId) throws UserNotFoundException {
         return offerMapper.entityToDto(offerService.findAllOpenByPublisherId(userId));
     }
 }
