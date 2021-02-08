@@ -21,7 +21,7 @@ package me.mneri.offer.service.impl;
 import lombok.SneakyThrows;
 import lombok.val;
 import me.mneri.offer.TestUtil;
-import me.mneri.offer.entity.Offer;
+import me.mneri.offer.bean.OfferUpdate;
 import me.mneri.offer.entity.User;
 import me.mneri.offer.exception.UserIdNotFoundException;
 import me.mneri.offer.exception.UserNotAuthorizedException;
@@ -37,13 +37,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Test the {@link OfferService#update(Offer, String)}.
+ * Test the {@link OfferService#update(String, OfferUpdate, String)}.
  * <p>
  * We test 3 different cases:
  * <ul>
@@ -75,7 +74,7 @@ public class OfferServiceIntegrationTest$update {
     }
 
     /**
-     * Test {@link OfferService#update(Offer, String)} given a user id that is different from the id of the offer's
+     * Test {@link OfferService#update(String, OfferUpdate, String)} given a user id that is different from the id of the offer's
      * publisher.
      */
     @Test
@@ -84,17 +83,18 @@ public class OfferServiceIntegrationTest$update {
         val publisher = new User("user", "secret", passwordEncoder);
         val other = new User("other", "secret", passwordEncoder);
         val offer = TestUtil.createNonExpiredOffer(publisher);
+        val update = TestUtil.createOfferUpdate();
 
         userRepository.save(publisher);
         userRepository.save(other);
         offerRepository.save(offer);
 
         // When/Then
-        assertThrows(UserNotAuthorizedException.class, () -> offerService.update(offer, other.getId()));
+        assertThrows(UserNotAuthorizedException.class, () -> offerService.update(offer.getId(), update, other.getId()));
     }
 
     /**
-     * Test {@link OfferService#update(Offer, String)} given a user id that is not present in the repository.
+     * Test {@link OfferService#update(String, OfferUpdate, String)} given a user id that is not present in the repository.
      */
     @Test
     void givenNonExistingUserId_whenUpdateIsInvoked_thenUserIdNotFoundExceptionIsThrown() {
@@ -102,16 +102,17 @@ public class OfferServiceIntegrationTest$update {
         val publisher = new User("user", "secret", passwordEncoder);
         val otherId = UUID.randomUUID().toString();
         val offer = TestUtil.createNonExpiredOffer(publisher);
+        val update = TestUtil.createOfferUpdate();
 
         userRepository.save(publisher);
         offerRepository.save(offer);
 
         // When/Then
-        assertThrows(UserIdNotFoundException.class, () -> offerService.update(offer, otherId));
+        assertThrows(UserIdNotFoundException.class, () -> offerService.update(offer.getId(), update, otherId));
     }
 
     /**
-     * Test {@link OfferService#update(Offer, String)} given the proper user id.
+     * Test {@link OfferService#update(String, OfferUpdate, String)} given the proper user id.
      */
     @SneakyThrows
     @Test
@@ -119,18 +120,13 @@ public class OfferServiceIntegrationTest$update {
         // Given
         val publisher = new User("user", "secret", passwordEncoder);
         val offer = TestUtil.createNonExpiredOffer(publisher);
+        val update = TestUtil.createOfferUpdate();
 
         userRepository.save(publisher);
         offerRepository.save(offer);
 
-        offer.setTitle("New title");
-        offer.setDescription("New description");
-        offer.setPrice(new BigDecimal("999.99"));
-        offer.setCurrency("EUR");
-        offer.setTtl(10000L);
-
         // When
-        offerService.update(offer, publisher.getId());
+        offerService.update(offer.getId(), update, publisher.getId());
 
         // Then
         val optional = offerRepository.findById(offer.getId());
@@ -139,10 +135,9 @@ public class OfferServiceIntegrationTest$update {
 
         val returned = optional.get();
 
-        assertEquals(offer.getTitle(), returned.getTitle());
-        assertEquals(offer.getDescription(), returned.getDescription());
-        assertEquals(offer.getPrice(), returned.getPrice());
-        assertEquals(offer.getCurrency(), returned.getCurrency());
-        assertEquals(offer.getEndTime(), returned.getEndTime());
+        assertEquals(update.getTitle(), returned.getTitle());
+        assertEquals(update.getDescription(), returned.getDescription());
+        assertEquals(update.getPrice(), returned.getPrice());
+        assertEquals(update.getCurrency(), returned.getCurrency());
     }
 }

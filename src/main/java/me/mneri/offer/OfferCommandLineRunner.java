@@ -18,7 +18,7 @@
 
 package me.mneri.offer;
 
-import me.mneri.offer.entity.Offer;
+import me.mneri.offer.bean.OfferCreate;
 import me.mneri.offer.entity.User;
 import me.mneri.offer.service.OfferService;
 import me.mneri.offer.service.UserService;
@@ -65,24 +65,21 @@ public class OfferCommandLineRunner implements CommandLineRunner {
         userService.save(mneri);
         userService.save(jkaczmarczyk);
 
-        Offer freeCoffee = Offer.builder()
-                .title("Buy one coffee, get one free")
-                .description("Come to our amazing shop and get one coffee for free!")
-                .price(new BigDecimal("2.00"))
-                .currency("GBP")
-                .publisher(mneri)
-                .ttl(nextMonth())
-                .build();
-        Offer freeChocolate = Offer.builder()
-                .title("Buy one chocolate, get one free")
-                .description("Come to our amazing shop and get one chocolate for free!")
-                .price(new BigDecimal("2.50"))
-                .currency("GBP")
-                .publisher(jkaczmarczyk)
-                .ttl(nextMonth())
-                .build();
+        OfferCreate freeCoffee = new OfferCreate();
+        freeCoffee.setTitle("Buy one coffee, get one free");
+        freeCoffee.setDescription("Come to our amazing shop and get one coffee for free!");
+        freeCoffee.setPrice(new BigDecimal("2.00"));
+        freeCoffee.setCurrency("GBP");
+        freeCoffee.setTtl(nextMonth());
 
-        offerService.save(freeCoffee);
-        offerService.save(freeChocolate);
+        OfferCreate freeChocolate = new OfferCreate();
+        freeChocolate.setTitle("Buy one chocolate, get one free");
+        freeChocolate.setDescription("Come to our amazing shop and get one chocolate for free!");
+        freeChocolate.setPrice(new BigDecimal("2.50"));
+        freeChocolate.setCurrency("GBP");
+        freeChocolate.setTtl(nextMonth());
+
+        offerService.save(freeCoffee, mneri);
+        offerService.save(freeChocolate, jkaczmarczyk);
     }
 }

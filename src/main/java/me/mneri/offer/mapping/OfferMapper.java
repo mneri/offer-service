@@ -18,6 +18,8 @@
 
 package me.mneri.offer.mapping;
 
+import me.mneri.offer.bean.OfferCreate;
+import me.mneri.offer.bean.OfferUpdate;
 import me.mneri.offer.dto.OfferCreateDto;
 import me.mneri.offer.dto.OfferDto;
 import me.mneri.offer.dto.OfferUpdateDto;
@@ -31,6 +33,8 @@ import org.mapstruct.*;
  */
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface OfferMapper {
+    OfferCreate createDtoToCreate(OfferCreateDto dto);
+
     Iterable<OfferDto> entityToDto(Iterable<Offer> offers);
 
     OfferDto entityToDto(Offer offer);
@@ -38,8 +42,10 @@ public interface OfferMapper {
     OfferCreateDto entityToCreateDto(Offer offer);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void mergeCreateDtoToEntity(@MappingTarget Offer offer, OfferCreateDto createDto);
+    void mergeCreateToOffer(@MappingTarget Offer offer, OfferCreate create);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void mergeUpdateDtoToEntity(@MappingTarget Offer offer, OfferUpdateDto offerUpdateDto);
+    void mergeUpdateToEntity(@MappingTarget Offer offer, OfferUpdate update);
+
+    OfferUpdate updateDtoToUpdate(OfferUpdateDto dto);
 }

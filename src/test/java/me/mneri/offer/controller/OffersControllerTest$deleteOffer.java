@@ -119,7 +119,7 @@ class OffersControllerTest$deleteOffer {
                 .willReturn(optionalOffer);
 
         doThrow(new UserIdNotFoundException(userId))
-                .when(offerService).update(offer, userId);
+                .when(offerService).delete(offer, userId);
 
         // When
         val response = mockMvc
@@ -149,7 +149,7 @@ class OffersControllerTest$deleteOffer {
                 .willReturn(optionalOffer);
 
         doThrow(new UserNotAuthorizedException(userId))
-                .when(offerService).update(offer, userId);
+                .when(offerService).delete(offer, userId);
 
         // When
         val response = mockMvc
