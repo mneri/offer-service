@@ -63,6 +63,36 @@ public class OffersController {
     private UserService userService;
 
     /**
+     * Close (cancel) an existing open offer.
+     * <p>
+     * The deletion of an offer is only logical: the offer cancelled field is set to true and the object physically
+     * remains inside the repository and it will be filtered out by query predicates.
+     *
+     * @param offerId The offer id.
+     * @param userId  The id of the user attempting the modification.
+     * @throws OfferIdNotFoundException   If an offer with the specified id is not found.
+     * @throws UserNotAuthorizedException If the user is not the publisher of the specified offer.
+     */
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successful operation."),
+            @ApiResponse(responseCode = "401", description = "If the user has no rights to modify the offer."),
+            @ApiResponse(responseCode = "404", description = "If the user or the offer don't exist or they are not enabled.")})
+    @Operation(summary = "Delete an open offer.",
+            description = "Delete an open offer in the repository.")
+    @DeleteMapping(value = "/{offerId}", consumes = MimeTypeUtils.APPLICATION_JSON_VALUE)
+    public void deleteOffer(@PathVariable String offerId, @RequestParam("user.id") String userId)
+            throws OfferIdNotFoundException, UserIdNotFoundException, UserNotAuthorizedException {
+        Optional<Offer> offerOptional = offerService.findOpenById(offerId);
+
+        if (!offerOptional.isPresent()) {
+            log.debug("No open offer with the specified id was found; offerId: {}", offerId);
+            throw new OfferIdNotFoundException(offerId);
+        }
+
+        offerService.delete(offerOptional.get(), userId);
+    }
+
+    /**
      * Retrieve all the open {@link Offer}s. An open offer is an offer that is not yet expired nor has been canceled
      * by its publisher.
      *
@@ -124,11 +154,7 @@ public class OffersController {
             throw new UserIdNotFoundException(userId);
         }
 
-        Offer offer = Offer.builder().build();
-        offerMapper.mergeCreateDtoToEntity(offer, createDto);
-        offer.setPublisher(optional.get());
-
-        offerService.save(offer);
+        offerService.save(offerMapper.createDtoToCreate(createDto), optional.get());
     }
 
     /**
@@ -151,50 +177,6 @@ public class OffersController {
                          @Valid @RequestBody OfferUpdateDto updateDto,
                          @RequestParam("user.id") String userId)
             throws OfferIdNotFoundException, UserIdNotFoundException, UserNotAuthorizedException {
-        Optional<Offer> offerOptional = offerService.findOpenById(offerId);
-
-        if (!offerOptional.isPresent()) {
-            log.debug("No open offer with the specified id was found; offerId: {}", offerId);
-            throw new OfferIdNotFoundException(offerId);
-        }
-
-        Offer offer = offerOptional.get();
-        offerMapper.mergeUpdateDtoToEntity(offer, updateDto);
-
-        offerService.update(offer, userId);
-    }
-
-    /**
-     * Close (cancel) an existing open offer.
-     * <p>
-     * The deletion of an offer is only logical: the offer cancelled field is set to true and the object physically
-     * remains inside the repository and it will be filtered out by query predicates.
-     *
-     * @param offerId The offer id.
-     * @param userId  The id of the user attempting the modification.
-     * @throws OfferIdNotFoundException   If an offer with the specified id is not found.
-     * @throws UserIdNotFoundException    If an user with the specified id is not found.
-     * @throws UserNotAuthorizedException If the user is not the publisher of the specified offer.
-     */
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successful operation."),
-            @ApiResponse(responseCode = "401", description = "If the user has no rights to modify the offer."),
-            @ApiResponse(responseCode = "404", description = "If the user or the offer don't exist or they are not enabled.")})
-    @Operation(summary = "Delete an open offer.",
-            description = "Delete an open offer in the repository.")
-    @DeleteMapping(value = "/{offerId}", consumes = MimeTypeUtils.APPLICATION_JSON_VALUE)
-    public void deleteOffer(@PathVariable String offerId, @RequestParam("user.id") String userId)
-            throws OfferIdNotFoundException, UserIdNotFoundException, UserNotAuthorizedException {
-        Optional<Offer> offerOptional = offerService.findOpenById(offerId);
-
-        if (!offerOptional.isPresent()) {
-            log.debug("No open offer with the specified id was found; offerId: {}", offerId);
-            throw new OfferIdNotFoundException(offerId);
-        }
-
-        Offer offer = offerOptional.get();
-        offer.setCanceled(true);
-
-        offerService.update(offer, userId);
+        offerService.update(offerId, offerMapper.updateDtoToUpdate(updateDto), userId);
     }
 }

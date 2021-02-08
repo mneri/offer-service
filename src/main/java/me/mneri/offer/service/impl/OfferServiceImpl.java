@@ -19,10 +19,14 @@
 package me.mneri.offer.service.impl;
 
 import lombok.extern.log4j.Log4j2;
+import me.mneri.offer.bean.OfferCreate;
+import me.mneri.offer.bean.OfferUpdate;
 import me.mneri.offer.entity.Offer;
 import me.mneri.offer.entity.User;
+import me.mneri.offer.exception.OfferIdNotFoundException;
 import me.mneri.offer.exception.UserIdNotFoundException;
 import me.mneri.offer.exception.UserNotAuthorizedException;
+import me.mneri.offer.mapping.OfferMapper;
 import me.mneri.offer.repository.OfferRepository;
 import me.mneri.offer.repository.UserRepository;
 import me.mneri.offer.service.OfferService;
@@ -46,6 +50,9 @@ import static org.springframework.data.jpa.domain.Specification.where;
 @Service
 public class OfferServiceImpl implements OfferService {
     @Autowired
+    private OfferMapper offerMapper;
+
+    @Autowired
     private OfferRepository offerRepository;
 
     @Autowired
@@ -56,6 +63,24 @@ public class OfferServiceImpl implements OfferService {
 
     @Autowired
     private UserSpec userSpec;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void delete(Offer offer, String userId) throws UserIdNotFoundException, UserNotAuthorizedException {
+        if (!enabledUserExistsById(userId)) {
+            log.debug("No enabled user with the specified id was found; userId: {}", userId);
+            throw new UserIdNotFoundException(userId);
+        }
+
+        if (offerRepository.count(where(offerSpec.idIsEqualTo(offer.getId())).and(offerSpec.publisherIdIsEqualTo(userId))) == 0) {
+            throw new UserNotAuthorizedException(userId);
+        }
+
+        offer.setCanceled(true);
+        offerRepository.save(offer);
+    }
 
     /**
      * Return {@code true} if an enabled {@link User} with the specified id exists in the repository.
@@ -105,12 +130,24 @@ public class OfferServiceImpl implements OfferService {
     /**
      * {@inheritDoc}
      */
+    @Override
     @Transactional
-    public void update(Offer offer, String userId) throws UserIdNotFoundException, UserNotAuthorizedException {
+    public void update(String offerId, OfferUpdate update, String userId)
+            throws OfferIdNotFoundException, UserIdNotFoundException, UserNotAuthorizedException {
         if (!enabledUserExistsById(userId)) {
             log.debug("No enabled user with the specified id was found; userId: {}", userId);
             throw new UserIdNotFoundException(userId);
         }
+
+        Optional<Offer> optional = offerRepository.findOne(where(offerSpec.isOpen()).and(offerSpec.idIsEqualTo(offerId)));
+
+        if (!optional.isPresent()) {
+            log.debug("No open offer with the specified id was found; offerId: {}", offerId);
+            throw new OfferIdNotFoundException(offerId);
+        }
+
+        Offer offer = optional.get();
+        offerMapper.mergeUpdateToEntity(offer, update);
 
         if (offerRepository.count(where(offerSpec.idIsEqualTo(offer.getId())).and(offerSpec.publisherIdIsEqualTo(userId))) == 0) {
             log.debug("The user is not authorized to update the offer; offerId: {}; userId: {}", offer.getId(), userId);
@@ -124,7 +161,11 @@ public class OfferServiceImpl implements OfferService {
     /**
      * {@inheritDoc}
      */
-    public void save(Offer offer) {
+    @Override
+    public void save(OfferCreate create, User user) {
+        Offer offer = Offer.builder().build();
+        offerMapper.mergeCreateToOffer(offer, create);
+        offer.setPublisher(user);
         offerRepository.save(offer);
         log.debug("Offer created; offerId: {}", offer.getId());
     }

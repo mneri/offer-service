@@ -18,8 +18,11 @@
 
 package me.mneri.offer.service;
 
+import me.mneri.offer.bean.OfferCreate;
+import me.mneri.offer.bean.OfferUpdate;
 import me.mneri.offer.entity.Offer;
 import me.mneri.offer.entity.User;
+import me.mneri.offer.exception.OfferIdNotFoundException;
 import me.mneri.offer.exception.UserIdNotFoundException;
 import me.mneri.offer.exception.UserNotAuthorizedException;
 
@@ -32,6 +35,14 @@ import java.util.Optional;
  * @author mneri
  */
 public interface OfferService {
+    /**
+     * Delete (cancel) an offer.
+     *
+     * @param offer  The offer.
+     * @param userId The id of the modifier.
+     */
+    void delete(Offer offer, String userId) throws UserIdNotFoundException, UserNotAuthorizedException;
+
     /**
      * Find all the open {@link Offer}s.
      *
@@ -68,17 +79,21 @@ public interface OfferService {
      * <p>
      * Only the publisher of a specific offer is granted the permission to update.
      *
-     * @param offer  The offer.
-     * @param userId The user id of the modifier.
+     * @param offerId The id of the offer to update.
+     * @param update  The data to update the offer with.
+     * @param userId  The user id of the modifier.
+     * @throws OfferIdNotFoundException   If the offer with the specified id was not found in the repository.
      * @throws UserIdNotFoundException    If a user with the specified id was not found in the repository.
      * @throws UserNotAuthorizedException If the specified user id doesn't belong to the publisher of the offer.
      */
-    void update(Offer offer, String userId) throws UserIdNotFoundException, UserNotAuthorizedException;
+    void update(String offerId, OfferUpdate update, String userId)
+            throws OfferIdNotFoundException, UserIdNotFoundException, UserNotAuthorizedException;
 
     /**
      * Persist an offer into the database.
      *
-     * @param offer The offer.
+     * @param create The to create the offer with.
+     * @param user   The creator.
      */
-    void save(Offer offer);
+    void save(OfferCreate create, User user);
 }
