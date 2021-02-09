@@ -22,7 +22,7 @@ import lombok.SneakyThrows;
 import lombok.val;
 import me.mneri.offer.TestUtil;
 import me.mneri.offer.entity.User;
-import me.mneri.offer.exception.UserIdNotFoundException;
+import me.mneri.offer.exception.UserNotFoundException;
 import me.mneri.offer.repository.OfferRepository;
 import me.mneri.offer.repository.UserRepository;
 import me.mneri.offer.service.OfferService;
@@ -113,7 +113,7 @@ class OfferServiceIntegrationTest$findAllOpenByPublisherId {
         }
 
         // When/Then
-        assertThrows(UserIdNotFoundException.class, () -> offerService.findAllOpenByPublisherId(publisher.getId()));
+        assertThrows(UserNotFoundException.class, () -> offerService.findAllOpenByPublisherId(publisher.getId()));
     }
 
     /**
@@ -126,7 +126,7 @@ class OfferServiceIntegrationTest$findAllOpenByPublisherId {
         val publisher = new User("user", "secret", passwordEncoder);
 
         // When/Then
-        assertThrows(UserIdNotFoundException.class, () -> offerService.findAllOpenByPublisherId(publisher.getId()));
+        assertThrows(UserNotFoundException.class, () -> offerService.findAllOpenByPublisherId(publisher.getId()));
     }
 
     /**
@@ -145,7 +145,7 @@ class OfferServiceIntegrationTest$findAllOpenByPublisherId {
         offerRepository.save(offer);
 
         // When/Then
-        assertThrows(UserIdNotFoundException.class, () -> offerService.findAllOpenByPublisherId(publisher.getId()));
+        assertThrows(UserNotFoundException.class, () -> offerService.findAllOpenByPublisherId(publisher.getId()));
     }
 
     /**

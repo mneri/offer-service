@@ -21,13 +21,8 @@ package me.mneri.offer.controller;
 import lombok.SneakyThrows;
 import lombok.val;
 import me.mneri.offer.TestUtil;
-import me.mneri.offer.entity.Offer;
 import me.mneri.offer.entity.User;
-<<<<<<< Updated upstream
-import me.mneri.offer.exception.UserIdNotFoundException;
-=======
 import me.mneri.offer.exception.OfferNotFoundException;
->>>>>>> Stashed changes
 import me.mneri.offer.exception.UserNotAuthorizedException;
 import me.mneri.offer.exception.UserNotFoundException;
 import me.mneri.offer.service.OfferService;
@@ -122,13 +117,8 @@ class OffersControllerTest$deleteOffer {
         given(offerService.findById(offerId))
                 .willReturn(optionalOffer);
 
-<<<<<<< Updated upstream
-        doThrow(new UserIdNotFoundException(userId))
-                .when(offerService).update(offer, userId);
-=======
         doThrow(new UserNotFoundException(userId))
                 .when(offerService).delete(offerId, userId);
->>>>>>> Stashed changes
 
         // When
         val response = mockMvc
@@ -158,11 +148,7 @@ class OffersControllerTest$deleteOffer {
                 .willReturn(optionalOffer);
 
         doThrow(new UserNotAuthorizedException(userId))
-<<<<<<< Updated upstream
-                .when(offerService).update(offer, userId);
-=======
                 .when(offerService).delete(offerId, userId);
->>>>>>> Stashed changes
 
         // When
         val response = mockMvc

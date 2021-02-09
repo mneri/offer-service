@@ -19,33 +19,33 @@
 package me.mneri.offer.exception;
 
 /**
- * Thrown when the specified offer is expired.
+ * Thrown when the specified user couldn't be found.
  *
  * @author mneri
  */
-public class OfferIdNotFoundException extends Throwable {
-    private String offerId;
+public class UserNotFoundException extends Throwable {
+    private final String userId;
 
     /**
      * Create a new instance.
      *
      * @param offerId The offer id.
      */
-    public OfferIdNotFoundException(String offerId) {
-        this.offerId = offerId;
+    public UserNotFoundException(String offerId) {
+        this.userId = offerId;
     }
 
     @Override
     public String getMessage() {
-        return String.format("Couldn't find the offer id '%s'", offerId);
+        return String.format("Couldn't find the specified user: userId=%s", userId);
     }
 
     /**
-     * Return the id of the offer that has generated the exception.
+     * Return the id that has generated the exception.
      *
-     * @return The id of the offer.
+     * @return The id.
      */
-    public String getOfferId() {
-        return offerId;
+    public String getUserId() {
+        return userId;
     }
 }

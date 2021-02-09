@@ -21,6 +21,7 @@ package me.mneri.offer.service.impl;
 import lombok.SneakyThrows;
 import lombok.val;
 import me.mneri.offer.TestUtil;
+import me.mneri.offer.bean.OfferCreate;
 import me.mneri.offer.entity.Offer;
 import me.mneri.offer.entity.User;
 import me.mneri.offer.repository.OfferRepository;
@@ -39,7 +40,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Test the {@link OfferService#save(Offer)}.
+ * Test the {@link OfferService#save(OfferCreate, String)}.
  *
  * @author mneri
  */
@@ -64,28 +65,20 @@ public class OfferServiceIntegrationTest$save {
     }
 
     /**
-<<<<<<< Updated upstream
-     * Test {@link OfferService#save(Offer)} saving a {@link Offer} and then retrieving it from the repository.
-=======
      * Test {@link OfferService#save(OfferCreate, String)} saving a {@link Offer} and then retrieving it from the
      * repository.
->>>>>>> Stashed changes
      */
     @SneakyThrows
     @Test
     void givenOffer_whenSaveIsInvoked_thenOfferIsRetrievable() {
         // Given
         val publisher = new User("user", "secret", passwordEncoder);
-        val offer = TestUtil.createNonExpiredOffer(publisher);
+        val create = TestUtil.createOfferCreate();
 
         userRepository.save(publisher);
 
         // When
-<<<<<<< Updated upstream
-        offerService.save(offer);
-=======
-        offerService.save(create, publisher.getId());
->>>>>>> Stashed changes
+        val offer = offerService.save(create, publisher.getId());
 
         // Then
         val optional = offerRepository.findById(offer.getId());
@@ -99,6 +92,5 @@ public class OfferServiceIntegrationTest$save {
         assertEquals(offer.getDescription(), returned.getDescription());
         assertEquals(offer.getPrice(), returned.getPrice());
         assertEquals(offer.getCurrency(), returned.getCurrency());
-        assertEquals(offer.getEndTime(), returned.getEndTime());
     }
 }

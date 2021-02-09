@@ -18,14 +18,8 @@
 
 package me.mneri.offer.controller;
 
-<<<<<<< Updated upstream
-import me.mneri.offer.exception.OfferIdNotFoundException;
-import me.mneri.offer.exception.UserIdNotFoundException;
-import me.mneri.offer.exception.UserNotAuthorizedException;
-=======
 import lombok.extern.log4j.Log4j2;
 import me.mneri.offer.exception.*;
->>>>>>> Stashed changes
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -40,13 +34,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class ControllerAdvice {
     /**
-<<<<<<< Updated upstream
-     * Handler for {@link OfferIdNotFoundException}.
-     */
-    @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "The specified offer id was not found.")
-    @ExceptionHandler(OfferIdNotFoundException.class)
-    public void offerIdNotFound() {
-=======
      * Handler for {@link OfferIsCancelledException}.
      */
     @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "The specified offer was cancelled.")
@@ -80,21 +67,15 @@ public class ControllerAdvice {
     @ExceptionHandler(UserIsNotEnabledException.class)
     public void userIsNotEnabled(UserIsNotEnabledException exception) {
         log.info("The specified user was not found: userId={}", exception.getUserId());
->>>>>>> Stashed changes
     }
 
     /**
-     * Handler for {@link UserIdNotFoundException}.
+     * Handler for {@link UserNotFoundException}.
      */
     @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "The specified user id was not found.")
-<<<<<<< Updated upstream
-    @ExceptionHandler(UserIdNotFoundException.class)
-    public void userIdNotFound() {
-=======
     @ExceptionHandler(UserNotFoundException.class)
     public void userNotFound(UserNotFoundException exception) {
         log.info("The specified user was not found: userId={}", exception.getUserId());
->>>>>>> Stashed changes
     }
 
     /**

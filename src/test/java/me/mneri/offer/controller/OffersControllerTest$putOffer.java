@@ -22,10 +22,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import lombok.val;
 import me.mneri.offer.TestUtil;
-import me.mneri.offer.entity.Offer;
 import me.mneri.offer.entity.User;
-import me.mneri.offer.exception.UserIdNotFoundException;
 import me.mneri.offer.exception.UserNotAuthorizedException;
+import me.mneri.offer.exception.UserNotFoundException;
 import me.mneri.offer.mapping.OfferMapper;
 import me.mneri.offer.service.OfferService;
 import me.mneri.offer.service.UserService;
@@ -100,11 +99,11 @@ class OffersControllerTest$putOffer {
         val userId = user.getId();
         val offer = TestUtil.createNonExpiredOffer(user);
         val offerId = offer.getId();
-        Optional<Offer> optionalOffer = Optional.empty();
-        val offerDto = offerMapper.entityToDto(offer);
+        val offerDto = TestUtil.createOfferCreateDto();
+        val update = TestUtil.createOfferUpdate();
 
-        given(offerService.findOpenById(offerId))
-                .willReturn(optionalOffer);
+        doThrow(new UserNotFoundException(userId))
+                .when(offerService).update(offerId, update, userId);
 
         // When
         val response = mockMvc
@@ -135,13 +134,8 @@ class OffersControllerTest$putOffer {
         given(offerService.findById(offerId))
                 .willReturn(optionalOffer);
 
-<<<<<<< Updated upstream
-        doThrow(new UserIdNotFoundException(userId))
-                .when(offerService).update(offer, userId);
-=======
         doThrow(new UserNotFoundException(userId))
                 .when(offerService).delete(offerId, userId);
->>>>>>> Stashed changes
 
         // When
         val response = mockMvc
@@ -173,11 +167,7 @@ class OffersControllerTest$putOffer {
                 .willReturn(optionalOffer);
 
         doThrow(new UserNotAuthorizedException(userId))
-<<<<<<< Updated upstream
-                .when(offerService).update(offer, userId);
-=======
                 .when(offerService).delete(offerId, userId);
->>>>>>> Stashed changes
 
         // When
         val response = mockMvc

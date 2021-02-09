@@ -18,15 +18,10 @@
 
 package me.mneri.offer;
 
-<<<<<<< Updated upstream
-import me.mneri.offer.entity.Offer;
-=======
+import lombok.SneakyThrows;
 import me.mneri.offer.bean.OfferCreate;
 import me.mneri.offer.bean.UserCreate;
->>>>>>> Stashed changes
 import me.mneri.offer.entity.User;
-import me.mneri.offer.exception.UserIsNotEnabledException;
-import me.mneri.offer.exception.UserNotFoundException;
 import me.mneri.offer.service.OfferService;
 import me.mneri.offer.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,7 +60,8 @@ public class OfferCommandLineRunner implements CommandLineRunner {
     }
 
     @Override
-    public void run(String... args) throws UserNotFoundException, UserIsNotEnabledException {
+    @SneakyThrows
+    public void run(String... args) {
         UserCreate mneriCreate = new UserCreate();
         mneriCreate.setUsername("mneri");
         mneriCreate.setPassword("secret");
@@ -77,27 +73,13 @@ public class OfferCommandLineRunner implements CommandLineRunner {
         User mneri = userService.save(mneriCreate);
         User jkaczmarczyk = userService.save(jkaczmarczykCreate);
 
-        Offer freeCoffee = Offer.builder()
-                .title("Buy one coffee, get one free")
-                .description("Come to our amazing shop and get one coffee for free!")
-                .price(new BigDecimal("2.00"))
-                .currency("GBP")
-                .publisher(mneri)
-                .ttl(nextMonth())
-                .build();
-        Offer freeChocolate = Offer.builder()
-                .title("Buy one chocolate, get one free")
-                .description("Come to our amazing shop and get one chocolate for free!")
-                .price(new BigDecimal("2.50"))
-                .currency("GBP")
-                .publisher(jkaczmarczyk)
-                .ttl(nextMonth())
-                .build();
+        OfferCreate freeCoffee = new OfferCreate();
+        freeCoffee.setTitle("Buy one coffee, get one free");
+        freeCoffee.setDescription("Come to our amazing shop and get one coffee for free!");
+        freeCoffee.setPrice(new BigDecimal("2.00"));
+        freeCoffee.setCurrency("GBP");
+        freeCoffee.setTtl(nextMonth());
 
-<<<<<<< Updated upstream
-        offerService.save(freeCoffee);
-        offerService.save(freeChocolate);
-=======
         OfferCreate freeChocolate = new OfferCreate();
         freeChocolate.setTitle("Buy one chocolate, get one free");
         freeChocolate.setDescription("Come to our amazing shop and get one chocolate for free!");
@@ -107,6 +89,5 @@ public class OfferCommandLineRunner implements CommandLineRunner {
 
         offerService.save(freeCoffee, mneri.getId());
         offerService.save(freeChocolate, jkaczmarczyk.getId());
->>>>>>> Stashed changes
     }
 }

@@ -21,6 +21,8 @@ package me.mneri.offer;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.val;
+import me.mneri.offer.bean.OfferCreate;
+import me.mneri.offer.bean.OfferUpdate;
 import me.mneri.offer.dto.OfferCreateDto;
 import me.mneri.offer.dto.OfferUpdateDto;
 import me.mneri.offer.entity.Offer;
@@ -97,32 +99,62 @@ public final class TestUtil {
     }
 
     /**
+     * Create a new test {@link OfferCreate}.
+     *
+     * @return The {@code OfferCreate}.
+     */
+    public static OfferCreate createOfferCreate() {
+        OfferCreate create = new OfferCreate();
+        create.setTitle("New Title");
+        create.setDescription("New Description");
+        create.setPrice(new BigDecimal("999.99"));
+        create.setCurrency("EUR");
+        create.setTtl(10000L);
+        return create;
+    }
+
+    /**
      * Create a new test {@link OfferCreateDto}.
      *
      * @return The {@code OfferCreateDto}.
      */
     public static OfferCreateDto createOfferCreateDto() {
-        OfferCreateDto offerCreateDto = new OfferCreateDto();
-        offerCreateDto.setTitle("New Title");
-        offerCreateDto.setDescription("New Description");
-        offerCreateDto.setPrice(new BigDecimal("999.99"));
-        offerCreateDto.setCurrency("EUR");
-        offerCreateDto.setTtl(10000L);
-        return offerCreateDto;
+        OfferCreateDto createDto = new OfferCreateDto();
+        createDto.setTitle("New Title");
+        createDto.setDescription("New Description");
+        createDto.setPrice(new BigDecimal("999.99"));
+        createDto.setCurrency("EUR");
+        createDto.setTtl(10000L);
+        return createDto;
+    }
+
+    /**
+     * Create a new test {@link OfferUpdate}.
+     *
+     * @return The {@code OfferUpdateDto}.
+     */
+    public static OfferUpdate createOfferUpdate() {
+        OfferUpdate offerCreate = new OfferUpdate();
+        offerCreate.setTitle("New Title");
+        offerCreate.setDescription("New Description");
+        offerCreate.setPrice(new BigDecimal("999.99"));
+        offerCreate.setCurrency("EUR");
+        offerCreate.setTtl(10000L);
+        return offerCreate;
     }
 
     /**
      * Create a new test {@link OfferUpdateDto}.
      *
-     * @return The {@code OfferRequest}.
+     * @return The {@code OfferUpdateDto}.
      */
     public static OfferUpdateDto createOfferUpdateDto() {
-        OfferUpdateDto offerCreateDto = new OfferUpdateDto();
-        offerCreateDto.setTitle("New Title");
-        offerCreateDto.setDescription("New Description");
-        offerCreateDto.setPrice(new BigDecimal("999.99"));
-        offerCreateDto.setCurrency("EUR");
-        offerCreateDto.setTtl(10000L);
-        return offerCreateDto;
+        OfferUpdateDto updateDto = new OfferUpdateDto();
+        updateDto.setTitle("New Title");
+        updateDto.setDescription("New Description");
+        updateDto.setPrice(new BigDecimal("999.99"));
+        updateDto.setCurrency("EUR");
+        updateDto.setTtl(10000L);
+        return updateDto;
     }
 }

@@ -18,14 +18,11 @@
 
 package me.mneri.offer.service;
 
+import me.mneri.offer.bean.OfferCreate;
+import me.mneri.offer.bean.OfferUpdate;
 import me.mneri.offer.entity.Offer;
 import me.mneri.offer.entity.User;
-<<<<<<< Updated upstream
-import me.mneri.offer.exception.UserIdNotFoundException;
-import me.mneri.offer.exception.UserNotAuthorizedException;
-=======
 import me.mneri.offer.exception.*;
->>>>>>> Stashed changes
 
 import java.util.List;
 import java.util.Optional;
@@ -37,8 +34,6 @@ import java.util.Optional;
  */
 public interface OfferService {
     /**
-<<<<<<< Updated upstream
-=======
      * Delete (cancel) an offer.
      *
      * @param offerId The id of the offer to delete.
@@ -55,7 +50,6 @@ public interface OfferService {
             UserIsNotEnabledException, UserNotAuthorizedException, UserNotFoundException;
 
     /**
->>>>>>> Stashed changes
      * Find all the open {@link Offer}s.
      *
      * @return The list of the open offers.
@@ -70,19 +64,7 @@ public interface OfferService {
      * @throws UserIsNotEnabledException If the specified user is not enabled.
      * @throws UserNotFoundException     If the user with the specified id was not found in the repository.
      */
-<<<<<<< Updated upstream
-    List<Offer> findAllOpenByPublisherId(String id) throws UserIdNotFoundException;
-
-    /**
-     * Find all the open {@link Offer}s published by the specified {@link User}.
-     *
-     * @param username The username of the user.
-     * @return The list of the open offers published by the specified user.
-     */
-    List<Offer> findAllOpenByPublisherUsername(String username);
-=======
     List<Offer> findAllOpenByPublisherId(String id) throws UserIsNotEnabledException, UserNotFoundException;
->>>>>>> Stashed changes
 
     /**
      * Find the {@link Offer} with the specified id.
@@ -97,14 +79,6 @@ public interface OfferService {
      * <p>
      * Only the publisher of a specific offer is granted the permission to update.
      *
-<<<<<<< Updated upstream
-     * @param offer  The offer.
-     * @param userId The user id of the modifier.
-     * @throws UserIdNotFoundException    If a user with the specified id was not found in the repository.
-     * @throws UserNotAuthorizedException If the specified user id doesn't belong to the publisher of the offer.
-     */
-    void update(Offer offer, String userId) throws UserIdNotFoundException, UserNotAuthorizedException;
-=======
      * @param offerId The id of the offer to update.
      * @param update  The data to update the offer with.
      * @param userId  The user id of the modifier.
@@ -118,16 +92,10 @@ public interface OfferService {
     void update(String offerId, OfferUpdate update, String userId)
             throws OfferIsCancelledException, OfferIsExpiredException, OfferNotFoundException,
             UserIsNotEnabledException, UserNotAuthorizedException, UserNotFoundException;
->>>>>>> Stashed changes
 
     /**
      * Persist an offer into the database.
      *
-<<<<<<< Updated upstream
-     * @param offer The offer.
-     */
-    void save(Offer offer);
-=======
      * @param create The to create the offer with.
      * @param userId The creator.
      * @return The offer.
@@ -135,5 +103,4 @@ public interface OfferService {
      * @throws UserNotFoundException     If a user with the specified id was not found in the repository.
      */
     Offer save(OfferCreate create, String userId) throws UserIsNotEnabledException, UserNotFoundException;
->>>>>>> Stashed changes
 }
