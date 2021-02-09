@@ -16,36 +16,32 @@
  * limitations under the License.
  */
 
-package me.mneri.offer.exception;
+package me.mneri.offer.bean;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import me.mneri.offer.entity.Offer;
+
+import java.math.BigDecimal;
 
 /**
- * Thrown when the specified user id couldn't be found.
+ * DTO for a user's request to create a new {@link Offer}.
  *
  * @author mneri
  */
-public class UserIdNotFoundException extends Exception {
-    private String userId;
+@Data
+@EqualsAndHashCode
+@ToString
+public class OfferCreate {
+    private String title;
 
-    /**
-     * Create a new instance.
-     *
-     * @param userId The user id.
-     */
-    public UserIdNotFoundException(String userId) {
-        this.userId = userId;
-    }
+    private String description;
 
-    @Override
-    public String getMessage() {
-        return String.format("Couldn't find user id '%s'", userId);
-    }
+    private BigDecimal price;
 
-    /**
-     * Return the id that has generated the exception.
-     *
-     * @return The id.
-     */
-    public String getUserId() {
-        return userId;
-    }
+    private String currency;
+
+    private long ttl;
 }

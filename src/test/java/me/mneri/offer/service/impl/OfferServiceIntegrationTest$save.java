@@ -18,6 +18,7 @@
 
 package me.mneri.offer.service.impl;
 
+import lombok.SneakyThrows;
 import lombok.val;
 import me.mneri.offer.TestUtil;
 import me.mneri.offer.entity.Offer;
@@ -63,8 +64,14 @@ public class OfferServiceIntegrationTest$save {
     }
 
     /**
+<<<<<<< Updated upstream
      * Test {@link OfferService#save(Offer)} saving a {@link Offer} and then retrieving it from the repository.
+=======
+     * Test {@link OfferService#save(OfferCreate, String)} saving a {@link Offer} and then retrieving it from the
+     * repository.
+>>>>>>> Stashed changes
      */
+    @SneakyThrows
     @Test
     void givenOffer_whenSaveIsInvoked_thenOfferIsRetrievable() {
         // Given
@@ -74,7 +81,11 @@ public class OfferServiceIntegrationTest$save {
         userRepository.save(publisher);
 
         // When
+<<<<<<< Updated upstream
         offerService.save(offer);
+=======
+        offerService.save(create, publisher.getId());
+>>>>>>> Stashed changes
 
         // Then
         val optional = offerRepository.findById(offer.getId());

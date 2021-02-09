@@ -92,7 +92,7 @@ class OffersControllerTest$getOfferById {
         val id = UUID.randomUUID().toString();
         Optional<Offer> optional = Optional.empty();
 
-        given(offerService.findOpenById(id))
+        given(offerService.findById(id))
                 .willReturn(optional);
 
         // When
@@ -118,7 +118,7 @@ class OffersControllerTest$getOfferById {
         val id = offer.getId();
         Optional<Offer> optional = Optional.of(offer);
 
-        given(offerService.findOpenById(id))
+        given(offerService.findById(id))
                 .willReturn(optional);
 
         // When

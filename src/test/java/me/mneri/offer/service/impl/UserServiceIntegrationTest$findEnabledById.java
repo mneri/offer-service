@@ -37,7 +37,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 /**
- * Test the {@link UserService#findEnabledById(String)} method. <br/>
+ * Test the {@link UserService#findById(String)} method. <br/>
  * We test 4 different cases:
  * <ul>
  *     <li>Empty repository;</li>
@@ -66,7 +66,7 @@ class UserServiceIntegrationTest$findEnabledById {
     }
 
     /**
-     * Test the method {@link UserService#findEnabledById(String)} against an empty repository.
+     * Test the method {@link UserService#findById(String)} against an empty repository.
      */
     @Test
     void givenEmptyRepository_whenFindByUsernameIsCalled_thenNoUserIsReturned() {
@@ -74,14 +74,14 @@ class UserServiceIntegrationTest$findEnabledById {
         val id = UUID.randomUUID().toString();
 
         // When
-        val returned = userService.findEnabledById(id);
+        val returned = userService.findById(id);
 
         // Then
         assertFalse(returned.isPresent());
     }
 
     /**
-     * Test the method {@link UserService#findEnabledById(String)} against a repository that does not contain the
+     * Test the method {@link UserService#findById(String)} against a repository that does not contain the
      * specified id.
      */
     @Test
@@ -93,33 +93,14 @@ class UserServiceIntegrationTest$findEnabledById {
         userRepository.save(user);
 
         // When
-        val returned = userService.findEnabledById(other.getId());
+        val returned = userService.findById(other.getId());
 
         // Then
         assertFalse(returned.isPresent());
     }
 
     /**
-     * Test the method {@link UserService#findEnabledById(String)} against a repository that contains the specified id,
-     * but the user is disabled.
-     */
-    @Test
-    void givenUsernameAndDisabledUserInRepository_whenFindByUsernameIsCalled_thenNoUserIsReturned() {
-        // Given
-        val user = new User("user", "secret", passwordEncoder);
-
-        user.setEnabled(false);
-        userRepository.save(user);
-
-        // When
-        val returned = userService.findEnabledById(user.getId());
-
-        // Then
-        assertFalse(returned.isPresent());
-    }
-
-    /**
-     * Test the method {@link UserService#findEnabledById(String)} against a repository that contains the specified
+     * Test the method {@link UserService#findById(String)} against a repository that contains the specified
      * username and the user is enabled.
      */
     @Test
@@ -130,7 +111,7 @@ class UserServiceIntegrationTest$findEnabledById {
         userRepository.save(user);
 
         // When
-        val returned = userService.findEnabledById(user.getId());
+        val returned = userService.findById(user.getId());
 
         // Then
         assertEquals(user, returned.orElse(null));

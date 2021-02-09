@@ -35,7 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Test the {@link UserService#findEnabledById(String)} method. <br/>
+ * Test the {@link UserService#findById(String)} method. <br/>
  * We test 3 different cases:
  * <ul>
  *     <li>Empty repository;</li>

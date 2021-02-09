@@ -132,11 +132,16 @@ class OffersControllerTest$putOffer {
         val optionalOffer = Optional.of(offer);
         val offerDto = offerMapper.entityToDto(offer);
 
-        given(offerService.findOpenById(offerId))
+        given(offerService.findById(offerId))
                 .willReturn(optionalOffer);
 
+<<<<<<< Updated upstream
         doThrow(new UserIdNotFoundException(userId))
                 .when(offerService).update(offer, userId);
+=======
+        doThrow(new UserNotFoundException(userId))
+                .when(offerService).delete(offerId, userId);
+>>>>>>> Stashed changes
 
         // When
         val response = mockMvc
@@ -164,11 +169,15 @@ class OffersControllerTest$putOffer {
         val optionalOffer = Optional.of(offer);
         val offerDto = offerMapper.entityToDto(offer);
 
-        given(offerService.findOpenById(offerId))
+        given(offerService.findById(offerId))
                 .willReturn(optionalOffer);
 
         doThrow(new UserNotAuthorizedException(userId))
+<<<<<<< Updated upstream
                 .when(offerService).update(offer, userId);
+=======
+                .when(offerService).delete(offerId, userId);
+>>>>>>> Stashed changes
 
         // When
         val response = mockMvc
@@ -196,7 +205,7 @@ class OffersControllerTest$putOffer {
         val optionalOffer = Optional.of(offer);
         val offerDto = offerMapper.entityToDto(offer);
 
-        given(offerService.findOpenById(offerId))
+        given(offerService.findById(offerId))
                 .willReturn(optionalOffer);
 
         // When

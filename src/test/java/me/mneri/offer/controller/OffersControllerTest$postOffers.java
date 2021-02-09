@@ -23,6 +23,7 @@ import lombok.SneakyThrows;
 import lombok.val;
 import me.mneri.offer.TestUtil;
 import me.mneri.offer.entity.User;
+import me.mneri.offer.exception.UserNotFoundException;
 import me.mneri.offer.mapping.OfferMapper;
 import me.mneri.offer.service.OfferService;
 import me.mneri.offer.service.UserService;
@@ -42,6 +43,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 /**
@@ -87,22 +89,21 @@ class OffersControllerTest$postOffers {
      */
     @SneakyThrows
     @Test
-    void givenInvalidUserIdAndOfferPostRequest_whenPostOffersIsCalled_thenHttp404ResponseIsReturned() {
+    void givenInvalidUserIdAndOfferCreateDto_whenPostOffersIsCalled_thenHttp404ResponseIsReturned() {
         // Given
         val user = new User("user", "secret", passwordEncoder);
-        Optional<User> optionalUser = Optional.empty();
         val userId = user.getId();
-        val offer = TestUtil.createNonExpiredOffer(user);
-        val offerPostRequest = offerMapper.entityToCreateDto(offer);
+        val create = TestUtil.createOfferCreate();
+        val createDto = TestUtil.createOfferCreateDto();
 
-        given(userService.findEnabledById(userId))
-                .willReturn(optionalUser);
+        doThrow(new UserNotFoundException(userId))
+                .when(offerService).save(create, userId);
 
         // When
         val response = mockMvc
                 .perform(post(String.format(PATH, userId))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(offerPostRequest)))
+                        .content(objectMapper.writeValueAsString(createDto)))
                 .andReturn()
                 .getResponse();
 
@@ -123,7 +124,7 @@ class OffersControllerTest$postOffers {
         val offer = TestUtil.createNonExpiredOffer(user);
         val offerPostRequest = offerMapper.entityToCreateDto(offer);
 
-        given(userService.findEnabledById(userId))
+        given(userService.findById(userId))
                 .willReturn(optionalUser);
 
         // When

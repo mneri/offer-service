@@ -90,7 +90,7 @@ class UsersControllerTest$getUserById {
         val id = UUID.randomUUID().toString();
         Optional<User> optional = Optional.empty();
 
-        given(userService.findEnabledById(id))
+        given(userService.findById(id))
                 .willReturn(optional);
 
         // When
@@ -115,7 +115,7 @@ class UsersControllerTest$getUserById {
         val id = user.getId();
         Optional<User> optional = Optional.of(user);
 
-        given(userService.findEnabledById(id))
+        given(userService.findById(id))
                 .willReturn(optional);
 
         // When

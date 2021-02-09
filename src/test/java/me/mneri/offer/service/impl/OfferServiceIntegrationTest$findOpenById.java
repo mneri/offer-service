@@ -40,7 +40,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Test the {@link OfferService#findOpenById(String)} method. <br/>
+ * Test the {@link OfferService#findById(String)} method. <br/>
  * We test 4 different cases:
  * <ul>
  *     <li>Empty repository;</li>
@@ -72,27 +72,7 @@ class OfferServiceIntegrationTest$findOpenById {
     }
 
     /**
-     * Test the method {@link UserService#findEnabledById(String)} against a repository containing the specified offer,
-     * but it's closed.
-     */
-    @Test
-    void givenClosedOfferInRepository_whenFindOpenByIdIsCalled_thenNoOfferIsReturned() {
-        // Given
-        val publisher = new User("user", "secret", passwordEncoder);
-        val offer = TestUtil.createExpiredOffer(publisher);
-
-        userRepository.save(publisher);
-        offerRepository.save(offer);
-
-        // When
-        val returned = offerService.findOpenById(offer.getId());
-
-        // Then
-        assertFalse(returned.isPresent());
-    }
-
-    /**
-     * Test the method {@link UserService#findEnabledById(String)} against an empty repository.
+     * Test the method {@link UserService#findById(String)} against an empty repository.
      */
     @Test
     void givenEmptyRepository_whenFindByOpenByIdIsCalled_thenNoOfferIsReturned() {
@@ -100,14 +80,14 @@ class OfferServiceIntegrationTest$findOpenById {
         val id = UUID.randomUUID().toString();
 
         // When
-        val returned = offerService.findOpenById(id);
+        val returned = offerService.findById(id);
 
         // Then
         assertFalse(returned.isPresent());
     }
 
     /**
-     * Test the method {@link UserService#findEnabledById(String)} against a repository containing the specified offer.
+     * Test the method {@link UserService#findById(String)} against a repository containing the specified offer.
      */
     @Test
     void givenOpenOfferInRepository_whenFindOpenByIdIsCalled_thenOfferIsReturned() {
@@ -119,14 +99,14 @@ class OfferServiceIntegrationTest$findOpenById {
         offerRepository.save(offer);
 
         // When
-        val returned = offerService.findOpenById(offer.getId());
+        val returned = offerService.findById(offer.getId());
 
         // Then
         assertTrue(returned.isPresent());
     }
 
     /**
-     * Test the method {@link UserService#findEnabledById(String)} against a repository containing the specified offer.
+     * Test the method {@link UserService#findById(String)} against a repository containing the specified offer.
      */
     @Test
     void givenOpenOfferWithDifferentIdInRepository_whenFindOpenByIdIsCalled_thenNoOfferIsReturned() {
@@ -139,7 +119,7 @@ class OfferServiceIntegrationTest$findOpenById {
         offerRepository.save(offer);
 
         // When
-        val returned = offerService.findOpenById(offerId);
+        val returned = offerService.findById(offerId);
 
         // Then
         assertFalse(returned.isPresent());

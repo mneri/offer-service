@@ -18,6 +18,7 @@
 
 package me.mneri.offer.service;
 
+import me.mneri.offer.bean.UserCreate;
 import me.mneri.offer.entity.User;
 
 import java.util.List;
@@ -32,32 +33,23 @@ public interface UserService {
     /**
      * Find all enabled {@link User}s.
      *
-     * @return The list of all enabled users.
+     * @return The list of all enabled users or an empty list if no enable user exist.
      */
     List<User> findAllEnabled();
 
     /**
      * Find the user with the specified id in the repository.
      *
-     * @param id The id.
+     * @param userId The id.
      * @return If the user is present return an {@link Optional} of the user; otherwise return an empty
      * {@link Optional}.
      */
-    Optional<User> findEnabledById(String id);
-
-    /**
-     * Find the user with the specified username in the repository.
-     *
-     * @param username The username.
-     * @return If the user is present return an {@link Optional} of the user; otherwise return an empty
-     * {@link Optional}.
-     */
-    Optional<User> findEnabledByUsername(String username);
+    Optional<User> findById(String userId);
 
     /**
      * Persist a user into the database.
      *
-     * @param user The user.
+     * @param create The data of the user to create.
      */
-    void save(User user);
+    User save(UserCreate create);
 }

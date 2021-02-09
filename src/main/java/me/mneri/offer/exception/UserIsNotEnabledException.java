@@ -19,31 +19,31 @@
 package me.mneri.offer.exception;
 
 /**
- * Thrown when the specified user id couldn't be found.
+ * Thrown when the user is not enabled.
  *
  * @author mneri
  */
-public class UserIdNotFoundException extends Exception {
-    private String userId;
+public class UserIsNotEnabledException extends Exception {
+    private final String userId;
 
     /**
      * Create a new instance.
      *
      * @param userId The user id.
      */
-    public UserIdNotFoundException(String userId) {
+    public UserIsNotEnabledException(String userId) {
         this.userId = userId;
     }
 
     @Override
     public String getMessage() {
-        return String.format("Couldn't find user id '%s'", userId);
+        return String.format("The user is not enabled: userId=%s", userId);
     }
 
     /**
-     * Return the id that has generated the exception.
+     * Return the id of the user that has generated the exception.
      *
-     * @return The id.
+     * @return The id of the user.
      */
     public String getUserId() {
         return userId;

@@ -18,8 +18,15 @@
 
 package me.mneri.offer;
 
+<<<<<<< Updated upstream
 import me.mneri.offer.entity.Offer;
+=======
+import me.mneri.offer.bean.OfferCreate;
+import me.mneri.offer.bean.UserCreate;
+>>>>>>> Stashed changes
 import me.mneri.offer.entity.User;
+import me.mneri.offer.exception.UserIsNotEnabledException;
+import me.mneri.offer.exception.UserNotFoundException;
 import me.mneri.offer.service.OfferService;
 import me.mneri.offer.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,12 +65,17 @@ public class OfferCommandLineRunner implements CommandLineRunner {
     }
 
     @Override
-    public void run(String... args) {
-        User mneri = new User("mneri", "secret", passwordEncoder);
-        User jkaczmarczyk = new User("jkaczmarczyk", "secret", passwordEncoder);
+    public void run(String... args) throws UserNotFoundException, UserIsNotEnabledException {
+        UserCreate mneriCreate = new UserCreate();
+        mneriCreate.setUsername("mneri");
+        mneriCreate.setPassword("secret");
 
-        userService.save(mneri);
-        userService.save(jkaczmarczyk);
+        UserCreate jkaczmarczykCreate = new UserCreate();
+        jkaczmarczykCreate.setUsername("jkaczmarczyk");
+        jkaczmarczykCreate.setPassword("secret");
+
+        User mneri = userService.save(mneriCreate);
+        User jkaczmarczyk = userService.save(jkaczmarczykCreate);
 
         Offer freeCoffee = Offer.builder()
                 .title("Buy one coffee, get one free")
@@ -82,7 +94,19 @@ public class OfferCommandLineRunner implements CommandLineRunner {
                 .ttl(nextMonth())
                 .build();
 
+<<<<<<< Updated upstream
         offerService.save(freeCoffee);
         offerService.save(freeChocolate);
+=======
+        OfferCreate freeChocolate = new OfferCreate();
+        freeChocolate.setTitle("Buy one chocolate, get one free");
+        freeChocolate.setDescription("Come to our amazing shop and get one chocolate for free!");
+        freeChocolate.setPrice(new BigDecimal("2.50"));
+        freeChocolate.setCurrency("GBP");
+        freeChocolate.setTtl(nextMonth());
+
+        offerService.save(freeCoffee, mneri.getId());
+        offerService.save(freeChocolate, jkaczmarczyk.getId());
+>>>>>>> Stashed changes
     }
 }

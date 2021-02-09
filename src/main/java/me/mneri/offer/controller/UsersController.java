@@ -27,7 +27,12 @@ import me.mneri.offer.dto.OfferDto;
 import me.mneri.offer.dto.UserDto;
 import me.mneri.offer.entity.Offer;
 import me.mneri.offer.entity.User;
+<<<<<<< Updated upstream
 import me.mneri.offer.exception.UserIdNotFoundException;
+=======
+import me.mneri.offer.exception.UserIsNotEnabledException;
+import me.mneri.offer.exception.UserNotFoundException;
+>>>>>>> Stashed changes
 import me.mneri.offer.mapping.OfferMapper;
 import me.mneri.offer.mapping.UserMapper;
 import me.mneri.offer.service.OfferService;
@@ -38,8 +43,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Optional;
 
 /**
  * REST controller for paths starting with {@code /users}.
@@ -90,15 +93,24 @@ public class UsersController {
     @GetMapping(value = "/{userId}", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
     @Operation(summary = "Return the user identified by the specified id.",
             description = "Return the user given its id or return an error if such user doesn't exist or it's disabled.")
+<<<<<<< Updated upstream
     public UserDto getUserById(@PathVariable String userId) throws UserIdNotFoundException {
         Optional<User> optional = userService.findEnabledById(userId);
 
         if (!optional.isPresent()) {
             log.debug("No enabled user with the specified id was found; userId: {}", userId);
             throw new UserIdNotFoundException(userId);
+=======
+    public UserDto getUserById(@PathVariable String userId) throws UserIsNotEnabledException, UserNotFoundException {
+        User user = userService.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(userId));
+
+        if (!user.isEnabled()) {
+            throw new UserIsNotEnabledException(userId);
+>>>>>>> Stashed changes
         }
 
-        return optional.map(user -> userMapper.entityToDto(user)).get();
+        return userMapper.entityToDto(user);
     }
 
     /**
@@ -114,7 +126,12 @@ public class UsersController {
     @GetMapping(value = "/{userId}/offers", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
     @Operation(summary = "Return the list of offers published by the user identified by the specified id.",
             description = "Return a user's offers or return an error if the user doesn't exist or it's disabled.")
+<<<<<<< Updated upstream
     public Iterable<OfferDto> getOffersByPublisherId(@PathVariable String userId) throws UserIdNotFoundException {
+=======
+    public Iterable<OfferDto> getOffersByPublisherId(@PathVariable String userId)
+            throws UserIsNotEnabledException, UserNotFoundException {
+>>>>>>> Stashed changes
         return offerMapper.entityToDto(offerService.findAllOpenByPublisherId(userId));
     }
 }

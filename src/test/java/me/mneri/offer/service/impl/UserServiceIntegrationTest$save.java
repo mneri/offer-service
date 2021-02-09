@@ -19,15 +19,13 @@
 package me.mneri.offer.service.impl;
 
 import lombok.val;
+import me.mneri.offer.bean.UserCreate;
 import me.mneri.offer.entity.User;
 import me.mneri.offer.repository.UserRepository;
 import me.mneri.offer.service.UserService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,23 +47,19 @@ public class UserServiceIntegrationTest$save {
     @Autowired
     private UserService userService;
 
-    private PasswordEncoder passwordEncoder;
-
-    @BeforeEach
-    private void beforeEach() {
-        passwordEncoder = new BCryptPasswordEncoder();
-    }
-
     /**
-     * Test {@link UserService#save(User)} saving a {@link User} and then retrieving it from the repository.
+     * Test {@link UserService#save(UserCreate)} saving a {@link User} and then retrieving it from the repository.
      */
     @Test
     void givenUser_whenSaveIsInvoked_thenUserIsRetrievable() {
         // Given
-        val user = new User("user", "secret", passwordEncoder);
+        val create = new UserCreate();
+        create.setUsername("mneri");
+        create.setPassword("secret");
+
 
         // When
-        userService.save(user);
+        val user = userService.save(create);
 
         // Then
         val optional = userRepository.findById(user.getId());

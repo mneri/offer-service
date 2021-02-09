@@ -21,8 +21,13 @@ package me.mneri.offer.service.impl;
 import lombok.extern.log4j.Log4j2;
 import me.mneri.offer.entity.Offer;
 import me.mneri.offer.entity.User;
+<<<<<<< Updated upstream
 import me.mneri.offer.exception.UserIdNotFoundException;
 import me.mneri.offer.exception.UserNotAuthorizedException;
+=======
+import me.mneri.offer.exception.*;
+import me.mneri.offer.mapping.OfferMapper;
+>>>>>>> Stashed changes
 import me.mneri.offer.repository.OfferRepository;
 import me.mneri.offer.repository.UserRepository;
 import me.mneri.offer.service.OfferService;
@@ -58,6 +63,7 @@ public class OfferServiceImpl implements OfferService {
     private UserSpec userSpec;
 
     /**
+<<<<<<< Updated upstream
      * Return {@code true} if an enabled {@link User} with the specified id exists in the repository.
      *
      * @param userId The user id.
@@ -66,11 +72,48 @@ public class OfferServiceImpl implements OfferService {
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private boolean enabledUserExistsById(String userId) {
         return userRepository.count(where(userSpec.isEnabled()).and(userSpec.idIsEqualTo(userId))) > 0;
+=======
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional
+    public void delete(String offerId, String userId)
+            throws OfferIsCancelledException, OfferIsExpiredException, OfferNotFoundException,
+            UserIsNotEnabledException, UserNotAuthorizedException, UserNotFoundException {
+        User user = userRepository.findOne(where(userSpec.idIsEqualTo(userId)))
+                .orElseThrow(() -> new UserNotFoundException(userId));
+
+        if (!user.isEnabled()) {
+            throw new UserIsNotEnabledException(userId);
+        }
+
+        Offer offer = offerRepository.findOne(where(offerSpec.idIsEqualTo(offerId)))
+                .orElseThrow(() -> new OfferNotFoundException(offerId));
+
+        if (!offer.getPublisher().equals(user)) {
+            throw new UserNotAuthorizedException(userId);
+        }
+
+        if (offer.isCanceled()) {
+            throw new OfferIsCancelledException(offerId);
+        }
+
+        if (offer.getTtl() == 0) {
+            throw new OfferIsExpiredException(offerId);
+        }
+
+        offer.setCanceled(true);
+
+        offerRepository.save(offer);
+        log.debug("Offer cancelled; offerId: {}", offerId);
+>>>>>>> Stashed changes
     }
 
     /**
      * {@inheritDoc}
      */
+    @Override
+    @Transactional
     public List<Offer> findAllOpen() {
         return offerRepository.findAll(where(offerSpec.isOpen()));
     }
@@ -78,11 +121,21 @@ public class OfferServiceImpl implements OfferService {
     /**
      * {@inheritDoc}
      */
+    @Override
     @Transactional
+<<<<<<< Updated upstream
     public List<Offer> findAllOpenByPublisherId(String userId) throws UserIdNotFoundException {
         if (!enabledUserExistsById(userId)) {
             log.debug("No enabled user with the specified id was found; userId: {}", userId);
             throw new UserIdNotFoundException(userId);
+=======
+    public List<Offer> findAllOpenByPublisherId(String userId) throws UserIsNotEnabledException, UserNotFoundException {
+        User user = userRepository.findOne(where(userSpec.idIsEqualTo(userId)))
+                .orElseThrow(() -> new UserNotFoundException(userId));
+
+        if (!user.isEnabled()) {
+            throw new UserIsNotEnabledException(userId);
+>>>>>>> Stashed changes
         }
 
         return offerRepository.findAll(where(offerSpec.isOpen()).and(offerSpec.publisherIdIsEqualTo(userId)));
@@ -91,21 +144,17 @@ public class OfferServiceImpl implements OfferService {
     /**
      * {@inheritDoc}
      */
-    public List<Offer> findAllOpenByPublisherUsername(String username) {
-        return offerRepository.findAll(where(offerSpec.isOpen()).and(offerSpec.publisherUsernameIsEqualTo(username)));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public Optional<Offer> findOpenById(String id) {
-        return offerRepository.findOne(where(offerSpec.isOpen()).and(offerSpec.idIsEqualTo(id)));
+    @Override
+    @Transactional
+    public Optional<Offer> findById(String id) {
+        return offerRepository.findOne(where(offerSpec.idIsEqualTo(id)));
     }
 
     /**
      * {@inheritDoc}
      */
     @Transactional
+<<<<<<< Updated upstream
     public void update(Offer offer, String userId) throws UserIdNotFoundException, UserNotAuthorizedException {
         if (!enabledUserExistsById(userId)) {
             log.debug("No enabled user with the specified id was found; userId: {}", userId);
@@ -115,7 +164,34 @@ public class OfferServiceImpl implements OfferService {
         if (offerRepository.count(where(offerSpec.idIsEqualTo(offer.getId())).and(offerSpec.publisherIdIsEqualTo(userId))) == 0) {
             log.debug("The user is not authorized to update the offer; offerId: {}; userId: {}", offer.getId(), userId);
             throw new UserNotAuthorizedException(userId);
+=======
+    public void update(String offerId, OfferUpdate update, String userId)
+            throws OfferIsCancelledException, OfferIsExpiredException, OfferNotFoundException,
+            UserIsNotEnabledException, UserNotFoundException, UserNotAuthorizedException {
+        User user = userRepository.findOne(where(userSpec.idIsEqualTo(userId)))
+                .orElseThrow(() -> new UserNotFoundException(userId));
+
+        if (!user.isEnabled()) {
+            throw new UserIsNotEnabledException(userId);
         }
+
+        Offer offer = offerRepository.findOne(where(offerSpec.idIsEqualTo(offerId)))
+                .orElseThrow(() -> new OfferNotFoundException(offerId));
+
+        if (!offer.getPublisher().equals(user)) {
+            throw new UserNotAuthorizedException(userId);
+        }
+
+        if (offer.isCanceled()) {
+            throw new OfferIsCancelledException(offerId);
+        }
+
+        if (offer.getTtl() == 0) {
+            throw new OfferIsExpiredException(offerId);
+>>>>>>> Stashed changes
+        }
+
+        offerMapper.mergeUpdateToEntity(offer, update);
 
         offerRepository.save(offer);
         log.debug("Offer updated; offerId: {}; userId: {}", offer.getId(), userId);
@@ -124,8 +200,27 @@ public class OfferServiceImpl implements OfferService {
     /**
      * {@inheritDoc}
      */
+<<<<<<< Updated upstream
     public void save(Offer offer) {
+=======
+    @Override
+    @Transactional
+    public Offer save(OfferCreate create, String userId) throws UserIsNotEnabledException, UserNotFoundException {
+        User user = userRepository.findOne(where(userSpec.idIsEqualTo(userId)))
+                .orElseThrow(() -> new UserNotFoundException(userId));
+
+        if (!user.isEnabled()) {
+            throw new UserIsNotEnabledException(userId);
+        }
+
+        Offer offer = Offer.builder().build();
+        offerMapper.mergeCreateToOffer(offer, create);
+        offer.setPublisher(user);
+
+>>>>>>> Stashed changes
         offerRepository.save(offer);
         log.debug("Offer created; offerId: {}", offer.getId());
+
+        return offer;
     }
 }
