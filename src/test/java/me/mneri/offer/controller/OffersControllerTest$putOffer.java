@@ -22,17 +22,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import lombok.val;
 import me.mneri.offer.TestUtil;
-import me.mneri.offer.bean.OfferUpdate;
 import me.mneri.offer.entity.User;
-import me.mneri.offer.exception.OfferNotFoundException;
-import me.mneri.offer.exception.UserNotFoundException;
 import me.mneri.offer.exception.UserNotAuthorizedException;
+import me.mneri.offer.exception.UserNotFoundException;
 import me.mneri.offer.mapping.OfferMapper;
 import me.mneri.offer.service.OfferService;
 import me.mneri.offer.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -102,10 +99,11 @@ class OffersControllerTest$putOffer {
         val userId = user.getId();
         val offer = TestUtil.createNonExpiredOffer(user);
         val offerId = offer.getId();
-        val offerDto = offerMapper.entityToDto(offer);
+        val offerDto = TestUtil.createOfferCreateDto();
+        val update = TestUtil.createOfferUpdate();
 
-        doThrow(new OfferNotFoundException(offerId))
-                .when(offerService).update(Mockito.eq(offerId), Mockito.any(OfferUpdate.class), Mockito.eq(userId));
+        doThrow(new UserNotFoundException(userId))
+                .when(offerService).update(offerId, update, userId);
 
         // When
         val response = mockMvc
@@ -133,11 +131,11 @@ class OffersControllerTest$putOffer {
         val optionalOffer = Optional.of(offer);
         val offerDto = offerMapper.entityToDto(offer);
 
-        given(offerService.findOpenById(offerId))
+        given(offerService.findById(offerId))
                 .willReturn(optionalOffer);
 
         doThrow(new UserNotFoundException(userId))
-                .when(offerService).delete(offer, userId);
+                .when(offerService).delete(offerId, userId);
 
         // When
         val response = mockMvc
@@ -166,11 +164,11 @@ class OffersControllerTest$putOffer {
         val offerDto = offerMapper.entityToDto(offer);
         val update = TestUtil.createOfferUpdate();
 
-        given(offerService.findOpenById(offerId))
+        given(offerService.findById(offerId))
                 .willReturn(optionalOffer);
 
         doThrow(new UserNotAuthorizedException(userId))
-                .when(offerService).delete(offer, userId);
+                .when(offerService).delete(offerId, userId);
 
         // When
         val response = mockMvc
@@ -198,7 +196,7 @@ class OffersControllerTest$putOffer {
         val optionalOffer = Optional.of(offer);
         val offerDto = offerMapper.entityToDto(offer);
 
-        given(offerService.findOpenById(offerId))
+        given(offerService.findById(offerId))
                 .willReturn(optionalOffer);
 
         // When

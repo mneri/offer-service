@@ -21,10 +21,10 @@ package me.mneri.offer.controller;
 import lombok.SneakyThrows;
 import lombok.val;
 import me.mneri.offer.TestUtil;
-import me.mneri.offer.entity.Offer;
 import me.mneri.offer.entity.User;
-import me.mneri.offer.exception.UserNotFoundException;
+import me.mneri.offer.exception.OfferNotFoundException;
 import me.mneri.offer.exception.UserNotAuthorizedException;
+import me.mneri.offer.exception.UserNotFoundException;
 import me.mneri.offer.service.OfferService;
 import me.mneri.offer.service.UserService;
 import org.junit.jupiter.api.Test;
@@ -80,16 +80,15 @@ class OffersControllerTest$deleteOffer {
      */
     @SneakyThrows
     @Test
-    void givenEmptyRepository_whenPostOffersIsCalled_thenHttp404ResponseIsReturned() {
+    void givenEmptyRepository_whenDeleteOffersIsCalled_thenHttp404ResponseIsReturned() {
         // Given
         val user = new User("user", "secret", passwordEncoder);
         val userId = user.getId();
         val offer = TestUtil.createNonExpiredOffer(user);
         val offerId = offer.getId();
-        Optional<Offer> optionalOffer = Optional.empty();
 
-        given(offerService.findOpenById(offerId))
-                .willReturn(optionalOffer);
+        doThrow(new OfferNotFoundException(offerId))
+                .when(offerService).delete(offerId, userId);
 
         // When
         val response = mockMvc
@@ -115,11 +114,11 @@ class OffersControllerTest$deleteOffer {
         val offerId = offer.getId();
         val optionalOffer = Optional.of(offer);
 
-        given(offerService.findOpenById(offerId))
+        given(offerService.findById(offerId))
                 .willReturn(optionalOffer);
 
         doThrow(new UserNotFoundException(userId))
-                .when(offerService).delete(offer, userId);
+                .when(offerService).delete(offerId, userId);
 
         // When
         val response = mockMvc
@@ -145,11 +144,11 @@ class OffersControllerTest$deleteOffer {
         val offerId = offer.getId();
         val optionalOffer = Optional.of(offer);
 
-        given(offerService.findOpenById(offerId))
+        given(offerService.findById(offerId))
                 .willReturn(optionalOffer);
 
         doThrow(new UserNotAuthorizedException(userId))
-                .when(offerService).delete(offer, userId);
+                .when(offerService).delete(offerId, userId);
 
         // When
         val response = mockMvc
@@ -175,7 +174,7 @@ class OffersControllerTest$deleteOffer {
         val offerId = offer.getId();
         val optionalOffer = Optional.of(offer);
 
-        given(offerService.findOpenById(offerId))
+        given(offerService.findById(offerId))
                 .willReturn(optionalOffer);
 
         // When

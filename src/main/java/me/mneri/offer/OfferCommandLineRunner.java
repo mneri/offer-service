@@ -18,7 +18,9 @@
 
 package me.mneri.offer;
 
+import lombok.SneakyThrows;
 import me.mneri.offer.bean.OfferCreate;
+import me.mneri.offer.bean.UserCreate;
 import me.mneri.offer.entity.User;
 import me.mneri.offer.service.OfferService;
 import me.mneri.offer.service.UserService;
@@ -58,12 +60,18 @@ public class OfferCommandLineRunner implements CommandLineRunner {
     }
 
     @Override
+    @SneakyThrows
     public void run(String... args) {
-        User mneri = new User("mneri", "secret", passwordEncoder);
-        User jkaczmarczyk = new User("jkaczmarczyk", "secret", passwordEncoder);
+        UserCreate mneriCreate = new UserCreate();
+        mneriCreate.setUsername("mneri");
+        mneriCreate.setPassword("secret");
 
-        userService.save(mneri);
-        userService.save(jkaczmarczyk);
+        UserCreate jkaczmarczykCreate = new UserCreate();
+        jkaczmarczykCreate.setUsername("jkaczmarczyk");
+        jkaczmarczykCreate.setPassword("secret");
+
+        User mneri = userService.save(mneriCreate);
+        User jkaczmarczyk = userService.save(jkaczmarczykCreate);
 
         OfferCreate freeCoffee = new OfferCreate();
         freeCoffee.setTitle("Buy one coffee, get one free");
@@ -79,7 +87,7 @@ public class OfferCommandLineRunner implements CommandLineRunner {
         freeChocolate.setCurrency("GBP");
         freeChocolate.setTtl(nextMonth());
 
-        offerService.save(freeCoffee, mneri);
-        offerService.save(freeChocolate, jkaczmarczyk);
+        offerService.save(freeCoffee, mneri.getId());
+        offerService.save(freeChocolate, jkaczmarczyk.getId());
     }
 }

@@ -22,9 +22,7 @@ import me.mneri.offer.bean.OfferCreate;
 import me.mneri.offer.bean.OfferUpdate;
 import me.mneri.offer.entity.Offer;
 import me.mneri.offer.entity.User;
-import me.mneri.offer.exception.OfferNotFoundException;
-import me.mneri.offer.exception.UserNotFoundException;
-import me.mneri.offer.exception.UserNotAuthorizedException;
+import me.mneri.offer.exception.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -38,10 +36,18 @@ public interface OfferService {
     /**
      * Delete (cancel) an offer.
      *
-     * @param offer  The offer.
-     * @param userId The id of the modifier.
+     * @param offerId The id of the offer to delete.
+     * @param userId  The id of the user.
+     * @throws OfferIsCancelledException  If the offer with the specified id was previously cancelled.
+     * @throws OfferIsExpiredException    If the offer with the specified id has expired.
+     * @throws OfferNotFoundException     If the offer with the specified id was not found in the repository.
+     * @throws UserIsNotEnabledException  If the user with the specified id is not enabled.
+     * @throws UserNotFoundException      If a user with the specified id was not found in the repository.
+     * @throws UserNotAuthorizedException If the specified user id doesn't belong to the publisher of the offer.
      */
-    void delete(Offer offer, String userId) throws UserNotFoundException, UserNotAuthorizedException;
+    void delete(String offerId, String userId)
+            throws OfferIsCancelledException, OfferIsExpiredException, OfferNotFoundException,
+            UserIsNotEnabledException, UserNotAuthorizedException, UserNotFoundException;
 
     /**
      * Find all the open {@link Offer}s.
@@ -55,16 +61,10 @@ public interface OfferService {
      *
      * @param id The id of the user.
      * @return The list of the open offers published by the specified user.
+     * @throws UserIsNotEnabledException If the specified user is not enabled.
+     * @throws UserNotFoundException     If the user with the specified id was not found in the repository.
      */
-    List<Offer> findAllOpenByPublisherId(String id) throws UserNotFoundException;
-
-    /**
-     * Find all the open {@link Offer}s published by the specified {@link User}.
-     *
-     * @param username The username of the user.
-     * @return The list of the open offers published by the specified user.
-     */
-    List<Offer> findAllOpenByPublisherUsername(String username);
+    List<Offer> findAllOpenByPublisherId(String id) throws UserIsNotEnabledException, UserNotFoundException;
 
     /**
      * Find the {@link Offer} with the specified id.
@@ -72,7 +72,7 @@ public interface OfferService {
      * @param id The id of the offer.
      * @return The offer with the specified id.
      */
-    Optional<Offer> findOpenById(String id);
+    Optional<Offer> findById(String id);
 
     /**
      * Update the specified {@link Offer} given the specified user id.
@@ -82,18 +82,25 @@ public interface OfferService {
      * @param offerId The id of the offer to update.
      * @param update  The data to update the offer with.
      * @param userId  The user id of the modifier.
-     * @throws OfferNotFoundException   If the offer with the specified id was not found in the repository.
-     * @throws UserNotFoundException    If a user with the specified id was not found in the repository.
+     * @throws OfferIsCancelledException  If the offer with the specified id was previously cancelled.
+     * @throws OfferIsExpiredException    If the offer with the specified id has expired.
+     * @throws OfferNotFoundException     If the offer with the specified id was not found in the repository.
+     * @throws UserIsNotEnabledException  If the user with the specified id is not enabled.
+     * @throws UserNotFoundException      If a user with the specified id was not found in the repository.
      * @throws UserNotAuthorizedException If the specified user id doesn't belong to the publisher of the offer.
      */
     void update(String offerId, OfferUpdate update, String userId)
-            throws OfferNotFoundException, UserNotFoundException, UserNotAuthorizedException;
+            throws OfferIsCancelledException, OfferIsExpiredException, OfferNotFoundException,
+            UserIsNotEnabledException, UserNotAuthorizedException, UserNotFoundException;
 
     /**
      * Persist an offer into the database.
      *
      * @param create The to create the offer with.
-     * @param user   The creator.
+     * @param userId The creator.
+     * @return The offer.
+     * @throws UserIsNotEnabledException If the user with the specified id is not enabled.
+     * @throws UserNotFoundException     If a user with the specified id was not found in the repository.
      */
-    void save(OfferCreate create, User user);
+    Offer save(OfferCreate create, String userId) throws UserIsNotEnabledException, UserNotFoundException;
 }

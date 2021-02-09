@@ -19,24 +19,33 @@
 package me.mneri.offer.exception;
 
 /**
- * Thrown when the specified user id couldn't be found.
+ * Thrown when the specified user couldn't be found.
  *
  * @author mneri
  */
-public class UserNotFoundException extends Exception {
+public class UserNotFoundException extends Throwable {
     private final String userId;
 
     /**
      * Create a new instance.
      *
-     * @param userId The user id.
+     * @param offerId The offer id.
      */
-    public UserNotFoundException(String userId) {
-        this.userId = userId;
+    public UserNotFoundException(String offerId) {
+        this.userId = offerId;
     }
 
     @Override
     public String getMessage() {
         return String.format("Couldn't find the specified user: userId=%s", userId);
+    }
+
+    /**
+     * Return the id that has generated the exception.
+     *
+     * @return The id.
+     */
+    public String getUserId() {
+        return userId;
     }
 }

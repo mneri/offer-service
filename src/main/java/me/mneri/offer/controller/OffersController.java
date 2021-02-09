@@ -27,10 +27,7 @@ import me.mneri.offer.dto.OfferCreateDto;
 import me.mneri.offer.dto.OfferDto;
 import me.mneri.offer.dto.OfferUpdateDto;
 import me.mneri.offer.entity.Offer;
-import me.mneri.offer.entity.User;
-import me.mneri.offer.exception.OfferNotFoundException;
-import me.mneri.offer.exception.UserNotFoundException;
-import me.mneri.offer.exception.UserNotAuthorizedException;
+import me.mneri.offer.exception.*;
 import me.mneri.offer.mapping.OfferMapper;
 import me.mneri.offer.service.OfferService;
 import me.mneri.offer.service.UserService;
@@ -40,7 +37,6 @@ import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Optional;
 
 /**
  * REST controller for paths starting with {@code /offers}.
@@ -70,8 +66,12 @@ public class OffersController {
      *
      * @param offerId The offer id.
      * @param userId  The id of the user attempting the modification.
-     * @throws OfferNotFoundException   If an offer with the specified id is not found.
-     * @throws UserNotAuthorizedException If the user is not the publisher of the specified offer.
+     * @throws OfferIsCancelledException  If the offer with the specified id was previously cancelled.
+     * @throws OfferIsExpiredException    If the offer with the specified id has expired.
+     * @throws OfferNotFoundException     If the offer with the specified id was not found in the repository.
+     * @throws UserIsNotEnabledException  If the user with the specified id is not enabled.
+     * @throws UserNotFoundException      If a user with the specified id was not found in the repository.
+     * @throws UserNotAuthorizedException If the specified user id doesn't belong to the publisher of the offer.
      */
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful operation."),
@@ -81,15 +81,9 @@ public class OffersController {
             description = "Delete an open offer in the repository.")
     @DeleteMapping(value = "/{offerId}", consumes = MimeTypeUtils.APPLICATION_JSON_VALUE)
     public void deleteOffer(@PathVariable String offerId, @RequestParam("user.id") String userId)
-            throws OfferNotFoundException, UserNotFoundException, UserNotAuthorizedException {
-        Optional<Offer> offerOptional = offerService.findOpenById(offerId);
-
-        if (!offerOptional.isPresent()) {
-            log.debug("No open offer with the specified id was found; offerId: {}", offerId);
-            throw new OfferNotFoundException(offerId);
-        }
-
-        offerService.delete(offerOptional.get(), userId);
+            throws OfferIsCancelledException, OfferIsExpiredException, OfferNotFoundException,
+            UserIsNotEnabledException, UserNotFoundException, UserNotAuthorizedException {
+        offerService.delete(offerId, userId);
     }
 
     /**
@@ -112,7 +106,9 @@ public class OffersController {
      *
      * @param offerId The id of the offer.
      * @return The offer, if present and still open, {@code null} otherwise.
-     * @throws OfferNotFoundException The specified offer id was not found.
+     * @throws OfferIsCancelledException If the specified offer was cancelled.
+     * @throws OfferIsExpiredException   If the specified offer is expired.
+     * @throws OfferNotFoundException    If the specified offer id was not found.
      */
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful operation."),
@@ -120,15 +116,20 @@ public class OffersController {
     @GetMapping(value = "/{offerId}", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
     @Operation(summary = "Return the user identified by the specified id.",
             description = "Return the offer given its id or return an error if such offer doesn't exist or it's closed.")
-    public OfferDto getOfferById(@PathVariable String offerId) throws OfferNotFoundException {
-        Optional<Offer> optional = offerService.findOpenById(offerId);
+    public OfferDto getOfferById(@PathVariable String offerId)
+            throws OfferIsExpiredException, OfferNotFoundException, OfferIsCancelledException {
+        Offer offer = offerService.findById(offerId)
+                .orElseThrow(() -> new OfferNotFoundException(offerId));
 
-        if (!optional.isPresent()) {
-            log.debug("No open offer with the specified id was found; offerId: {}", offerId);
-            throw new OfferNotFoundException(offerId);
+        if (offer.isCanceled()) {
+            throw new OfferIsCancelledException(offerId);
         }
 
-        return optional.map(offer -> offerMapper.entityToDto(offer)).get();
+        if (offer.getTtl() == 0) {
+            throw new OfferIsExpiredException(offerId);
+        }
+
+        return offerMapper.entityToDto(offer);
     }
 
     /**
@@ -136,7 +137,8 @@ public class OffersController {
      *
      * @param createDto The offer.
      * @param userId    The user id of the publisher of the offer.
-     * @throws UserNotFoundException If the user is not found.
+     * @throws UserIsNotEnabledException If the user with the specified id is not enabled.
+     * @throws UserNotFoundException     If a user with the specified id was not found in the repository.
      */
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Successful operation."),
@@ -146,15 +148,8 @@ public class OffersController {
     @PostMapping(consumes = MimeTypeUtils.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public void postOffer(@Valid @RequestBody OfferCreateDto createDto, @RequestParam("user.id") String userId)
-            throws UserNotFoundException {
-        Optional<User> optional = userService.findEnabledById(userId);
-
-        if (!optional.isPresent()) {
-            log.debug("No enabled user with the specified id was found; userId: {}", userId);
-            throw new UserNotFoundException(userId);
-        }
-
-        offerService.save(offerMapper.createDtoToCreate(createDto), optional.get());
+            throws UserIsNotEnabledException, UserNotFoundException {
+        offerService.save(offerMapper.createDtoToCreate(createDto), userId);
     }
 
     /**
@@ -163,8 +158,12 @@ public class OffersController {
      * @param offerId   The offer id.
      * @param updateDto The update data.
      * @param userId    The user id of the publisher of the offer.
-     * @throws UserNotFoundException    If the user has no rights to modify the offer.
-     * @throws UserNotAuthorizedException If the user is not found.
+     * @throws OfferIsCancelledException  If the offer with the specified id was previously cancelled.
+     * @throws OfferIsExpiredException    If the offer with the specified id has expired.
+     * @throws OfferNotFoundException     If the offer with the specified id was not found in the repository.
+     * @throws UserIsNotEnabledException  If the user with the specified id is not enabled.
+     * @throws UserNotFoundException      If a user with the specified id was not found in the repository.
+     * @throws UserNotAuthorizedException If the specified user id doesn't belong to the publisher of the offer.
      */
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful operation."),
@@ -176,7 +175,8 @@ public class OffersController {
     public void putOffer(@PathVariable String offerId,
                          @Valid @RequestBody OfferUpdateDto updateDto,
                          @RequestParam("user.id") String userId)
-            throws OfferNotFoundException, UserNotFoundException, UserNotAuthorizedException {
+            throws OfferIsCancelledException, OfferIsExpiredException, OfferNotFoundException,
+            UserIsNotEnabledException, UserNotFoundException, UserNotAuthorizedException {
         offerService.update(offerId, offerMapper.updateDtoToUpdate(updateDto), userId);
     }
 }

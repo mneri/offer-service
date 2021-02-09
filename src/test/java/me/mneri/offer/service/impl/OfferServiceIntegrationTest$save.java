@@ -18,6 +18,7 @@
 
 package me.mneri.offer.service.impl;
 
+import lombok.SneakyThrows;
 import lombok.val;
 import me.mneri.offer.TestUtil;
 import me.mneri.offer.bean.OfferCreate;
@@ -38,7 +39,7 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Test the {@link OfferService#save(OfferCreate, User)}.
+ * Test the {@link OfferService#save(OfferCreate, String)}.
  *
  * @author mneri
  */
@@ -63,9 +64,10 @@ public class OfferServiceIntegrationTest$save {
     }
 
     /**
-     * Test {@link OfferService#save(OfferCreate, User)} saving a {@link Offer} and then retrieving it from the
+     * Test {@link OfferService#save(OfferCreate, String)} saving a {@link Offer} and then retrieving it from the
      * repository.
      */
+    @SneakyThrows
     @Test
     void givenOffer_whenSaveIsInvoked_thenOfferIsRetrievable() {
         // Given
@@ -75,7 +77,7 @@ public class OfferServiceIntegrationTest$save {
         userRepository.save(publisher);
 
         // When
-        offerService.save(create, publisher);
+        val offer = offerService.save(create, publisher.getId());
 
         // Then
         val optional = offerRepository.findOne(null);
@@ -84,11 +86,10 @@ public class OfferServiceIntegrationTest$save {
 
         val returned = optional.get();
 
-        assertNotNull(returned.getId());
-        assertEquals(create.getTitle(), returned.getTitle());
-        assertEquals(create.getDescription(), returned.getDescription());
-        assertEquals(create.getPrice(), returned.getPrice());
-        assertEquals(create.getCurrency(), returned.getCurrency());
-        assertEquals(create.getTtl(), returned.getTtl());
+        assertEquals(offer.getId(), returned.getId());
+        assertEquals(offer.getTitle(), returned.getTitle());
+        assertEquals(offer.getDescription(), returned.getDescription());
+        assertEquals(offer.getPrice(), returned.getPrice());
+        assertEquals(offer.getCurrency(), returned.getCurrency());
     }
 }

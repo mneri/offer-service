@@ -23,8 +23,8 @@ import lombok.val;
 import me.mneri.offer.TestUtil;
 import me.mneri.offer.bean.OfferUpdate;
 import me.mneri.offer.entity.User;
-import me.mneri.offer.exception.UserNotFoundException;
 import me.mneri.offer.exception.UserNotAuthorizedException;
+import me.mneri.offer.exception.UserNotFoundException;
 import me.mneri.offer.repository.OfferRepository;
 import me.mneri.offer.repository.UserRepository;
 import me.mneri.offer.service.OfferService;
@@ -116,7 +116,7 @@ public class OfferServiceIntegrationTest$update {
      */
     @SneakyThrows
     @Test
-    void givenUserId_whenUpdateIsInvoked_thenOfferIsUpdatedThrown() {
+    void givenUserId_whenUpdateIsInvoked_thenOfferIsUpdated() {
         // Given
         val publisher = new User("user", "secret", passwordEncoder);
         val offer = TestUtil.createNonExpiredOffer(publisher);

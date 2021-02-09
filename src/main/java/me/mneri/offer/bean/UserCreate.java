@@ -16,36 +16,23 @@
  * limitations under the License.
  */
 
-package me.mneri.offer.exception;
+package me.mneri.offer.bean;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import me.mneri.offer.entity.User;
 
 /**
- * Thrown when the specified offer was cancelled.
+ * Data to create a new {@link User}.
  *
  * @author mneri
  */
-public class OfferIsCancelledException extends Throwable {
-    private final String offerId;
+@Data
+@EqualsAndHashCode
+@ToString
+public class UserCreate {
+    private String username;
 
-    /**
-     * Create a new instance.
-     *
-     * @param offerId The offer id.
-     */
-    public OfferIsCancelledException(String offerId) {
-        this.offerId = offerId;
-    }
-
-    @Override
-    public String getMessage() {
-        return String.format("The offer is cancelled: offerId=%s", offerId);
-    }
-
-    /**
-     * Return the id of the offer that has generated the exception.
-     *
-     * @return The id of the offer.
-     */
-    public String getOfferId() {
-        return offerId;
-    }
+    private String password;
 }

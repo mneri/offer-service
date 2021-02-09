@@ -39,4 +39,13 @@ public class OfferNotFoundException extends Throwable {
     public String getMessage() {
         return String.format("Couldn't find the specified offer: offerId=%s", offerId);
     }
+
+    /**
+     * Return the id that has generated the exception.
+     *
+     * @return The id.
+     */
+    public String getOfferId() {
+        return offerId;
+    }
 }

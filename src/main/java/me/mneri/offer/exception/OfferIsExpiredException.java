@@ -19,7 +19,7 @@
 package me.mneri.offer.exception;
 
 /**
- * Thrown when the specified offer id couldn't be found.
+ * Thrown when the specified offer is expired.
  *
  * @author mneri
  */
@@ -38,5 +38,14 @@ public class OfferIsExpiredException extends Throwable {
     @Override
     public String getMessage() {
         return String.format("The offer is expired: offerId=%s", offerId);
+    }
+
+    /**
+     * Return the id of the offer that has generated the exception.
+     *
+     * @return The id of the offer.
+     */
+    public String getOfferId() {
+        return offerId;
     }
 }

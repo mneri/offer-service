@@ -18,6 +18,7 @@
 
 package me.mneri.offer.controller;
 
+import lombok.extern.log4j.Log4j2;
 import me.mneri.offer.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  *
  * @author mneri
  */
+@Log4j2
 @RestControllerAdvice
 public class ControllerAdvice {
     /**
@@ -36,7 +38,8 @@ public class ControllerAdvice {
      */
     @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "The specified offer was cancelled.")
     @ExceptionHandler(OfferIsCancelledException.class)
-    public void offerIsCancelled() {
+    public void offerIsCancelled(OfferIsCancelledException exception) {
+        log.info("The specified offer is cancelled: offerId={}", exception.getOfferId());
     }
 
     /**
@@ -44,7 +47,8 @@ public class ControllerAdvice {
      */
     @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "The specified offer is expired.")
     @ExceptionHandler(OfferIsExpiredException.class)
-    public void offerIsExpired() {
+    public void offerIsExpired(OfferIsExpiredException exception) {
+        log.info("The specified offer is expired: offerId={}", exception.getOfferId());
     }
 
     /**
@@ -52,7 +56,17 @@ public class ControllerAdvice {
      */
     @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "The specified offer id was not found.")
     @ExceptionHandler(OfferNotFoundException.class)
-    public void offerNotFound() {
+    public void offerNotFound(OfferNotFoundException exception) {
+        log.info("The specified offer was not found: offerId={}", exception.getOfferId());
+    }
+
+    /**
+     * Handler for {@link UserIsNotEnabledException}.
+     */
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "The specified user id is not enabled.")
+    @ExceptionHandler(UserIsNotEnabledException.class)
+    public void userIsNotEnabled(UserIsNotEnabledException exception) {
+        log.info("The specified user was not found: userId={}", exception.getUserId());
     }
 
     /**
@@ -60,7 +74,8 @@ public class ControllerAdvice {
      */
     @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "The specified user id was not found.")
     @ExceptionHandler(UserNotFoundException.class)
-    public void userNotFound() {
+    public void userNotFound(UserNotFoundException exception) {
+        log.info("The specified user was not found: userId={}", exception.getUserId());
     }
 
     /**
@@ -68,6 +83,7 @@ public class ControllerAdvice {
      */
     @ResponseStatus(value = HttpStatus.UNAUTHORIZED, reason = "The user has no rights to modify the resource.")
     @ExceptionHandler(UserNotAuthorizedException.class)
-    public void userNotAuthorizedException() {
+    public void userNotAuthorizedException(UserNotAuthorizedException exception) {
+        log.info("The specified user is not authorized: userId={}", exception.getUserId());
     }
 }

@@ -33,7 +33,7 @@ import org.mapstruct.*;
  */
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface OfferMapper {
-    OfferCreate createDtoToCreate(OfferCreateDto dto);
+    OfferCreate createDtoToCreate(OfferCreateDto createDto);
 
     Iterable<OfferDto> entityToDto(Iterable<Offer> offers);
 
@@ -45,7 +45,13 @@ public interface OfferMapper {
     void mergeCreateToOffer(@MappingTarget Offer offer, OfferCreate create);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void mergeCreateToEntity(@MappingTarget Offer offer, OfferCreate create);
+
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void mergeUpdateDtoToEntity(@MappingTarget Offer offer, OfferUpdateDto updateDto);
+
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void mergeUpdateToEntity(@MappingTarget Offer offer, OfferUpdate update);
 
-    OfferUpdate updateDtoToUpdate(OfferUpdateDto dto);
+    OfferUpdate updateDtoToUpdate(OfferUpdateDto updateDto);
 }

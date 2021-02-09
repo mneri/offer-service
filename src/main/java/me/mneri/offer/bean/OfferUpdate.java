@@ -20,20 +20,18 @@ package me.mneri.offer.bean;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
 import me.mneri.offer.entity.Offer;
 
 import java.math.BigDecimal;
 
 /**
- * DTO for a user's request to create a new {@link Offer}.
+ * Data to update an {@link Offer}.
  *
  * @author mneri
  */
 @Data
 @EqualsAndHashCode
-@NoArgsConstructor
 @ToString
 public class OfferUpdate {
     private String title;

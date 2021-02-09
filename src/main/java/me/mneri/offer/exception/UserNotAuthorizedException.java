@@ -39,4 +39,13 @@ public class UserNotAuthorizedException extends Exception {
     public String getMessage() {
         return String.format("The user is not authorized: userId=%s", userId);
     }
+
+    /**
+     * Return the id of the user that has generated the exception.
+     *
+     * @return The id of the user.
+     */
+    public String getUserId() {
+        return userId;
+    }
 }

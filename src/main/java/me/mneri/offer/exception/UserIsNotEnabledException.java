@@ -19,33 +19,33 @@
 package me.mneri.offer.exception;
 
 /**
- * Thrown when the specified offer was cancelled.
+ * Thrown when the user is not enabled.
  *
  * @author mneri
  */
-public class OfferIsCancelledException extends Throwable {
-    private final String offerId;
+public class UserIsNotEnabledException extends Exception {
+    private final String userId;
 
     /**
      * Create a new instance.
      *
-     * @param offerId The offer id.
+     * @param userId The user id.
      */
-    public OfferIsCancelledException(String offerId) {
-        this.offerId = offerId;
+    public UserIsNotEnabledException(String userId) {
+        this.userId = userId;
     }
 
     @Override
     public String getMessage() {
-        return String.format("The offer is cancelled: offerId=%s", offerId);
+        return String.format("The user is not enabled: userId=%s", userId);
     }
 
     /**
-     * Return the id of the offer that has generated the exception.
+     * Return the id of the user that has generated the exception.
      *
-     * @return The id of the offer.
+     * @return The id of the user.
      */
-    public String getOfferId() {
-        return offerId;
+    public String getUserId() {
+        return userId;
     }
 }

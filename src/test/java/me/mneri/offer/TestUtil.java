@@ -119,13 +119,28 @@ public final class TestUtil {
      * @return The {@code OfferCreateDto}.
      */
     public static OfferCreateDto createOfferCreateDto() {
-        OfferCreateDto offerCreateDto = new OfferCreateDto();
-        offerCreateDto.setTitle("New Title");
-        offerCreateDto.setDescription("New Description");
-        offerCreateDto.setPrice(new BigDecimal("999.99"));
-        offerCreateDto.setCurrency("EUR");
-        offerCreateDto.setTtl(10000L);
-        return offerCreateDto;
+        OfferCreateDto createDto = new OfferCreateDto();
+        createDto.setTitle("New Title");
+        createDto.setDescription("New Description");
+        createDto.setPrice(new BigDecimal("999.99"));
+        createDto.setCurrency("EUR");
+        createDto.setTtl(10000L);
+        return createDto;
+    }
+
+    /**
+     * Create a new test {@link OfferUpdate}.
+     *
+     * @return The {@code OfferUpdateDto}.
+     */
+    public static OfferUpdate createOfferUpdate() {
+        OfferUpdate offerCreate = new OfferUpdate();
+        offerCreate.setTitle("New Title");
+        offerCreate.setDescription("New Description");
+        offerCreate.setPrice(new BigDecimal("999.99"));
+        offerCreate.setCurrency("EUR");
+        offerCreate.setTtl(10000L);
+        return offerCreate;
     }
 
     /**
@@ -134,27 +149,12 @@ public final class TestUtil {
      * @return The {@code OfferUpdateDto}.
      */
     public static OfferUpdateDto createOfferUpdateDto() {
-        OfferUpdateDto offerCreateDto = new OfferUpdateDto();
-        offerCreateDto.setTitle("New Title");
-        offerCreateDto.setDescription("New Description");
-        offerCreateDto.setPrice(new BigDecimal("999.99"));
-        offerCreateDto.setCurrency("EUR");
-        offerCreateDto.setTtl(10000L);
-        return offerCreateDto;
-    }
-
-    /**
-     * Create a new test {@link OfferUpdate}.
-     *
-     * @return The {@code OfferUpdate}.
-     */
-    public static OfferUpdate createOfferUpdate() {
-        OfferUpdate update = new OfferUpdate();
-        update.setTitle("New Title");
-        update.setDescription("New Description");
-        update.setPrice(new BigDecimal("999.99"));
-        update.setCurrency("EUR");
-        update.setTtl(10000L);
-        return update;
+        OfferUpdateDto updateDto = new OfferUpdateDto();
+        updateDto.setTitle("New Title");
+        updateDto.setDescription("New Description");
+        updateDto.setPrice(new BigDecimal("999.99"));
+        updateDto.setCurrency("EUR");
+        updateDto.setTtl(10000L);
+        return updateDto;
     }
 }
