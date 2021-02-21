@@ -16,24 +16,36 @@
  * limitations under the License.
  */
 
-package me.mneri.offer;
-
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+package me.mneri.offer.business.exception;
 
 /**
- * Main class and starting point of the application.
+ * Thrown when the specified user couldn't be found.
  *
  * @author Massimo Neri
  */
-@SpringBootApplication
-public class OfferApplication {
+public class UserNotFoundException extends Exception {
+    private final String userId;
+
     /**
-     * Application entry point.
+     * Create a new instance.
      *
-     * @param args Command line arguments.
+     * @param offerId The offer id.
      */
-    public static void main(String... args) {
-        SpringApplication.run(OfferApplication.class, args);
+    public UserNotFoundException(String offerId) {
+        this.userId = offerId;
+    }
+
+    @Override
+    public String getMessage() {
+        return String.format("Couldn't find the specified user: userId=%s", userId);
+    }
+
+    /**
+     * Return the id that has generated the exception.
+     *
+     * @return The id.
+     */
+    public String getUserId() {
+        return userId;
     }
 }

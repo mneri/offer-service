@@ -16,24 +16,27 @@
  * limitations under the License.
  */
 
-package me.mneri.offer;
+package me.mneri.offer.business.bean;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import lombok.Data;
+import me.mneri.offer.data.entity.Offer;
+
+import java.math.BigDecimal;
 
 /**
- * Main class and starting point of the application.
+ * Data to create a new {@link Offer}.
  *
  * @author Massimo Neri
  */
-@SpringBootApplication
-public class OfferApplication {
-    /**
-     * Application entry point.
-     *
-     * @param args Command line arguments.
-     */
-    public static void main(String... args) {
-        SpringApplication.run(OfferApplication.class, args);
-    }
+@Data
+public class OfferCreate {
+    private String title;
+
+    private String description;
+
+    private BigDecimal price;
+
+    private String currency;
+
+    private long ttl;
 }

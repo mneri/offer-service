@@ -16,24 +16,36 @@
  * limitations under the License.
  */
 
-package me.mneri.offer;
-
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+package me.mneri.offer.business.exception;
 
 /**
- * Main class and starting point of the application.
+ * Thrown when the user is not enabled.
  *
  * @author Massimo Neri
  */
-@SpringBootApplication
-public class OfferApplication {
+public class UserIsNotEnabledException extends Exception {
+    private final String userId;
+
     /**
-     * Application entry point.
+     * Create a new instance.
      *
-     * @param args Command line arguments.
+     * @param userId The user id.
      */
-    public static void main(String... args) {
-        SpringApplication.run(OfferApplication.class, args);
+    public UserIsNotEnabledException(String userId) {
+        this.userId = userId;
+    }
+
+    @Override
+    public String getMessage() {
+        return String.format("The user is not enabled: userId=%s", userId);
+    }
+
+    /**
+     * Return the id of the user that has generated the exception.
+     *
+     * @return The id of the user.
+     */
+    public String getUserId() {
+        return userId;
     }
 }

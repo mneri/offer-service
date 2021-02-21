@@ -16,24 +16,24 @@
  * limitations under the License.
  */
 
-package me.mneri.offer;
+package me.mneri.offer.business.exception;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import lombok.val;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
-/**
- * Main class and starting point of the application.
- *
- * @author Massimo Neri
- */
-@SpringBootApplication
-public class OfferApplication {
-    /**
-     * Application entry point.
-     *
-     * @param args Command line arguments.
-     */
-    public static void main(String... args) {
-        SpringApplication.run(OfferApplication.class, args);
+import java.util.UUID;
+
+class OfferNotFoundExceptionTest {
+    @Test
+    public void givenOfferId_whenOfferNotFoundExceptionIsCreated_thenOfferIdFieldIsCorrectlyInitialised() {
+        // Given
+        val offerId = UUID.randomUUID().toString();
+
+        // When
+        val exception = new OfferNotFoundException(offerId);
+
+        // Then
+        Assertions.assertEquals(offerId, exception.getOfferId());
     }
 }

@@ -16,24 +16,24 @@
  * limitations under the License.
  */
 
-package me.mneri.offer;
+package me.mneri.offer.data.entity;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.stereotype.Component;
+
+import java.util.UUID;
 
 /**
- * Main class and starting point of the application.
+ * Default implementation of {@link UuidProvider}.
  *
  * @author Massimo Neri
  */
-@SpringBootApplication
-public class OfferApplication {
+@Component
+public class UuidProviderImpl implements UuidProvider {
     /**
-     * Application entry point.
-     *
-     * @param args Command line arguments.
+     * {@inheritDoc}
      */
-    public static void main(String... args) {
-        SpringApplication.run(OfferApplication.class, args);
+    @Override
+    public UUID random() {
+        return UUID.randomUUID();
     }
 }

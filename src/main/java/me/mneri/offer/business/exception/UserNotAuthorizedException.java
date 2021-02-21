@@ -16,24 +16,36 @@
  * limitations under the License.
  */
 
-package me.mneri.offer;
-
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+package me.mneri.offer.business.exception;
 
 /**
- * Main class and starting point of the application.
+ * Thrown when a user is not authorized to read or write the specified resource.
  *
  * @author Massimo Neri
  */
-@SpringBootApplication
-public class OfferApplication {
+public class UserNotAuthorizedException extends Exception {
+    private final String userId;
+
     /**
-     * Application entry point.
+     * Create a new instance.
      *
-     * @param args Command line arguments.
+     * @param userId The user id.
      */
-    public static void main(String... args) {
-        SpringApplication.run(OfferApplication.class, args);
+    public UserNotAuthorizedException(String userId) {
+        this.userId = userId;
+    }
+
+    @Override
+    public String getMessage() {
+        return String.format("The user is not authorized: userId=%s", userId);
+    }
+
+    /**
+     * Return the id of the user that has generated the exception.
+     *
+     * @return The id of the user.
+     */
+    public String getUserId() {
+        return userId;
     }
 }

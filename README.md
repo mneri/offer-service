@@ -78,16 +78,16 @@ OfferUpdateDto {
 ### API
 The following table summarizes the implemented API:
 
-| API                | Endpoint                                    |   Request body   |  Response body   |
-|--------------------|---------------------------------------------|------------------|------------------|
-| List of users      | `GET /users`                                |                  | `List<UserDto>`  |
-| User details       | `GET /users/{userId}`                       |                  | `UserDto`        |
-| Offers by user     | `GET /users/{userId}/offers`                |                  | `List<OfferDto>` |
-| List of offers     | `GET /offers`                               |                  | `List<OfferDto>` |
-| Offer details      | `GET /offers/{offerId}`                     |                  | `OfferDto`       |
-| Create a new offer | `POST /offers?user.id={userId}`             | `OfferCreateDto` |                  |
-| Modify an offer    | `PUT /offers/{offerId}?user.id={userId}`    | `OfferUpdateDto` |                  |
-| Delete an offer    | `DELETE /offers/{offerId}?user.id={userId}` |                  |                  |
+| API                | Endpoint                                       |   Request body   |  Response body   |
+|--------------------|------------------------------------------------|------------------|------------------|
+| List of users      | `GET /users`                                   |                  | `List<UserDto>`  |
+| User details       | `GET /users/{userId}`                          |                  | `UserDto`        |
+| Offers by user     | `GET /users/{userId}/offers`                   |                  | `List<OfferDto>` |
+| List of offers     | `GET /offers`                                  |                  | `List<OfferDto>` |
+| Offer details      | `GET /offers/{offerId}`                        |                  | `OfferDto`       |
+| Create a new offer | `POST /offers?auth.token={userId}`             | `OfferCreateDto` |                  |
+| Modify an offer    | `PUT /offers/{offerId}?auth.token={userId}`    | `OfferUpdateDto` |                  |
+| Delete an offer    | `DELETE /offers/{offerId}?auth.token={userId}` |                  |                  |
 
 ## Tools and Libraries
 - [Criteria Queries](https://docs.jboss.org/hibernate/entitymanager/3.5/reference/en/html/querycriteria.html)

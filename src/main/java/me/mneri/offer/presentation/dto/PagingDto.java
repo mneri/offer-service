@@ -16,24 +16,22 @@
  * limitations under the License.
  */
 
-package me.mneri.offer;
+package me.mneri.offer.presentation.dto;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
- * Main class and starting point of the application.
+ * DTO for pagination data.
  *
  * @author Massimo Neri
  */
-@SpringBootApplication
-public class OfferApplication {
-    /**
-     * Application entry point.
-     *
-     * @param args Command line arguments.
-     */
-    public static void main(String... args) {
-        SpringApplication.run(OfferApplication.class, args);
-    }
+@AllArgsConstructor
+@Data
+@NoArgsConstructor
+public class PagingDto {
+    private Integer pageNumber;
+
+    private Integer pageSize;
 }

@@ -16,24 +16,19 @@
  * limitations under the License.
  */
 
-package me.mneri.offer;
+package me.mneri.offer.data.repository;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import me.mneri.offer.data.entity.Offer;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
 /**
- * Main class and starting point of the application.
+ * Repository for {@link Offer} entities.
  *
  * @author Massimo Neri
  */
-@SpringBootApplication
-public class OfferApplication {
-    /**
-     * Application entry point.
-     *
-     * @param args Command line arguments.
-     */
-    public static void main(String... args) {
-        SpringApplication.run(OfferApplication.class, args);
-    }
+@Repository
+@SuppressWarnings("unused")
+public interface OfferRepository extends CrudRepository<Offer, String>, JpaSpecificationExecutor<Offer> {
 }

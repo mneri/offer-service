@@ -16,24 +16,29 @@
  * limitations under the License.
  */
 
-package me.mneri.offer;
+package me.mneri.offer.presentation.controller;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 /**
- * Main class and starting point of the application.
+ * Collection of constants regulating API parameters.
  *
  * @author Massimo Neri
  */
-@SpringBootApplication
-public class OfferApplication {
-    /**
-     * Application entry point.
-     *
-     * @param args Command line arguments.
-     */
-    public static void main(String... args) {
-        SpringApplication.run(OfferApplication.class, args);
-    }
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+final class Parameters {
+    static final String PARAM_AUTH_TOKEN = "auth.token";
+
+    static final String PARAM_PAGE_NUMBER = "page.number";
+
+    static final int PARAM_PAGE_NUMBER_DEFAULT = 0;
+
+    static final String PARAM_PAGE_SIZE = "page.size";
+
+    static final int PARAM_PAGE_SIZE_DEFAULT = 24;
+
+    static final int PARAM_PAGE_SIZE_MAX = 128;
+
+    static final int PARAM_PAGE_SIZE_MIN = 24;
 }

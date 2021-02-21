@@ -19,11 +19,11 @@
 package me.mneri.offer;
 
 import lombok.SneakyThrows;
-import me.mneri.offer.bean.OfferCreate;
-import me.mneri.offer.bean.UserCreate;
-import me.mneri.offer.entity.User;
-import me.mneri.offer.service.OfferService;
-import me.mneri.offer.service.UserService;
+import me.mneri.offer.business.bean.OfferCreate;
+import me.mneri.offer.business.bean.UserCreate;
+import me.mneri.offer.business.service.OfferService;
+import me.mneri.offer.business.service.UserService;
+import me.mneri.offer.data.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
@@ -36,7 +36,7 @@ import java.util.Date;
 /**
  * {@link CommandLineRunner} that initializes the demo data into the database.
  *
- * @author mneri
+ * @author Massimo Neri
  */
 @Component
 @Profile("!test") // Most of the tests rely on an empty initial database, we exclude this class from the test profile.
