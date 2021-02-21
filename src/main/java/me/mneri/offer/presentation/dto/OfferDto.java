@@ -20,7 +20,9 @@ package me.mneri.offer.presentation.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import me.mneri.offer.data.entity.Offer;
 import me.mneri.offer.data.validator.Description;
 import me.mneri.offer.data.validator.Title;

@@ -23,8 +23,11 @@ import me.mneri.offer.data.entity.Offer;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
-import java.lang.annotation.*;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * Constraints to be applied to TTLs.

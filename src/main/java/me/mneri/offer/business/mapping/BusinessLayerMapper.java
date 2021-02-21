@@ -23,7 +23,13 @@ import me.mneri.offer.business.bean.OfferUpdate;
 import me.mneri.offer.business.bean.UserCreate;
 import me.mneri.offer.data.entity.Offer;
 import me.mneri.offer.data.entity.User;
-import org.mapstruct.*;
+import org.mapstruct.BeanMapping;
+import org.mapstruct.Context;
+import org.mapstruct.InjectionStrategy;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.springframework.lang.NonNull;
 
 /**

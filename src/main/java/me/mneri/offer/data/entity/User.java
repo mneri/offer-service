@@ -18,7 +18,13 @@
 
 package me.mneri.offer.data.entity;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.Setter;
+import lombok.ToString;
 import me.mneri.offer.data.validator.Username;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
