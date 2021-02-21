@@ -29,14 +29,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 /**
  * Application wide security configuration and beans.
  *
- * @author mneri.
+ * @author Massimo Neri.
  */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
+    protected void configure(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity
                 .csrf()
                 .disable()
                 .authorizeRequests()

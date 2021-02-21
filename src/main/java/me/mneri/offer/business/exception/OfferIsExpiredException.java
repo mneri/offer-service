@@ -16,24 +16,36 @@
  * limitations under the License.
  */
 
-package me.mneri.offer;
-
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+package me.mneri.offer.business.exception;
 
 /**
- * Main class and starting point of the application.
+ * Thrown when the specified offer is expired.
  *
  * @author Massimo Neri
  */
-@SpringBootApplication
-public class OfferApplication {
+public class OfferIsExpiredException extends Exception {
+    private final String offerId;
+
     /**
-     * Application entry point.
+     * Create a new instance.
      *
-     * @param args Command line arguments.
+     * @param offerId The offer id.
      */
-    public static void main(String... args) {
-        SpringApplication.run(OfferApplication.class, args);
+    public OfferIsExpiredException(String offerId) {
+        this.offerId = offerId;
+    }
+
+    @Override
+    public String getMessage() {
+        return String.format("The offer is expired: offerId=%s", offerId);
+    }
+
+    /**
+     * Return the id of the offer that has generated the exception.
+     *
+     * @return The id of the offer.
+     */
+    public String getOfferId() {
+        return offerId;
     }
 }

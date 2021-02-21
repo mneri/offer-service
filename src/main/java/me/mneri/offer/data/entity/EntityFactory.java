@@ -16,24 +16,27 @@
  * limitations under the License.
  */
 
-package me.mneri.offer;
-
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+package me.mneri.offer.data.entity;
 
 /**
- * Main class and starting point of the application.
+ * Factory to create data layer entities.
  *
  * @author Massimo Neri
  */
-@SpringBootApplication
-public class OfferApplication {
+public interface EntityFactory {
     /**
-     * Application entry point.
+     * Create a new {@link Offer}.
      *
-     * @param args Command line arguments.
+     * @return A new offer.
      */
-    public static void main(String... args) {
-        SpringApplication.run(OfferApplication.class, args);
-    }
+    Offer createOffer();
+
+    /**
+     * Create a new {@link User}.
+     * <p>
+     * The created user is enabled.
+     *
+     * @return A new user.
+     */
+    User createUser();
 }

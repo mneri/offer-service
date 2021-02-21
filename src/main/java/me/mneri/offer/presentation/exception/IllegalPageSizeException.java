@@ -16,24 +16,31 @@
  * limitations under the License.
  */
 
-package me.mneri.offer;
-
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+package me.mneri.offer.presentation.exception;
 
 /**
- * Main class and starting point of the application.
+ * Thrown when the specified page size is not legal.
  *
  * @author Massimo Neri
  */
-@SpringBootApplication
-public class OfferApplication {
+public class IllegalPageSizeException extends Exception {
+    private final int pageSize;
+
     /**
-     * Application entry point.
+     * Create a new instance.
      *
-     * @param args Command line arguments.
+     * @param pageSize The page size.
      */
-    public static void main(String... args) {
-        SpringApplication.run(OfferApplication.class, args);
+    public IllegalPageSizeException(int pageSize) {
+        this.pageSize = pageSize;
+    }
+
+    /**
+     * Return the page size.
+     *
+     * @return The page size.
+     */
+    public int getPageSize() {
+        return pageSize;
     }
 }

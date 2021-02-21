@@ -16,24 +16,32 @@
  * limitations under the License.
  */
 
-package me.mneri.offer;
+package me.mneri.offer.data.validator;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import me.mneri.offer.data.entity.Offer;
+
+import javax.validation.Constraint;
+import javax.validation.Payload;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+import java.lang.annotation.*;
 
 /**
- * Main class and starting point of the application.
+ * Constraints to be applied to titles.
  *
  * @author Massimo Neri
  */
-@SpringBootApplication
-public class OfferApplication {
-    /**
-     * Application entry point.
-     *
-     * @param args Command line arguments.
-     */
-    public static void main(String... args) {
-        SpringApplication.run(OfferApplication.class, args);
-    }
+@Constraint(validatedBy = {})
+@Documented
+@NotEmpty
+@Retention(RetentionPolicy.RUNTIME)
+@Size(min = Offer.TITLE_MIN_LENGTH, max = Offer.TITLE_MAX_LENGTH)
+@SuppressWarnings("unused")
+@Target(ElementType.FIELD)
+public @interface Title {
+    String message() default "";
+
+    Class<?>[] groups() default {};
+
+    Class<? extends Payload>[] payload() default {};
 }

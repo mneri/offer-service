@@ -16,24 +16,21 @@
  * limitations under the License.
  */
 
-package me.mneri.offer;
+package me.mneri.offer.business.bean;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import lombok.Data;
+import lombok.ToString;
+import me.mneri.offer.data.entity.User;
 
 /**
- * Main class and starting point of the application.
+ * Data to create a new {@link User}.
  *
  * @author Massimo Neri
  */
-@SpringBootApplication
-public class OfferApplication {
-    /**
-     * Application entry point.
-     *
-     * @param args Command line arguments.
-     */
-    public static void main(String... args) {
-        SpringApplication.run(OfferApplication.class, args);
-    }
+@Data
+public class UserCreate {
+    private String username;
+
+    @ToString.Exclude
+    private String password;
 }

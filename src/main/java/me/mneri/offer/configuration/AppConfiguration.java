@@ -16,24 +16,22 @@
  * limitations under the License.
  */
 
-package me.mneri.offer;
+package me.mneri.offer.configuration;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import java.time.Clock;
 
 /**
- * Main class and starting point of the application.
+ * Application wide configuration.
  *
  * @author Massimo Neri
  */
-@SpringBootApplication
-public class OfferApplication {
-    /**
-     * Application entry point.
-     *
-     * @param args Command line arguments.
-     */
-    public static void main(String... args) {
-        SpringApplication.run(OfferApplication.class, args);
+@Configuration
+public class AppConfiguration {
+    @Bean
+    public Clock clock() {
+        return Clock.systemDefaultZone();
     }
 }

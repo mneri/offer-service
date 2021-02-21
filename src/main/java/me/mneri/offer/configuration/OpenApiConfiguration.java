@@ -27,7 +27,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * Swagger and Open API configuration.
  *
- * @author mneri
+ * @author Massimo Neri
  */
 @Configuration
 public class OpenApiConfiguration {
