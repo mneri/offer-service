@@ -33,6 +33,7 @@ import java.math.BigDecimal;
  * @author Massimo Neri
  */
 @Data
+@Schema(name = "OfferUpdate")
 public class OfferUpdateDto {
     @Schema(description = "Offer's title.",
             example = "Buy 1 get 1 for free.",

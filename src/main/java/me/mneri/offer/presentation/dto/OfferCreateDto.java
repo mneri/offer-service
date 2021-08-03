@@ -35,6 +35,7 @@ import java.math.BigDecimal;
  * @author Massimo Neri
  */
 @Data
+@Schema(name = "OfferCreate")
 public class OfferCreateDto {
     @NotEmpty
     @Schema(description = "Offer's title.",
