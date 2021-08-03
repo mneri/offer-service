@@ -16,13 +16,12 @@
  * limitations under the License.
  */
 
-package me.mneri.offer.data.specification.impl;
+package me.mneri.offer.data.specification;
 
 import lombok.RequiredArgsConstructor;
 import me.mneri.offer.data.entity.Offer;
 import me.mneri.offer.data.entity.Offer_;
 import me.mneri.offer.data.entity.User_;
-import me.mneri.offer.data.specification.OfferSpec;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;

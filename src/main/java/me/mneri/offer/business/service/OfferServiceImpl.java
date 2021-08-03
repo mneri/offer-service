@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package me.mneri.offer.business.service.impl;
+package me.mneri.offer.business.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -30,7 +30,6 @@ import me.mneri.offer.business.exception.UserIsNotEnabledException;
 import me.mneri.offer.business.exception.UserNotAuthorizedException;
 import me.mneri.offer.business.exception.UserNotFoundException;
 import me.mneri.offer.business.mapping.BusinessLayerMapper;
-import me.mneri.offer.business.service.OfferService;
 import me.mneri.offer.data.entity.Offer;
 import me.mneri.offer.data.entity.User;
 import me.mneri.offer.data.repository.OfferRepository;
