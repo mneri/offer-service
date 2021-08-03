@@ -23,6 +23,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import me.mneri.offer.data.validator.Description;
 import me.mneri.offer.data.validator.Title;
 
@@ -113,6 +114,7 @@ public class Offer {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @NotNull
+    @ToString.Exclude
     private User publisher;
 
     /**

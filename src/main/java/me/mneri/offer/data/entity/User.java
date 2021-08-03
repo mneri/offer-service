@@ -31,6 +31,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Index;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -47,6 +49,7 @@ import java.util.UUID;
 @Entity
 @EqualsAndHashCode(of = "id")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "user", indexes = @Index(name = "idx_user_username_unq", columnList = "username", unique = true))
 public class User {
     /**
      * The maximum length for a username field.

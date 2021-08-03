@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package me.mneri.offer.presentation.controller;
+package me.mneri.offer.presentation.api;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -27,18 +27,18 @@ import lombok.NoArgsConstructor;
  * @author Massimo Neri
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-final class Parameters {
-    static final String PARAM_AUTH_TOKEN = "auth.token";
+public final class APIParameters {
+    public static final String PARAM_AUTH_TOKEN = "auth.token";
 
-    static final String PARAM_PAGE_NUMBER = "page.number";
+    public static final String PARAM_PAGE_NUMBER = "page.number";
 
-    static final int PARAM_PAGE_NUMBER_DEFAULT = 0;
+    public static final int PARAM_PAGE_NUMBER_DEFAULT = 0;
 
-    static final String PARAM_PAGE_SIZE = "page.size";
+    public static final String PARAM_PAGE_SIZE = "page.size";
 
-    static final int PARAM_PAGE_SIZE_DEFAULT = 24;
+    public static final int PARAM_PAGE_SIZE_DEFAULT = 24;
 
-    static final int PARAM_PAGE_SIZE_MAX = 128;
+    public static final int PARAM_PAGE_SIZE_MAX = 128;
 
-    static final int PARAM_PAGE_SIZE_MIN = 24;
+    public static final int PARAM_PAGE_SIZE_MIN = 24;
 }

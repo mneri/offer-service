@@ -18,6 +18,7 @@
 
 package me.mneri.offer.presentation.controller;
 
+import me.mneri.offer.presentation.api.APIParameters;
 import me.mneri.offer.presentation.dto.PagingDto;
 import me.mneri.offer.presentation.exception.IllegalPageSizeException;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -32,16 +33,16 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class ModelAttributeControllerAdvice {
     @ModelAttribute
-    public PagingDto pagingDto(@RequestParam(value = Parameters.PARAM_PAGE_NUMBER, required = false) Integer pageNumber,
-                               @RequestParam(value = Parameters.PARAM_PAGE_SIZE, required = false) Integer pageSize)
+    public PagingDto pagingDto(@RequestParam(value = APIParameters.PARAM_PAGE_NUMBER, required = false) Integer pageNumber,
+                               @RequestParam(value = APIParameters.PARAM_PAGE_SIZE, required = false) Integer pageSize)
             throws IllegalPageSizeException {
         if (pageNumber == null) {
-            pageNumber = Parameters.PARAM_PAGE_NUMBER_DEFAULT;
+            pageNumber = APIParameters.PARAM_PAGE_NUMBER_DEFAULT;
         }
 
         if (pageSize == null) {
-            pageSize = Parameters.PARAM_PAGE_SIZE_DEFAULT;
-        } else if (pageSize < Parameters.PARAM_PAGE_SIZE_MIN || pageSize > Parameters.PARAM_PAGE_SIZE_MAX) {
+            pageSize = APIParameters.PARAM_PAGE_SIZE_DEFAULT;
+        } else if (pageSize < APIParameters.PARAM_PAGE_SIZE_MIN || pageSize > APIParameters.PARAM_PAGE_SIZE_MAX) {
             throw new IllegalPageSizeException(pageSize);
         }
 
