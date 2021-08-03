@@ -28,6 +28,7 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Subquery;
+import java.util.UUID;
 
 /**
  * Default implementation of the {@link UserSpec} component.
@@ -38,7 +39,7 @@ public class UserSpecImpl implements UserSpec {
      * {@inheritDoc}
      */
     @Override
-    public Specification<User> idIsEqualTo(String value) {
+    public Specification<User> idIsEqualTo(UUID value) {
         return (root, query, builder) -> builder.equal(root.get(User_.id), value);
     }
 
@@ -54,9 +55,9 @@ public class UserSpecImpl implements UserSpec {
      * {@inheritDoc}
      */
     @Override
-    public Specification<User> isPublisherOf(String offerId) {
+    public Specification<User> isPublisherOf(UUID offerId) {
         return (root, query, builder) -> {
-            Subquery<String> subQuery = query.subquery(String.class);
+            Subquery<UUID> subQuery = query.subquery(UUID.class);
             Root<Offer> subRoot = subQuery.from(Offer.class);
 
             subQuery.select(subRoot.get(Offer_.publisher).get(User_.id))

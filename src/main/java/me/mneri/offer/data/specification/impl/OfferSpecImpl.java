@@ -29,6 +29,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.Clock;
 import java.util.Date;
+import java.util.UUID;
 
 import static org.springframework.data.jpa.domain.Specification.not;
 
@@ -46,7 +47,7 @@ public class OfferSpecImpl implements OfferSpec {
      * {@inheritDoc}
      */
     @Override
-    public Specification<Offer> idIsEqualTo(String value) {
+    public Specification<Offer> idIsEqualTo(UUID value) {
         return (root, query, builder) -> builder.equal(root.get(Offer_.id), value);
     }
 
@@ -78,7 +79,7 @@ public class OfferSpecImpl implements OfferSpec {
      * {@inheritDoc}
      */
     @Override
-    public Specification<Offer> publisherIdIsEqualTo(String value) {
+    public Specification<Offer> publisherIdIsEqualTo(UUID value) {
         return (root, query, builder) -> builder.equal(root.join(Offer_.publisher).get(User_.id), value);
     }
 }

@@ -28,7 +28,7 @@ class UserNotFoundExceptionTest {
     @Test
     public void givenUserId_whenUserNotFoundExceptionIsCreated_thenUserIdFieldIsCorrectlyInitialised() {
         // Given
-        val userId = UUID.randomUUID().toString();
+        val userId = UUID.randomUUID();
 
         // When
         val exception = new UserNotFoundException(userId);

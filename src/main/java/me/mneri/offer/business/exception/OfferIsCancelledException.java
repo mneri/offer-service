@@ -18,20 +18,22 @@
 
 package me.mneri.offer.business.exception;
 
+import java.util.UUID;
+
 /**
  * Thrown when the specified offer was cancelled.
  *
  * @author Massimo Neri
  */
 public class OfferIsCancelledException extends Exception {
-    private final String offerId;
+    private final UUID offerId;
 
     /**
      * Create a new instance.
      *
      * @param offerId The offer id.
      */
-    public OfferIsCancelledException(String offerId) {
+    public OfferIsCancelledException(UUID offerId) {
         this.offerId = offerId;
     }
 
@@ -40,7 +42,7 @@ public class OfferIsCancelledException extends Exception {
      */
     @Override
     public String getMessage() {
-        return String.format("The offer is cancelled: offerId=%s", offerId);
+        return String.format("The offer is cancelled: offerId=%s", offerId.toString());
     }
 
     /**
@@ -48,7 +50,7 @@ public class OfferIsCancelledException extends Exception {
      *
      * @return The id of the offer.
      */
-    public String getOfferId() {
+    public UUID getOfferId() {
         return offerId;
     }
 }

@@ -18,18 +18,22 @@
 
 package me.mneri.offer.data.entity;
 
+import org.springframework.stereotype.Component;
+
 import java.util.UUID;
 
 /**
- * Provides freshly generated {@link UUID}.
+ * Default implementation of {@link UUIDProvider}.
  *
  * @author Massimo Neri
  */
-public interface UuidProvider {
+@Component
+public class UUIDProviderImpl implements UUIDProvider {
     /**
-     * Return a new randomly generated {@link UUID}.
-     *
-     * @return A new randomly generated {@link UUID}.
+     * {@inheritDoc}
      */
-    UUID random();
+    @Override
+    public UUID createRandomUuid() {
+        return UUID.randomUUID();
+    }
 }

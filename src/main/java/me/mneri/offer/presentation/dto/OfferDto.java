@@ -29,6 +29,7 @@ import me.mneri.offer.data.validator.Title;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * DTO for {@link Offer} objects.
@@ -43,7 +44,7 @@ public class OfferDto {
     @Schema(description = "Offer's unique identifier.",
             example = "123e4567-e89b-12d3-a456-556642440000",
             required = true)
-    private String id;
+    private UUID id;
 
     @NonNull
     @Schema(description = "Offer's title.",

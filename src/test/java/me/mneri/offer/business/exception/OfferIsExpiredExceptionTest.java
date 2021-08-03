@@ -28,7 +28,7 @@ class OfferIsExpiredExceptionTest {
     @Test
     public void givenOfferId_whenOfferIsExpiredExceptionIsCreated_thenOfferIdFieldIsCorrectlyInitialised() {
         // Given
-        val offerId = UUID.randomUUID().toString();
+        val offerId = UUID.randomUUID();
 
         // When
         val exception = new OfferIsExpiredException(offerId);

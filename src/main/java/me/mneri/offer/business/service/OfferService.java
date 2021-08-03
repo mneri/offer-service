@@ -32,6 +32,7 @@ import me.mneri.offer.data.entity.User;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Service for accessing the offer repository.
@@ -51,7 +52,7 @@ public interface OfferService {
      * @throws UserNotFoundException      If a user with the specified id was not found in the repository.
      * @throws UserNotAuthorizedException If the specified user id doesn't belong to the publisher of the offer.
      */
-    void delete(String offerId, String userId)
+    void delete(UUID offerId, UUID userId)
             throws OfferIsCancelledException, OfferIsExpiredException, OfferNotFoundException,
             UserIsNotEnabledException, UserNotAuthorizedException, UserNotFoundException;
 
@@ -72,7 +73,7 @@ public interface OfferService {
      * @throws UserIsNotEnabledException If the specified user is not enabled.
      * @throws UserNotFoundException     If the user with the specified id was not found in the repository.
      */
-    List<Offer> findAllOpenByPublisherId(String userId, Paging paging)
+    List<Offer> findAllOpenByPublisherId(UUID userId, Paging paging)
             throws UserIsNotEnabledException, UserNotFoundException;
 
     /**
@@ -81,7 +82,7 @@ public interface OfferService {
      * @param id The id of the offer.
      * @return The offer with the specified id.
      */
-    Optional<Offer> findById(String id);
+    Optional<Offer> findById(UUID id);
 
     /**
      * Update the specified {@link Offer} given the specified user id.
@@ -98,7 +99,7 @@ public interface OfferService {
      * @throws UserNotFoundException      If a user with the specified id was not found in the repository.
      * @throws UserNotAuthorizedException If the specified user id doesn't belong to the publisher of the offer.
      */
-    void update(String offerId, OfferUpdate update, String userId)
+    void update(UUID offerId, OfferUpdate update, UUID userId)
             throws OfferIsCancelledException, OfferIsExpiredException, OfferNotFoundException,
             UserIsNotEnabledException, UserNotAuthorizedException, UserNotFoundException;
 
@@ -111,5 +112,5 @@ public interface OfferService {
      * @throws UserIsNotEnabledException If the user with the specified id is not enabled.
      * @throws UserNotFoundException     If a user with the specified id was not found in the repository.
      */
-    Offer save(OfferCreate create, String userId) throws UserIsNotEnabledException, UserNotFoundException;
+    Offer save(OfferCreate create, UUID userId) throws UserIsNotEnabledException, UserNotFoundException;
 }

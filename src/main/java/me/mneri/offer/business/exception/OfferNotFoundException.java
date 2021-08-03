@@ -18,26 +18,28 @@
 
 package me.mneri.offer.business.exception;
 
+import java.util.UUID;
+
 /**
  * Thrown when the specified offer id couldn't be found.
  *
  * @author Massimo Neri
  */
 public class OfferNotFoundException extends Exception {
-    private final String offerId;
+    private final UUID offerId;
 
     /**
      * Create a new instance.
      *
      * @param offerId The offer id.
      */
-    public OfferNotFoundException(String offerId) {
+    public OfferNotFoundException(UUID offerId) {
         this.offerId = offerId;
     }
 
     @Override
     public String getMessage() {
-        return String.format("Couldn't find the specified offer: offerId=%s", offerId);
+        return String.format("Couldn't find the specified offer: offerId=%s", offerId.toString());
     }
 
     /**
@@ -45,7 +47,7 @@ public class OfferNotFoundException extends Exception {
      *
      * @return The id.
      */
-    public String getOfferId() {
+    public UUID getOfferId() {
         return offerId;
     }
 }

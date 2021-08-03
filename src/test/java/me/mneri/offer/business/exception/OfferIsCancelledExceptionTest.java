@@ -33,7 +33,7 @@ class OfferIsCancelledExceptionTest {
     @Test
     public void givenOfferId_whenOfferIsCancelledExceptionIsCreated_thenOfferIdFieldIsCorrectlyInitialised() {
         // Given
-        val offerId = UUID.randomUUID().toString();
+        val offerId = UUID.randomUUID();
 
         // When
         val exception = new OfferIsCancelledException(offerId);

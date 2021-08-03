@@ -28,7 +28,7 @@ class OfferNotFoundExceptionTest {
     @Test
     public void givenOfferId_whenOfferNotFoundExceptionIsCreated_thenOfferIdFieldIsCorrectlyInitialised() {
         // Given
-        val offerId = UUID.randomUUID().toString();
+        val offerId = UUID.randomUUID();
 
         // When
         val exception = new OfferNotFoundException(offerId);

@@ -33,6 +33,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.util.UUID;
 
 /**
  * ORM for {@code user} table.
@@ -63,9 +65,9 @@ public class User {
 
     @Column
     @Id
-    @NotBlank
+    @NotNull
     @Setter(AccessLevel.PROTECTED)
-    private String id;
+    private UUID id;
 
     @Column(unique = true)
     @Username

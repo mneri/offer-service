@@ -24,6 +24,7 @@ import java.math.BigDecimal;
 import java.time.Clock;
 import java.time.Instant;
 import java.util.Date;
+import java.util.UUID;
 
 @ActiveProfiles("test")
 class PresentationLayerMapperImplTest {
@@ -161,7 +162,7 @@ class PresentationLayerMapperImplTest {
         Mockito.doReturn("GBP").when(offer).getCurrency();
         Mockito.doReturn("Buy one and get one free!").when(offer).getDescription();
         Mockito.doReturn(endDate).when(offer).getEndTime();
-        Mockito.doReturn("00000000-0000-0000-0000-000000000000").when(offer).getId();
+        Mockito.doReturn(UUID.fromString("00000000-0000-0000-0000-000000000000")).when(offer).getId();
         Mockito.doReturn(new BigDecimal("0.00")).when(offer).getPrice();
         Mockito.doReturn("Free Coffee").when(offer).getTitle();
         Mockito.doReturn(ttl).when(offer).getTtl(Mockito.any(Clock.class));
@@ -198,7 +199,7 @@ class PresentationLayerMapperImplTest {
         val user = Mockito.mock(User.class, new UnsupportedOperationAnswer());
 
         Mockito.doReturn(passwordEncoder.encode("password")).when(user).getEncodedPassword();
-        Mockito.doReturn("11111111-1111-1111-1111-111111111111").when(user).getId();
+        Mockito.doReturn(UUID.fromString("11111111-1111-1111-1111-111111111111")).when(user).getId();
         Mockito.doReturn(true).when(user).isEnabled();
         Mockito.doReturn("user").when(user).getUsername();
 

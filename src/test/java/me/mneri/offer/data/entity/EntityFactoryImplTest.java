@@ -23,8 +23,8 @@ public class EntityFactoryImplTest {
 
         uuid = UUID.fromString("00000000-0000-0000-0000-000000000000");
 
-        UuidProvider uuidProvider = Mockito.mock(UuidProvider.class);
-        Mockito.doReturn(uuid).when(uuidProvider).random();
+        UUIDProvider uuidProvider = Mockito.mock(UUIDProvider.class);
+        Mockito.doReturn(uuid).when(uuidProvider).createRandomUuid();
 
         entityFactory = new EntityFactoryImpl(clock, uuidProvider);
     }
@@ -37,7 +37,7 @@ public class EntityFactoryImplTest {
         val offer = entityFactory.createOffer();
 
         // Then
-        Assertions.assertThat(offer.getId()).isEqualTo(uuid.toString());
+        Assertions.assertThat(offer.getId()).isEqualTo(uuid);
     }
 
     @Test
@@ -60,7 +60,7 @@ public class EntityFactoryImplTest {
         val user = entityFactory.createUser();
 
         // Then
-        Assertions.assertThat(user.getId()).isEqualTo(uuid.toString());
+        Assertions.assertThat(user.getId()).isEqualTo(uuid);
     }
 
     @Test

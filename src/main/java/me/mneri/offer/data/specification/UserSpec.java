@@ -21,6 +21,8 @@ package me.mneri.offer.data.specification;
 import me.mneri.offer.data.entity.User;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.util.UUID;
+
 /**
  * Specification definition for the {@link User} entity.
  *
@@ -33,7 +35,7 @@ public interface UserSpec {
      * @param value The value to match against the id.
      * @return The specification.
      */
-    Specification<User> idIsEqualTo(String value);
+    Specification<User> idIsEqualTo(UUID value);
 
     /**
      * Return a {@link Specification} for the SQL predicate {@code user.enabled = 1}.
@@ -49,5 +51,5 @@ public interface UserSpec {
      * @param offerId The id of the offer.
      * @return The specification.
      */
-    Specification<User> isPublisherOf(String offerId);
+    Specification<User> isPublisherOf(UUID offerId);
 }

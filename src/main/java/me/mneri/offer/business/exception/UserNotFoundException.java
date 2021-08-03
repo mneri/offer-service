@@ -18,26 +18,28 @@
 
 package me.mneri.offer.business.exception;
 
+import java.util.UUID;
+
 /**
  * Thrown when the specified user couldn't be found.
  *
  * @author Massimo Neri
  */
 public class UserNotFoundException extends Exception {
-    private final String userId;
+    private final UUID userId;
 
     /**
      * Create a new instance.
      *
      * @param offerId The offer id.
      */
-    public UserNotFoundException(String offerId) {
-        this.userId = offerId;
+    public UserNotFoundException(UUID userId) {
+        this.userId = userId;
     }
 
     @Override
     public String getMessage() {
-        return String.format("Couldn't find the specified user: userId=%s", userId);
+        return String.format("Couldn't find the specified user: userId=%s", userId.toString());
     }
 
     /**
@@ -45,7 +47,7 @@ public class UserNotFoundException extends Exception {
      *
      * @return The id.
      */
-    public String getUserId() {
+    public UUID getUserId() {
         return userId;
     }
 }

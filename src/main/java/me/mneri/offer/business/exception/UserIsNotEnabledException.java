@@ -18,26 +18,28 @@
 
 package me.mneri.offer.business.exception;
 
+import java.util.UUID;
+
 /**
  * Thrown when the user is not enabled.
  *
  * @author Massimo Neri
  */
 public class UserIsNotEnabledException extends Exception {
-    private final String userId;
+    private final UUID userId;
 
     /**
      * Create a new instance.
      *
      * @param userId The user id.
      */
-    public UserIsNotEnabledException(String userId) {
+    public UserIsNotEnabledException(UUID userId) {
         this.userId = userId;
     }
 
     @Override
     public String getMessage() {
-        return String.format("The user is not enabled: userId=%s", userId);
+        return String.format("The user is not enabled: userId=%s", userId.toString());
     }
 
     /**
@@ -45,7 +47,7 @@ public class UserIsNotEnabledException extends Exception {
      *
      * @return The id of the user.
      */
-    public String getUserId() {
+    public UUID getUserId() {
         return userId;
     }
 }

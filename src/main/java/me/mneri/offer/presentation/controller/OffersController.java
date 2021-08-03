@@ -58,6 +58,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.time.Clock;
+import java.util.UUID;
 
 /**
  * REST controller for paths starting with {@code /offers}.
@@ -100,7 +101,7 @@ public class OffersController {
     @DeleteMapping(value = "/{offerId}")
     @Operation(summary = "Delete an open offer.",
             description = "Delete an open offer in the repository.")
-    public void deleteOffer(@PathVariable String offerId, @RequestParam(Parameters.PARAM_AUTH_TOKEN) String auth)
+    public void deleteOffer(@PathVariable UUID offerId, @RequestParam(Parameters.PARAM_AUTH_TOKEN) UUID auth)
             throws OfferIsCancelledException, OfferIsExpiredException, OfferNotFoundException,
             UserIsNotEnabledException, UserNotFoundException, UserNotAuthorizedException {
         offerService.delete(offerId, auth);
@@ -137,7 +138,7 @@ public class OffersController {
     @GetMapping(value = "/{offerId}", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
     @Operation(summary = "Return the offer identified by the specified id.",
             description = "Return the offer given its id or return an error if such offer doesn't exist or it's closed.")
-    public OfferDto getOfferById(@PathVariable String offerId)
+    public OfferDto getOfferById(@PathVariable UUID offerId)
             throws OfferIsCancelledException, OfferIsExpiredException, OfferNotFoundException {
         Offer offer = offerService
                 .findById(offerId)
@@ -170,7 +171,7 @@ public class OffersController {
     @GetMapping(value = "/{offerId}/user", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
     @Operation(summary = "Return the user who published the offer identified by the specified id.",
             description = "Return the user given an offer id or return an error if such offer doesn't exist or it's closed.")
-    public UserDto getUserByOfferId(@PathVariable String offerId)
+    public UserDto getUserByOfferId(@PathVariable UUID offerId)
             throws OfferIsCancelledException, OfferIsExpiredException, OfferNotFoundException {
         return presentationLayerMapper.mapUserToUserDto(userService.findByOfferId(offerId));
     }
@@ -191,7 +192,7 @@ public class OffersController {
     @PostMapping(consumes = MimeTypeUtils.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public OfferDto postOffer(@Valid @RequestBody OfferCreateDto createDto,
-                              @RequestParam(Parameters.PARAM_AUTH_TOKEN) String auth)
+                              @RequestParam(Parameters.PARAM_AUTH_TOKEN) UUID auth)
             throws UserIsNotEnabledException, UserNotFoundException {
         Offer offer = offerService.save(presentationLayerMapper.mapOfferCreateDtoToOfferCreate(createDto), auth);
         return presentationLayerMapper.mapOfferToOfferDto(offer);
@@ -217,9 +218,9 @@ public class OffersController {
     @Operation(summary = "Modify an open offer.",
             description = "Modify an open offer in the repository.")
     @PutMapping(value = "/{offerId}", consumes = MimeTypeUtils.APPLICATION_JSON_VALUE)
-    public void putOffer(@PathVariable String offerId,
+    public void putOffer(@PathVariable UUID offerId,
                          @Valid @RequestBody OfferUpdateDto updateDto,
-                         @RequestParam(Parameters.PARAM_AUTH_TOKEN) String auth)
+                         @RequestParam(Parameters.PARAM_AUTH_TOKEN) UUID auth)
             throws OfferIsCancelledException, OfferIsExpiredException, OfferNotFoundException,
             UserIsNotEnabledException, UserNotFoundException, UserNotAuthorizedException {
         offerService.update(offerId, presentationLayerMapper.mapOfferUpdateDtoToOfferUpdate(updateDto), auth);

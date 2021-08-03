@@ -37,6 +37,7 @@ import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.Clock;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * ORM for {@code offer} table.
@@ -75,10 +76,11 @@ public class Offer {
      */
     public static final int TTL_MIN_VALUE = 1;
 
+    @Column
     @Id
-    @NotEmpty
+    @NotNull
     @Setter(AccessLevel.PROTECTED)
-    private String id;
+    private UUID id;
 
     @Column
     @Title

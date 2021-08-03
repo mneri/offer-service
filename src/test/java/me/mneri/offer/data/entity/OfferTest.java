@@ -33,6 +33,7 @@ import java.time.Clock;
 import java.time.Instant;
 import java.util.Date;
 import java.util.Set;
+import java.util.UUID;
 
 /**
  * Unit tests for {@link Offer} class.
@@ -266,7 +267,7 @@ class OfferTest {
         offer.setCurrency("GBP");
         offer.setDescription("Buy one and get one free!");
         offer.setEndTime(Date.from(Instant.parse("2020-01-31T22:00:00.00Z")));
-        offer.setId("00000000-0000-0000-0000-000000000000");
+        offer.setId(UUID.fromString("00000000-0000-0000-0000-000000000000"));
         offer.setPrice(new BigDecimal("0.00"));
         offer.setTitle("Free Coffee");
 

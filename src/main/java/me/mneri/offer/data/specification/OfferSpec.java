@@ -21,6 +21,8 @@ package me.mneri.offer.data.specification;
 import me.mneri.offer.data.entity.Offer;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.util.UUID;
+
 /**
  * Specification definition for the {@link Offer}.
  *
@@ -33,7 +35,7 @@ public interface OfferSpec {
      * @param value The offer id.
      * @return The specification.
      */
-    Specification<Offer> idIsEqualTo(String value);
+    Specification<Offer> idIsEqualTo(UUID value);
 
     /**
      * Return a {@link Specification} for the SQL predicate {@code offer.canceled = 1}.
@@ -63,5 +65,5 @@ public interface OfferSpec {
      * @param value The publisher's id.
      * @return The specification.
      */
-    Specification<Offer> publisherIdIsEqualTo(String value);
+    Specification<Offer> publisherIdIsEqualTo(UUID value);
 }

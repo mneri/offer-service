@@ -30,6 +30,7 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import java.util.Set;
+import java.util.UUID;
 
 /**
  * Unit tests for {@link User} class.
@@ -125,7 +126,7 @@ class UserTest {
 
     private User newUserInstance() {
         User user = new User();
-        user.setId("00000000-0000-0000-0000-000000000000");
+        user.setId(UUID.fromString("00000000-0000-0000-0000-000000000000"));
         user.setUsername("user");
         user.setEncodedPassword("secret", passwordEncoder);
         return user;

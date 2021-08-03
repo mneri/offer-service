@@ -83,7 +83,6 @@ public class BusinessLayerMapperHelper {
         if (create != null) {
             offer.setTtl(create.getTtl(), clock);
         }
-
     }
 
     /**

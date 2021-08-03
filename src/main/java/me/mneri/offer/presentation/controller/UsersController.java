@@ -43,6 +43,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.UUID;
+
 /**
  * REST controller for paths starting with {@code /users}.
  *
@@ -88,7 +90,7 @@ public class UsersController {
     @GetMapping(value = "/{userId}", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
     @Operation(summary = "Return the user identified by the specified id.",
             description = "Return the user given its id or return an error if such user doesn't exist or it's disabled.")
-    public UserDto getUserById(@PathVariable String userId) throws UserIsNotEnabledException, UserNotFoundException {
+    public UserDto getUserById(@PathVariable UUID userId) throws UserIsNotEnabledException, UserNotFoundException {
         User user = userService
                 .findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId));
@@ -113,7 +115,7 @@ public class UsersController {
     @GetMapping(value = "/{userId}/offers", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
     @Operation(summary = "Return the list of offers published by the user identified by the specified id.",
             description = "Return a user's offers or return an error if the user doesn't exist or it's disabled.")
-    public Iterable<OfferDto> getOffersByPublisherId(@PathVariable String userId,
+    public Iterable<OfferDto> getOffersByPublisherId(@PathVariable UUID userId,
                                                      @ModelAttribute PagingDto pagingDto)
             throws UserIsNotEnabledException, UserNotFoundException {
         Paging paging = presentationLayerMapper.mapPagingDtoToPaging(pagingDto);

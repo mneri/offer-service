@@ -40,6 +40,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Clock;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.springframework.data.jpa.domain.Specification.where;
 
@@ -78,7 +79,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     @Transactional
-    public Optional<User> findById(String userId) {
+    public Optional<User> findById(UUID userId) {
         return userRepository.findOne(where(userSpec.idIsEqualTo(userId)));
     }
 
@@ -87,7 +88,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     @Transactional
-    public User findByOfferId(String offerId)
+    public User findByOfferId(UUID offerId)
             throws OfferIsCancelledException, OfferIsExpiredException, OfferNotFoundException {
         Offer offer = offerRepository
                 .findOne(where(offerSpec.idIsEqualTo(offerId)))

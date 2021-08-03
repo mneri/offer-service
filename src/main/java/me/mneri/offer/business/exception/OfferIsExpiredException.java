@@ -18,26 +18,28 @@
 
 package me.mneri.offer.business.exception;
 
+import java.util.UUID;
+
 /**
  * Thrown when the specified offer is expired.
  *
  * @author Massimo Neri
  */
 public class OfferIsExpiredException extends Exception {
-    private final String offerId;
+    private final UUID offerId;
 
     /**
      * Create a new instance.
      *
      * @param offerId The offer id.
      */
-    public OfferIsExpiredException(String offerId) {
+    public OfferIsExpiredException(UUID offerId) {
         this.offerId = offerId;
     }
 
     @Override
     public String getMessage() {
-        return String.format("The offer is expired: offerId=%s", offerId);
+        return String.format("The offer is expired: offerId=%s", offerId.toString());
     }
 
     /**
@@ -45,7 +47,7 @@ public class OfferIsExpiredException extends Exception {
      *
      * @return The id of the offer.
      */
-    public String getOfferId() {
+    public UUID getOfferId() {
         return offerId;
     }
 }

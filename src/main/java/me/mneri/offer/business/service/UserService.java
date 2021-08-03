@@ -27,6 +27,7 @@ import me.mneri.offer.data.entity.User;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Service for accessing the user repository.
@@ -49,7 +50,7 @@ public interface UserService {
      * @return If the user is present return an {@link Optional} of the user; otherwise return an empty
      * {@link Optional}.
      */
-    Optional<User> findById(String userId);
+    Optional<User> findById(UUID userId);
 
     /**
      * Find the user who published the offer identified by the specified id in the repository.
@@ -57,7 +58,7 @@ public interface UserService {
      * @param offerId The offer id.
      * @return The user.
      */
-    User findByOfferId(String offerId)
+    User findByOfferId(UUID offerId)
             throws OfferIsCancelledException, OfferIsExpiredException, OfferNotFoundException;
 
     /**

@@ -25,6 +25,8 @@ import lombok.NonNull;
 import me.mneri.offer.data.entity.User;
 import me.mneri.offer.data.validator.Username;
 
+import java.util.UUID;
+
 /**
  * DTO for {@link User} objects.
  *
@@ -38,7 +40,7 @@ public class UserDto {
     @Schema(description = "User's unique identifier.",
             example = "123e4567-e89b-12d3-a456-556642440000",
             required = true)
-    private String id;
+    private UUID id;
 
     @NonNull
     @Schema(description = "User's username.",

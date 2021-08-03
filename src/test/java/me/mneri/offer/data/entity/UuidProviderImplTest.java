@@ -6,11 +6,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class UuidProviderImplTest {
-    private UuidProviderImpl uuidProvider;
+    private UUIDProviderImpl uuidProvider;
 
     @BeforeEach
     public void beforeEach() {
-        uuidProvider = new UuidProviderImpl();
+        uuidProvider = new UUIDProviderImpl();
     }
 
     @Test
@@ -19,7 +19,7 @@ public class UuidProviderImplTest {
         // Nothing...
 
         // When
-        val actual = uuidProvider.random();
+        val actual = uuidProvider.createRandomUuid();
 
         // Then
         Assertions.assertThat(actual).isNotNull();

@@ -28,7 +28,7 @@ public class UserNotAuthorizedExceptionTest {
     @Test
     public void givenUserId_whenUserNotAuthorizedExceptionIsCreated_thenUserIdFieldIsCorrectlyInitialised() {
         // Given
-        val userId = UUID.randomUUID().toString();
+        val userId = UUID.randomUUID();
 
         // When
         val exception = new UserNotAuthorizedException(userId);

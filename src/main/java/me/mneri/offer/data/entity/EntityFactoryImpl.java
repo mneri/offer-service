@@ -17,7 +17,7 @@ import java.util.Date;
 public class EntityFactoryImpl implements EntityFactory {
     private final Clock clock;
 
-    private final UuidProvider uuidProvider;
+    private final UUIDProvider uuidProvider;
 
     /**
      * {@inheritDoc}
@@ -25,7 +25,7 @@ public class EntityFactoryImpl implements EntityFactory {
     @Override
     public Offer createOffer() {
         Offer offer = new Offer();
-        offer.setId(uuidProvider.random().toString());
+        offer.setId(uuidProvider.createRandomUuid());
         offer.setCreateTime(new Date(clock.millis()));
         return offer;
     }
@@ -36,7 +36,7 @@ public class EntityFactoryImpl implements EntityFactory {
     @Override
     public User createUser() {
         User user = new User();
-        user.setId(uuidProvider.random().toString());
+        user.setId(uuidProvider.createRandomUuid());
         user.setEnabled(true);
         return user;
     }

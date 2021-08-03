@@ -44,6 +44,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Clock;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.springframework.data.jpa.domain.Specification.where;
 
@@ -73,7 +74,7 @@ public class OfferServiceImpl implements OfferService {
      */
     @Override
     @Transactional
-    public void delete(String offerId, String userId)
+    public void delete(UUID offerId, UUID userId)
             throws OfferIsCancelledException, OfferIsExpiredException, OfferNotFoundException,
             UserIsNotEnabledException, UserNotAuthorizedException, UserNotFoundException {
         User user = userRepository
@@ -120,7 +121,7 @@ public class OfferServiceImpl implements OfferService {
      */
     @Override
     @Transactional
-    public List<Offer> findAllOpenByPublisherId(String userId, Paging paging)
+    public List<Offer> findAllOpenByPublisherId(UUID userId, Paging paging)
             throws UserIsNotEnabledException, UserNotFoundException {
         User user = userRepository
                 .findOne(where(userSpec.idIsEqualTo(userId)))
@@ -138,7 +139,7 @@ public class OfferServiceImpl implements OfferService {
      */
     @Override
     @Transactional
-    public Optional<Offer> findById(String id) {
+    public Optional<Offer> findById(UUID id) {
         return offerRepository.findOne(where(offerSpec.idIsEqualTo(id)));
     }
 
@@ -147,7 +148,7 @@ public class OfferServiceImpl implements OfferService {
      */
     @Override
     @Transactional
-    public void update(String offerId, OfferUpdate update, String userId)
+    public void update(UUID offerId, OfferUpdate update, UUID userId)
             throws OfferIsCancelledException, OfferIsExpiredException, OfferNotFoundException,
             UserIsNotEnabledException, UserNotFoundException, UserNotAuthorizedException {
         User user = userRepository
@@ -185,7 +186,7 @@ public class OfferServiceImpl implements OfferService {
      */
     @Override
     @Transactional
-    public Offer save(OfferCreate create, String userId) throws UserIsNotEnabledException, UserNotFoundException {
+    public Offer save(OfferCreate create, UUID userId) throws UserIsNotEnabledException, UserNotFoundException {
         User user = userRepository
                 .findOne(where(userSpec.idIsEqualTo(userId)))
                 .orElseThrow(() -> new UserNotFoundException(userId));
