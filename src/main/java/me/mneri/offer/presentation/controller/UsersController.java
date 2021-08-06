@@ -29,11 +29,13 @@ import me.mneri.offer.data.entity.User;
 import me.mneri.offer.presentation.api.UsersAPI;
 import me.mneri.offer.presentation.dto.OfferDto;
 import me.mneri.offer.presentation.dto.PagingDto;
+import me.mneri.offer.presentation.dto.ResponseDto;
 import me.mneri.offer.presentation.dto.UserDto;
 import me.mneri.offer.presentation.mapping.PresentationLayerMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -53,18 +55,20 @@ public class UsersController implements UsersAPI {
 
     /**
      * {@inheritDoc}
+     *
+     * @return
      */
     @Override
-    public Iterable<UserDto> getUsers(PagingDto pagingDto) {
+    public ResponseDto<List<UserDto>> getUsers(PagingDto pagingDto) {
         Paging paging = presentationLayerMapper.mapPagingDtoToPaging(pagingDto);
-        return presentationLayerMapper.mapUserToUserDto(userService.findAllEnabled(paging));
+        return new ResponseDto<>(presentationLayerMapper.mapUserToUserDto(userService.findAllEnabled(paging)));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public UserDto getUserById(UUID userId) throws UserIsNotEnabledException, UserNotFoundException {
+    public ResponseDto<UserDto> getUserById(UUID userId) throws UserIsNotEnabledException, UserNotFoundException {
         User user = userService
                 .findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId));
@@ -73,16 +77,21 @@ public class UsersController implements UsersAPI {
             throw new UserIsNotEnabledException(userId);
         }
 
-        return presentationLayerMapper.mapUserToUserDto(user);
+        return new ResponseDto<>(presentationLayerMapper.mapUserToUserDto(user));
     }
 
     /**
      * {@inheritDoc}
+     *
+     * @return
      */
     @Override
-    public Iterable<OfferDto> getOffersByPublisherId(UUID userId, PagingDto pagingDto)
+    public ResponseDto<List<OfferDto>> getOffersByPublisherId(UUID userId, PagingDto pagingDto)
             throws UserIsNotEnabledException, UserNotFoundException {
         Paging paging = presentationLayerMapper.mapPagingDtoToPaging(pagingDto);
-        return presentationLayerMapper.mapOfferToOfferDto(offerService.findAllOpenByPublisherId(userId, paging));
+        List<OfferDto> offers =
+                presentationLayerMapper.mapOfferToOfferDto(offerService.findAllOpenByPublisherId(userId, paging));
+
+        return new ResponseDto<>(offers);
     }
 }

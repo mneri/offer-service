@@ -18,22 +18,9 @@
 
 package me.mneri.offer.presentation.dto;
 
-import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Value;
 
-/**
- * DTO for pagination data.
- *
- * @author Massimo Neri
- */
-@AllArgsConstructor
-@Data
-@NoArgsConstructor
-@Schema(hidden = true)
-public class PagingDto {
-    private Integer pageNumber;
-
-    private Integer pageSize;
+@Value
+public class ErrorDto {
+    String message;
 }

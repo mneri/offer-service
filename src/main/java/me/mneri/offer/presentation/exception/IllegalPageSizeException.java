@@ -35,6 +35,11 @@ public class IllegalPageSizeException extends Exception {
         this.pageSize = pageSize;
     }
 
+    @Override
+    public String getMessage() {
+        return String.format("The specified page size is not legal: pageSize=%d", getPageSize());
+    }
+
     /**
      * Return the page size.
      *

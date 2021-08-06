@@ -35,12 +35,14 @@ import me.mneri.offer.presentation.dto.OfferCreateDto;
 import me.mneri.offer.presentation.dto.OfferDto;
 import me.mneri.offer.presentation.dto.OfferUpdateDto;
 import me.mneri.offer.presentation.dto.PagingDto;
+import me.mneri.offer.presentation.dto.ResponseDto;
 import me.mneri.offer.presentation.dto.UserDto;
 import me.mneri.offer.presentation.mapping.PresentationLayerMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.Clock;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -74,16 +76,16 @@ public class OffersController implements OffersAPI {
      * {@inheritDoc}
      */
     @Override
-    public Iterable<OfferDto> getOffers(PagingDto pagingDto) {
+    public ResponseDto<List<OfferDto>> getOffers(PagingDto pagingDto) {
         Paging paging = presentationLayerMapper.mapPagingDtoToPaging(pagingDto);
-        return presentationLayerMapper.mapOfferToOfferDto(offerService.findAllOpen(paging));
+        return new ResponseDto<>(presentationLayerMapper.mapOfferToOfferDto(offerService.findAllOpen(paging)));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public OfferDto getOfferById(UUID offerId)
+    public ResponseDto<OfferDto> getOfferById(UUID offerId)
             throws OfferIsCancelledException, OfferIsExpiredException, OfferNotFoundException {
         Offer offer = offerService
                 .findById(offerId)
@@ -97,26 +99,26 @@ public class OffersController implements OffersAPI {
             throw new OfferIsExpiredException(offerId);
         }
 
-        return presentationLayerMapper.mapOfferToOfferDto(offer);
+        return new ResponseDto<>(presentationLayerMapper.mapOfferToOfferDto(offer));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public UserDto getUserByOfferId(UUID offerId)
+    public ResponseDto<UserDto> getUserByOfferId(UUID offerId)
             throws OfferIsCancelledException, OfferIsExpiredException, OfferNotFoundException {
-        return presentationLayerMapper.mapUserToUserDto(userService.findByOfferId(offerId));
+        return new ResponseDto<>(presentationLayerMapper.mapUserToUserDto(userService.findByOfferId(offerId)));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public OfferDto postOffer(OfferCreateDto createDto, UUID auth)
+    public ResponseDto<OfferDto> postOffer(OfferCreateDto createDto, UUID auth)
             throws UserIsNotEnabledException, UserNotFoundException {
         Offer offer = offerService.save(presentationLayerMapper.mapOfferCreateDtoToOfferCreate(createDto), auth);
-        return presentationLayerMapper.mapOfferToOfferDto(offer);
+        return new ResponseDto<>(presentationLayerMapper.mapOfferToOfferDto(offer));
     }
 
     /**

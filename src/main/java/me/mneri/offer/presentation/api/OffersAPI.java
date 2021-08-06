@@ -19,8 +19,11 @@
 package me.mneri.offer.presentation.api;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import me.mneri.offer.business.exception.OfferIsCancelledException;
 import me.mneri.offer.business.exception.OfferIsExpiredException;
@@ -34,6 +37,7 @@ import me.mneri.offer.presentation.dto.OfferCreateDto;
 import me.mneri.offer.presentation.dto.OfferDto;
 import me.mneri.offer.presentation.dto.OfferUpdateDto;
 import me.mneri.offer.presentation.dto.PagingDto;
+import me.mneri.offer.presentation.dto.ResponseDto;
 import me.mneri.offer.presentation.dto.UserDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.MimeTypeUtils;
@@ -49,10 +53,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.UUID;
 
 @RequestMapping("/offers")
-@Tag(name = "offers", description = "The Offer API")
+@Tag(
+        name = "offers",
+        description = "The Offer API")
 public interface OffersAPI {
     /**
      * Close (cancel) an existing open offer.
@@ -69,13 +76,22 @@ public interface OffersAPI {
      * @throws UserNotFoundException      If a user with the specified id was not found in the repository.
      * @throws UserNotAuthorizedException If the specified user id doesn't belong to the publisher of the offer.
      */
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successful operation."),
-            @ApiResponse(responseCode = "401", description = "If the user has no rights to modify the offer."),
-            @ApiResponse(responseCode = "404", description = "If the user or the offer don't exist or they are not enabled.")})
+    @Operation(
+            summary = "Delete an open offer.",
+            description = "Delete an open offer in the repository.",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successful operation."),
+                    @ApiResponse(
+                            responseCode = "401",
+                            description = "If the user has no rights to modify the offer.",
+                            content = @Content),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "If the user or the offer don't exist or they are not enabled.",
+                            content = @Content)})
     @DeleteMapping(value = "/{offerId}")
-    @Operation(summary = "Delete an open offer.",
-            description = "Delete an open offer in the repository.")
     void deleteOffer(@PathVariable UUID offerId, @RequestParam(APIParameters.PARAM_AUTH_TOKEN) UUID auth)
             throws OfferIsCancelledException, OfferIsExpiredException, OfferNotFoundException,
             UserIsNotEnabledException, UserNotFoundException, UserNotAuthorizedException;
@@ -86,11 +102,26 @@ public interface OffersAPI {
      *
      * @return A list of open offers.
      */
-    @ApiResponses(value = @ApiResponse(responseCode = "200", description = "Successful operation."))
+    @Operation(
+            summary = "Return the list of open offers.",
+            description = "Return the list of the non-expired, non-canceled offers.",
+            parameters = {
+                    @Parameter(
+                            name = APIParameters.PARAM_PAGE_NUMBER,
+                            in = ParameterIn.QUERY,
+                            schema = @Schema(
+                                    implementation = Integer.class)),
+                    @Parameter(
+                            name = APIParameters.PARAM_PAGE_SIZE,
+                            in = ParameterIn.QUERY,
+                            schema = @Schema(
+                                    implementation = Integer.class))},
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successful operation.")})
     @GetMapping(produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Return the list of open offers.",
-            description = "Return the list of the non-expired, non-canceled offers.")
-    Iterable<OfferDto> getOffers(@ModelAttribute PagingDto pagingDto);
+    ResponseDto<List<OfferDto>> getOffers(@ModelAttribute @Parameter(hidden = true) PagingDto pagingDto);
 
     /**
      * Retrieve the {@link Offer} identified by the specified id, if open. An open offer is an offer that is not yet
@@ -102,13 +133,19 @@ public interface OffersAPI {
      * @throws OfferIsExpiredException   If the specified offer is expired.
      * @throws OfferNotFoundException    If the specified offer id was not found.
      */
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successful operation."),
-            @ApiResponse(responseCode = "404", description = "If the offer doesn't exist or it's closed.")})
+    @Operation(
+            summary = "Return the offer identified by the specified id.",
+            description = "Return the offer given its id or return an error if such offer doesn't exist or it's closed.",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successful operation."),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "If the offer doesn't exist or it's closed.",
+                            content = @Content)})
     @GetMapping(value = "/{offerId}", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Return the offer identified by the specified id.",
-            description = "Return the offer given its id or return an error if such offer doesn't exist or it's closed.")
-    OfferDto getOfferById(@PathVariable UUID offerId)
+    ResponseDto<OfferDto> getOfferById(@PathVariable UUID offerId)
             throws OfferIsCancelledException, OfferIsExpiredException, OfferNotFoundException;
 
     /**
@@ -121,13 +158,19 @@ public interface OffersAPI {
      * @throws OfferIsExpiredException   If the specified offer is expired.
      * @throws OfferNotFoundException    If the specified offer id was not found.
      */
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successful operation."),
-            @ApiResponse(responseCode = "404", description = "If the offer doesn't exist or it's closed.")})
     @GetMapping(value = "/{offerId}/user", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Return the user who published the offer identified by the specified id.",
-            description = "Return the user given an offer id or return an error if such offer doesn't exist or it's closed.")
-    UserDto getUserByOfferId(@PathVariable UUID offerId)
+    @Operation(
+            summary = "Return the user who published the offer identified by the specified id.",
+            description = "Return the user given an offer id or return an error if such offer doesn't exist or it's closed.",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successful operation."),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "If the offer doesn't exist or it's closed.",
+                            content = @Content)})
+    ResponseDto<UserDto> getUserByOfferId(@PathVariable UUID offerId)
             throws OfferIsCancelledException, OfferIsExpiredException, OfferNotFoundException;
 
     /**
@@ -138,15 +181,21 @@ public interface OffersAPI {
      * @throws UserIsNotEnabledException If the user with the specified id is not enabled.
      * @throws UserNotFoundException     If a user with the specified id was not found in the repository.
      */
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Successful operation."),
-            @ApiResponse(responseCode = "404", description = "If the user doesn't exist or it's not enabled.")})
-    @Operation(summary = "Insert a new open offer.",
-            description = "Insert a new open offer in the repository.")
+    @Operation(
+            summary = "Insert a new open offer.",
+            description = "Insert a new open offer in the repository.",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "201",
+                            description = "Successful operation."),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "If the user doesn't exist or it's not enabled.",
+                            content = @Content)})
     @PostMapping(consumes = MimeTypeUtils.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    OfferDto postOffer(@Valid @RequestBody OfferCreateDto createDto,
-                       @RequestParam(APIParameters.PARAM_AUTH_TOKEN) UUID auth)
+    ResponseDto<OfferDto> postOffer(@Valid @RequestBody OfferCreateDto createDto,
+                                    @RequestParam(APIParameters.PARAM_AUTH_TOKEN) UUID auth)
             throws UserIsNotEnabledException, UserNotFoundException;
 
     /**
@@ -162,12 +211,21 @@ public interface OffersAPI {
      * @throws UserNotFoundException      If a user with the specified id was not found in the repository.
      * @throws UserNotAuthorizedException If the specified user id doesn't belong to the publisher of the offer.
      */
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successful operation."),
-            @ApiResponse(responseCode = "401", description = "If the user has no rights to modify the offer."),
-            @ApiResponse(responseCode = "404", description = "If the user or the offer don't exist or they are not enabled.")})
-    @Operation(summary = "Modify an open offer.",
-            description = "Modify an open offer in the repository.")
+    @Operation(
+            summary = "Modify an open offer.",
+            description = "Modify an open offer in the repository.",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successful operation."),
+                    @ApiResponse(
+                            responseCode = "401",
+                            description = "If the user has no rights to modify the offer.",
+                            content = @Content),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "If the user or the offer don't exist or they are not enabled.",
+                            content = @Content)})
     @PutMapping(value = "/{offerId}", consumes = MimeTypeUtils.APPLICATION_JSON_VALUE)
     void putOffer(@PathVariable UUID offerId,
                   @Valid @RequestBody OfferUpdateDto updateDto,

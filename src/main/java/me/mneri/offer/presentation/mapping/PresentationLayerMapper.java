@@ -32,6 +32,8 @@ import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.List;
+
 /**
  * Mapper for the presentation layer classes.
  *
@@ -43,7 +45,7 @@ import org.mapstruct.Mapping;
 public interface PresentationLayerMapper {
     OfferCreate mapOfferCreateDtoToOfferCreate(OfferCreateDto dto);
 
-    Iterable<OfferDto> mapOfferToOfferDto(Iterable<Offer> offers);
+    List<OfferDto> mapOfferToOfferDto(Iterable<Offer> offers);
 
     @Mapping(target = "ttl", ignore = true)
     OfferDto mapOfferToOfferDto(Offer offer);
@@ -52,7 +54,7 @@ public interface PresentationLayerMapper {
 
     Paging mapPagingDtoToPaging(PagingDto pagingDto);
 
-    Iterable<UserDto> mapUserToUserDto(Iterable<User> user);
+    List<UserDto> mapUserToUserDto(Iterable<User> user);
 
     UserDto mapUserToUserDto(User user);
 }
