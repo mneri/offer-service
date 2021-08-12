@@ -20,12 +20,14 @@ package me.mneri.offer;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 /**
  * Main class and starting point of the application.
  *
  * @author Massimo Neri
  */
+@EnableEurekaClient
 @SpringBootApplication
 public class OfferApplication {
     /**
