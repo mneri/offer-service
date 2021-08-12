@@ -5,7 +5,7 @@ plugins {
     id 'org.springframework.boot' version '2.5.3'
 }
 
-group = 'com.example'
+group = 'me.mneri'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
