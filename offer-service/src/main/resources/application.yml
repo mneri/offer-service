@@ -26,6 +26,9 @@ service:
 spring:
   application:
     name: offer-service
+  cloud:
+    config:
+      uri: http://configuration-service
 
 springdoc:
   api-docs-path: /v3-api-docs

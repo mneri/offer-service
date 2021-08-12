@@ -17,7 +17,7 @@
  */
 
 rootProject.name = 'offer'
-include 'offer-service'
-include 'discovery-service'
-include 'configuration-service'
 
+include 'configuration-service'
+include 'discovery-service'
+include 'offer-service'
