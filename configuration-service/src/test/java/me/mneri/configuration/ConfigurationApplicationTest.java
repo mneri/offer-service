@@ -16,8 +16,14 @@
  * limitations under the License.
  */
 
-rootProject.name = 'offer'
-include 'offer-service'
-include 'discovery-service'
-include 'configuration-service'
+package me.mneri.configuration;
 
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class ConfigurationApplicationTest {
+    @Test
+    void contextLoads() {
+    }
+}
