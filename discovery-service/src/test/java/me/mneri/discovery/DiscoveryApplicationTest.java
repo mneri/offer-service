@@ -16,7 +16,16 @@
  * limitations under the License.
  */
 
-rootProject.name = 'offer'
-include 'offer-service'
-include 'discovery-service'
+package me.mneri.discovery;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class DiscoveryApplicationTest {
+    @Test
+    void contextLoads() {
+    }
+}
+
 

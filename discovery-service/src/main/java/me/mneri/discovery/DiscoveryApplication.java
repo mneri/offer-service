@@ -16,7 +16,21 @@
  * limitations under the License.
  */
 
-rootProject.name = 'offer'
-include 'offer-service'
-include 'discovery-service'
+package me.mneri.discovery;
 
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
+
+/**
+ * Main class and starting point of the application.
+ *
+ * @author Massimo Neri
+ */
+@EnableEurekaServer
+@SpringBootApplication
+public class DiscoveryApplication {
+    public static void main(String... args) {
+        SpringApplication.run(DiscoveryApplication.class, args);
+    }
+}
