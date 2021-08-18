@@ -1,5 +1,3 @@
-#!/bin/bash
-
 # Copyright 2020 Massimo Neri <hello@mneri.me>
 #
 # This file is part of mneri/offer-service.
@@ -16,10 +14,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-chmod +x ../gradlew                   && \
-sh ../gradlew build                   && \
-mkdir -p build/dependency             && \
-cd build/dependency                   && \
-jar -xf ../libs/*.jar                 && \
-cd ../..                              && \
-docker build -t configuration-service . ;
+FROM openjdk:8-jdk-alpine
+
+VOLUME /tmp
+
+ARG DEPENDENCY=build/dependency
+
+COPY ${DEPENDENCY}/BOOT-INF/lib /app/lib
+COPY ${DEPENDENCY}/META-INF /app/META-INF
+COPY ${DEPENDENCY}/BOOT-INF/classes /app
+
+ENTRYPOINT ["java", "-cp", "app:app/lib/*", "me.mneri.gateway.GatewayApplication"]

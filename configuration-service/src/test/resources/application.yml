@@ -26,4 +26,5 @@ spring:
     config:
       server:
         git:
-          uri:
+          default-label: main
+          uri: https://github.com/spring-cloud-samples/config-repo

@@ -16,8 +16,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-chmod +x gradlew                && \
-sh gradlew build                && \
+chmod +x ../gradlew             && \
+sh ../gradlew build             && \
 mkdir -p build/dependency       && \
 cd build/dependency             && \
 jar -xf ../libs/*.jar           && \

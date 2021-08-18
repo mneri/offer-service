@@ -31,6 +31,9 @@ service:
 spring:
   application:
     name: offer-service
+  cloud:
+    config:
+      enabled: false
 
 springdoc:
   api-docs-path: /v3-api-docs

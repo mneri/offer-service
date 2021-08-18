@@ -16,10 +16,23 @@
  * limitations under the License.
  */
 
-rootProject.name = 'offer'
+package me.mneri.gateway;
 
-include 'configuration-service'
-include 'discovery-service'
-include 'offer-service'
-include 'gateway-service'
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 
+/**
+ * Main class and starting point of the application.
+ *
+ * @author Massimo Neri
+ */
+@EnableEurekaClient
+@EnableZuulProxy
+@SpringBootApplication
+public class GatewayApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(GatewayApplication.class, args);
+    }
+}

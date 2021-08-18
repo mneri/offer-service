@@ -16,10 +16,16 @@
  * limitations under the License.
  */
 
-rootProject.name = 'offer'
+package me.mneri.gateway.configuration;
 
-include 'configuration-service'
-include 'discovery-service'
-include 'offer-service'
-include 'gateway-service'
+import me.mneri.gateway.filter.SimpleFilter;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
+@Configuration
+public class FilterConfiguration {
+    @Bean
+    public SimpleFilter simpleFilter() {
+        return new SimpleFilter();
+    }
+}

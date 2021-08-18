@@ -26,3 +26,6 @@ logging:
 spring:
   application:
     name: discovery-service
+  cloud:
+    config:
+      enabled: false
