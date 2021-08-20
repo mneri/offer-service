@@ -31,10 +31,9 @@ dependencyManagement {
     }
 }
 
-jar {
-    enabled = false
+bootBuildImage {
+    imageName = "discovery-service"
 }
-
 
 test {
     useJUnitPlatform()

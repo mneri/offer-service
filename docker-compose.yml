@@ -1,0 +1,31 @@
+version: "3"
+services:
+  configuration-service:
+    build: configuration-service
+    image: configuration-service
+    networks:
+      - dev
+    ports:
+      - "8888:8888"
+  discovery-service:
+    build: discovery-service
+    image: discovery-service
+    networks:
+      - dev
+    ports:
+      - "8761:8761"
+  gateway-service:
+    build: gateway-service
+    image: gateway-service
+    networks:
+      - dev
+    ports:
+      - "8080:8080"
+  offer-service:
+    build: offer-service
+    image: offer-service
+    networks:
+      - dev
+networks:
+  dev:
+    driver: bridge

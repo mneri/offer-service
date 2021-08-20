@@ -20,6 +20,5 @@ rootProject.name = 'offer'
 
 include 'configuration-service'
 include 'discovery-service'
-include 'offer-service'
 include 'gateway-service'
-
+include 'offer-service'

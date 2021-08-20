@@ -84,8 +84,8 @@ tasks.withType(JavaCompile) {
 
 sourceSets.main.java.srcDirs += ["build/generated/sources/annotationProcessor/java"]
 
-jar {
-    enabled = false
+bootBuildImage {
+    imageName = "offer-service"
 }
 
 idea {

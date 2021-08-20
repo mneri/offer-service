@@ -47,8 +47,8 @@ dependencyManagement {
     }
 }
 
-jar {
-    enabled = false
+bootBuildImage {
+    imageName = "configuration-service"
 }
 
 test {
