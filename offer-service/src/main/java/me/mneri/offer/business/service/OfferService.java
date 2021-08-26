@@ -25,7 +25,6 @@ import me.mneri.offer.business.exception.OfferIsCancelledException;
 import me.mneri.offer.business.exception.OfferIsExpiredException;
 import me.mneri.offer.business.exception.OfferNotFoundException;
 import me.mneri.offer.business.exception.UserIsNotEnabledException;
-import me.mneri.offer.business.exception.UserNotAuthorizedException;
 import me.mneri.offer.business.exception.UserNotFoundException;
 import me.mneri.offer.data.entity.Offer;
 import me.mneri.offer.data.entity.User;
@@ -44,17 +43,11 @@ public interface OfferService {
      * Delete (cancel) an offer.
      *
      * @param offerId The id of the offer to delete.
-     * @param userId  The id of the user.
-     * @throws OfferIsCancelledException  If the offer with the specified id was previously cancelled.
-     * @throws OfferIsExpiredException    If the offer with the specified id has expired.
-     * @throws OfferNotFoundException     If the offer with the specified id was not found in the repository.
-     * @throws UserIsNotEnabledException  If the user with the specified id is not enabled.
-     * @throws UserNotFoundException      If a user with the specified id was not found in the repository.
-     * @throws UserNotAuthorizedException If the specified user id doesn't belong to the publisher of the offer.
+     * @throws OfferIsCancelledException If the offer with the specified id was previously cancelled.
+     * @throws OfferIsExpiredException   If the offer with the specified id has expired.
+     * @throws OfferNotFoundException    If the offer with the specified id was not found in the repository.
      */
-    void delete(UUID offerId, UUID userId)
-            throws OfferIsCancelledException, OfferIsExpiredException, OfferNotFoundException,
-            UserIsNotEnabledException, UserNotAuthorizedException, UserNotFoundException;
+    void delete(UUID offerId) throws OfferIsCancelledException, OfferIsExpiredException, OfferNotFoundException;
 
     /**
      * Find all the open {@link Offer}s.
@@ -85,23 +78,28 @@ public interface OfferService {
     Optional<Offer> findById(UUID id);
 
     /**
+     * Return {@code true} if the specified {@link Offer} is published by the specified {@link User}.
+     *
+     * @param offerId  The offer id.
+     * @param username The user's username.
+     * @return {@code true} if the specified offer is published by the specified user, {@code false} otherwise.
+     */
+    @SuppressWarnings("unused")
+    boolean isPublishedByUser(UUID offerId, String username);
+
+    /**
      * Update the specified {@link Offer} given the specified user id.
      * <p>
      * Only the publisher of a specific offer is granted the permission to update.
      *
      * @param offerId The id of the offer to update.
      * @param update  The data to update the offer with.
-     * @param userId  The user id of the modifier.
-     * @throws OfferIsCancelledException  If the offer with the specified id was previously cancelled.
-     * @throws OfferIsExpiredException    If the offer with the specified id has expired.
-     * @throws OfferNotFoundException     If the offer with the specified id was not found in the repository.
-     * @throws UserIsNotEnabledException  If the user with the specified id is not enabled.
-     * @throws UserNotFoundException      If a user with the specified id was not found in the repository.
-     * @throws UserNotAuthorizedException If the specified user id doesn't belong to the publisher of the offer.
+     * @throws OfferIsCancelledException If the offer with the specified id was previously cancelled.
+     * @throws OfferIsExpiredException   If the offer with the specified id has expired.
+     * @throws OfferNotFoundException    If the offer with the specified id was not found in the repository.
      */
-    void update(UUID offerId, OfferUpdate update, UUID userId)
-            throws OfferIsCancelledException, OfferIsExpiredException, OfferNotFoundException,
-            UserIsNotEnabledException, UserNotAuthorizedException, UserNotFoundException;
+    void update(UUID offerId, OfferUpdate update)
+            throws OfferIsCancelledException, OfferIsExpiredException, OfferNotFoundException;
 
     /**
      * Persist an offer into the database.

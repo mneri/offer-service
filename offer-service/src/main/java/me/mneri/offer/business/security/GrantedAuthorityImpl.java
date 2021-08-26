@@ -16,22 +16,17 @@
  * limitations under the License.
  */
 
-package me.mneri.offer.configuration;
+package me.mneri.offer.business.security;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-
-import java.time.Clock;
+import lombok.Data;
+import org.springframework.security.core.GrantedAuthority;
 
 /**
- * Application wide configuration.
+ * Simple implementation of the {@link GrantedAuthority} interface.
  *
  * @author Massimo Neri
  */
-@Configuration
-public class AppConfiguration {
-    @Bean
-    public Clock clock() {
-        return Clock.systemDefaultZone();
-    }
+@Data
+class GrantedAuthorityImpl implements GrantedAuthority {
+    private String authority;
 }

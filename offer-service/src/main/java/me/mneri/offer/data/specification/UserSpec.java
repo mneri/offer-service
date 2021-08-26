@@ -52,4 +52,11 @@ public interface UserSpec {
      * @return The specification.
      */
     Specification<User> isPublisherOf(UUID offerId);
+
+    /**
+     * Return a Specification for the SQL predicate user.username = ?
+     * @param username The username
+     * @return The specification.
+     */
+    Specification<User> usernameIsEqualTo(String username);
 }

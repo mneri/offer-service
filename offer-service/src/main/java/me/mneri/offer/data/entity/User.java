@@ -86,7 +86,7 @@ public class User {
     private boolean enabled;
 
     @Transient
-    public void setEncodedPassword(String rawPassword, @NonNull PasswordEncoder passwordEncoder) {
+    public void setEncodedPassword(@NonNull String rawPassword, @NonNull PasswordEncoder passwordEncoder) {
         setEncodedPassword(passwordEncoder.encode(rawPassword));
     }
 }

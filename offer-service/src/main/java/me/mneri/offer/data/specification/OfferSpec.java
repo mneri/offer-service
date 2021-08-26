@@ -66,4 +66,12 @@ public interface OfferSpec {
      * @return The specification.
      */
     Specification<Offer> publisherIdIsEqualTo(UUID value);
+
+    /**
+     * Return a {@link Specification} for the SQL predicate {@code offer.publisher.username = ?}.
+     *
+     * @param username The publisher's id.
+     * @return The specification.
+     */
+    Specification<Offer> publisherUsernameIsEqualTo(String username);
 }

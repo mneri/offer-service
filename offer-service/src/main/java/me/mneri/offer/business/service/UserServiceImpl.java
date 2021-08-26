@@ -51,7 +51,7 @@ import static org.springframework.data.jpa.domain.Specification.where;
  */
 @Log4j2
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED, onConstructor_ = @Autowired)
-@Service
+@Service("userService")
 class UserServiceImpl implements UserService {
     private final BusinessLayerMapper businessLayerMapper;
 

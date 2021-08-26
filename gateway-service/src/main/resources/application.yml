@@ -37,3 +37,4 @@ zuul:
       url: http://offer-service:8080/offers
     users:
       url: http://offer-service:8080/users
+  sensitiveHeaders: Cookie,Set-Cookie

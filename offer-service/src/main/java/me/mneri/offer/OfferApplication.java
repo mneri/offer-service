@@ -21,6 +21,11 @@ package me.mneri.offer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.time.Clock;
 
 /**
  * Main class and starting point of the application.
@@ -30,6 +35,26 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 @EnableEurekaClient
 @SpringBootApplication
 public class OfferApplication {
+    /**
+     * Application {@link Clock}.
+     *
+     * @return The clock.
+     */
+    @Bean
+    protected Clock clock() {
+        return Clock.systemDefaultZone();
+    }
+
+    /**
+     * Application {@link PasswordEncoder}.
+     *
+     * @return The password encoder.
+     */
+    @Bean
+    protected PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
     /**
      * Application entry point.
      *

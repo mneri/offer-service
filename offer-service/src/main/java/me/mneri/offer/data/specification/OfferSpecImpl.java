@@ -79,7 +79,15 @@ class OfferSpecImpl implements OfferSpec {
      * {@inheritDoc}
      */
     @Override
-    public Specification<Offer> publisherIdIsEqualTo(UUID value) {
-        return (root, query, builder) -> builder.equal(root.join(Offer_.publisher).get(User_.id), value);
+    public Specification<Offer> publisherIdIsEqualTo(UUID uuid) {
+        return (root, query, builder) -> builder.equal(root.join(Offer_.publisher).get(User_.id), uuid);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Specification<Offer> publisherUsernameIsEqualTo(String username) {
+        return (root, query, builder) -> builder.equal(root.join(Offer_.publisher).get(User_.username), username);
     }
 }

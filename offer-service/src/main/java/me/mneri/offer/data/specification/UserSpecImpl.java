@@ -41,8 +41,8 @@ class UserSpecImpl implements UserSpec {
      * {@inheritDoc}
      */
     @Override
-    public Specification<User> idIsEqualTo(UUID value) {
-        return (root, query, builder) -> builder.equal(root.get(User_.id), value);
+    public Specification<User> idIsEqualTo(UUID uuid) {
+        return (root, query, builder) -> builder.equal(root.get(User_.id), uuid);
     }
 
     /**
@@ -67,5 +67,13 @@ class UserSpecImpl implements UserSpec {
 
             return builder.equal(root.get(User_.id), subQuery);
         };
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Specification<User> usernameIsEqualTo(String username) {
+        return (root, query, builder) -> builder.equal(root.get(User_.username), username);
     }
 }

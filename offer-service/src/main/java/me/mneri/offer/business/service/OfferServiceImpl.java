@@ -28,7 +28,6 @@ import me.mneri.offer.business.exception.OfferIsCancelledException;
 import me.mneri.offer.business.exception.OfferIsExpiredException;
 import me.mneri.offer.business.exception.OfferNotFoundException;
 import me.mneri.offer.business.exception.UserIsNotEnabledException;
-import me.mneri.offer.business.exception.UserNotAuthorizedException;
 import me.mneri.offer.business.exception.UserNotFoundException;
 import me.mneri.offer.business.mapping.BusinessLayerMapper;
 import me.mneri.offer.data.entity.Offer;
@@ -38,6 +37,7 @@ import me.mneri.offer.data.repository.UserRepository;
 import me.mneri.offer.data.specification.OfferSpec;
 import me.mneri.offer.data.specification.UserSpec;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,8 +55,8 @@ import static org.springframework.data.jpa.domain.Specification.where;
  */
 @Log4j2
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED, onConstructor_ = @Autowired)
-@Service
-class OfferServiceImpl implements OfferService {
+@Service("offerService")
+public class OfferServiceImpl implements OfferService {
     private final BusinessLayerMapper businessLayerMapper;
 
     private final Clock clock;
@@ -73,25 +73,13 @@ class OfferServiceImpl implements OfferService {
      * {@inheritDoc}
      */
     @Override
+    @PreAuthorize("@offerService.isPublishedByUser(#offerId, authentication.name)")
     @Transactional
-    public void delete(UUID offerId, UUID userId)
-            throws OfferIsCancelledException, OfferIsExpiredException, OfferNotFoundException,
-            UserIsNotEnabledException, UserNotAuthorizedException, UserNotFoundException {
-        User user = userRepository
-                .findOne(where(userSpec.idIsEqualTo(userId)))
-                .orElseThrow(() -> new UserNotFoundException(userId));
-
-        if (!user.isEnabled()) {
-            throw new UserIsNotEnabledException(userId);
-        }
-
+    public void delete(UUID offerId)
+            throws OfferIsCancelledException, OfferIsExpiredException, OfferNotFoundException {
         Offer offer = offerRepository
                 .findOne(where(offerSpec.idIsEqualTo(offerId)))
                 .orElseThrow(() -> new OfferNotFoundException(offerId));
-
-        if (!user.equals(offer.getPublisher())) {
-            throw new UserNotAuthorizedException(userId);
-        }
 
         if (offer.isCancelled()) {
             throw new OfferIsCancelledException(offerId);
@@ -148,24 +136,23 @@ class OfferServiceImpl implements OfferService {
      */
     @Override
     @Transactional
-    public void update(UUID offerId, OfferUpdate update, UUID userId)
-            throws OfferIsCancelledException, OfferIsExpiredException, OfferNotFoundException,
-            UserIsNotEnabledException, UserNotFoundException, UserNotAuthorizedException {
-        User user = userRepository
-                .findOne(where(userSpec.idIsEqualTo(userId)))
-                .orElseThrow(() -> new UserNotFoundException(userId));
+    public boolean isPublishedByUser(UUID offerId, String username) {
+        long count = offerRepository.count(where(offerSpec.idIsEqualTo(offerId)
+                                .and(offerSpec.publisherUsernameIsEqualTo(username))));
+        return count == 1;
+    }
 
-        if (!user.isEnabled()) {
-            throw new UserIsNotEnabledException(userId);
-        }
-
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @PreAuthorize("@offerService.isPublishedByUser(#offerId, authentication.name)")
+    @Transactional
+    public void update(UUID offerId, OfferUpdate update)
+            throws OfferIsCancelledException, OfferIsExpiredException, OfferNotFoundException {
         Offer offer = offerRepository
                 .findOne(where(offerSpec.idIsEqualTo(offerId)))
                 .orElseThrow(() -> new OfferNotFoundException(offerId));
-
-        if (!user.equals(offer.getPublisher())) {
-            throw new UserNotAuthorizedException(userId);
-        }
 
         if (offer.isCancelled()) {
             throw new OfferIsCancelledException(offerId);
@@ -178,7 +165,7 @@ class OfferServiceImpl implements OfferService {
         businessLayerMapper.mergeOfferUpdateToOffer(offer, update);
 
         offerRepository.save(offer);
-        log.debug("Offer updated; offerId: {}; userId: {}", offer.getId(), userId);
+        log.debug("Offer updated; offerId: {}", offer.getId());
     }
 
     /**

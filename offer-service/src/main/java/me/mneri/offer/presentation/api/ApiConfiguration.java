@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package me.mneri.offer.configuration;
+package me.mneri.offer.presentation.api;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
@@ -29,14 +29,14 @@ import org.springframework.context.annotation.Configuration;
  * @author Massimo Neri
  */
 @Configuration
-public class OpenApiConfiguration {
+class ApiConfiguration {
     /**
      * Return an application wide {@link OpenAPI} instance.
      *
      * @return The {@link OpenAPI} instance.
      */
     @Bean
-    public OpenAPI openAPI() {
+    protected OpenAPI openAPI() {
         return new OpenAPI()
                 .info(new Info()
                         .title("offer-service API")

@@ -29,7 +29,6 @@ import me.mneri.offer.business.exception.OfferIsCancelledException;
 import me.mneri.offer.business.exception.OfferIsExpiredException;
 import me.mneri.offer.business.exception.OfferNotFoundException;
 import me.mneri.offer.business.exception.UserIsNotEnabledException;
-import me.mneri.offer.business.exception.UserNotAuthorizedException;
 import me.mneri.offer.business.exception.UserNotFoundException;
 import me.mneri.offer.data.entity.Offer;
 import me.mneri.offer.data.entity.User;
@@ -68,13 +67,9 @@ public interface OffersAPI {
      * remains inside the repository and it will be filtered out by query predicates.
      *
      * @param offerId The offer id.
-     * @param auth    The id of the user attempting the modification.
-     * @throws OfferIsCancelledException  If the offer with the specified id was previously cancelled.
-     * @throws OfferIsExpiredException    If the offer with the specified id has expired.
-     * @throws OfferNotFoundException     If the offer with the specified id was not found in the repository.
-     * @throws UserIsNotEnabledException  If the user with the specified id is not enabled.
-     * @throws UserNotFoundException      If a user with the specified id was not found in the repository.
-     * @throws UserNotAuthorizedException If the specified user id doesn't belong to the publisher of the offer.
+     * @throws OfferIsCancelledException If the offer with the specified id was previously cancelled.
+     * @throws OfferIsExpiredException   If the offer with the specified id has expired.
+     * @throws OfferNotFoundException    If the offer with the specified id was not found in the repository.
      */
     @Operation(
             summary = "Delete an open offer.",
@@ -92,9 +87,8 @@ public interface OffersAPI {
                             description = "If the user or the offer don't exist or they are not enabled.",
                             content = @Content)})
     @DeleteMapping(value = "/{offerId}")
-    void deleteOffer(@PathVariable UUID offerId, @RequestParam(APIParameters.PARAM_AUTH_TOKEN) UUID auth)
-            throws OfferIsCancelledException, OfferIsExpiredException, OfferNotFoundException,
-            UserIsNotEnabledException, UserNotFoundException, UserNotAuthorizedException;
+    void deleteOffer(@PathVariable UUID offerId)
+            throws OfferIsCancelledException, OfferIsExpiredException, OfferNotFoundException;
 
     /**
      * Retrieve all the open {@link Offer}s. An open offer is an offer that is not yet expired nor has been canceled
@@ -203,13 +197,9 @@ public interface OffersAPI {
      *
      * @param offerId   The offer id.
      * @param updateDto The update data.
-     * @param auth      The user id of the publisher of the offer.
-     * @throws OfferIsCancelledException  If the offer with the specified id was previously cancelled.
-     * @throws OfferIsExpiredException    If the offer with the specified id has expired.
-     * @throws OfferNotFoundException     If the offer with the specified id was not found in the repository.
-     * @throws UserIsNotEnabledException  If the user with the specified id is not enabled.
-     * @throws UserNotFoundException      If a user with the specified id was not found in the repository.
-     * @throws UserNotAuthorizedException If the specified user id doesn't belong to the publisher of the offer.
+     * @throws OfferIsCancelledException If the offer with the specified id was previously cancelled.
+     * @throws OfferIsExpiredException   If the offer with the specified id has expired.
+     * @throws OfferNotFoundException    If the offer with the specified id was not found in the repository.
      */
     @Operation(
             summary = "Modify an open offer.",
@@ -228,8 +218,6 @@ public interface OffersAPI {
                             content = @Content)})
     @PutMapping(value = "/{offerId}", consumes = MimeTypeUtils.APPLICATION_JSON_VALUE)
     void putOffer(@PathVariable UUID offerId,
-                  @Valid @RequestBody OfferUpdateDto updateDto,
-                  @RequestParam(APIParameters.PARAM_AUTH_TOKEN) UUID auth)
-            throws OfferIsCancelledException, OfferIsExpiredException, OfferNotFoundException,
-            UserIsNotEnabledException, UserNotFoundException, UserNotAuthorizedException;
+                  @Valid @RequestBody OfferUpdateDto updateDto)
+            throws OfferIsCancelledException, OfferIsExpiredException, OfferNotFoundException;
 }

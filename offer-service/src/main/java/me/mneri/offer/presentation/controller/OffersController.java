@@ -26,7 +26,6 @@ import me.mneri.offer.business.exception.OfferIsCancelledException;
 import me.mneri.offer.business.exception.OfferIsExpiredException;
 import me.mneri.offer.business.exception.OfferNotFoundException;
 import me.mneri.offer.business.exception.UserIsNotEnabledException;
-import me.mneri.offer.business.exception.UserNotAuthorizedException;
 import me.mneri.offer.business.exception.UserNotFoundException;
 import me.mneri.offer.business.service.OfferService;
 import me.mneri.offer.business.service.UserService;
@@ -67,10 +66,9 @@ class OffersController implements OffersAPI {
      * {@inheritDoc}
      */
     @Override
-    public void deleteOffer(UUID offerId, UUID auth)
-            throws OfferIsCancelledException, OfferIsExpiredException, OfferNotFoundException,
-            UserIsNotEnabledException, UserNotFoundException, UserNotAuthorizedException {
-        offerService.delete(offerId, auth);
+    public void deleteOffer(UUID offerId)
+            throws OfferIsCancelledException, OfferIsExpiredException, OfferNotFoundException {
+        offerService.delete(offerId);
     }
 
     /**
@@ -126,9 +124,8 @@ class OffersController implements OffersAPI {
      * {@inheritDoc}
      */
     @Override
-    public void putOffer(UUID offerId, OfferUpdateDto updateDto, UUID auth)
-            throws OfferIsCancelledException, OfferIsExpiredException, OfferNotFoundException,
-            UserIsNotEnabledException, UserNotFoundException, UserNotAuthorizedException {
-        offerService.update(offerId, presentationLayerMapper.mapOfferUpdateDtoToOfferUpdate(updateDto), auth);
+    public void putOffer(UUID offerId, OfferUpdateDto updateDto)
+            throws OfferIsCancelledException, OfferIsExpiredException, OfferNotFoundException {
+        offerService.update(offerId, presentationLayerMapper.mapOfferUpdateDtoToOfferUpdate(updateDto));
     }
 }
