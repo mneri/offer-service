@@ -39,7 +39,7 @@ import static org.springframework.data.jpa.domain.Specification.where;
  *
  * @author Massimo Neri
  */
-@RequiredArgsConstructor(access = AccessLevel.PROTECTED, onConstructor_ = @Autowired)
+@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 @Service
 class UserDetailsServiceImpl implements UserDetailsService {
     @Mapper(componentModel = "spring",

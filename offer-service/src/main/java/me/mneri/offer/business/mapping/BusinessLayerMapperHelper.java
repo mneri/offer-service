@@ -42,7 +42,7 @@ import java.time.Clock;
  * @author Massimo Neri
  */
 @Component
-@RequiredArgsConstructor(access = AccessLevel.PROTECTED, onConstructor_ = @Autowired)
+@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 class BusinessLayerMapperHelper {
     private final Clock clock;
 

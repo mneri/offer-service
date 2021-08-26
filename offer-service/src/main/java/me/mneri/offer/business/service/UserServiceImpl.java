@@ -50,7 +50,7 @@ import static org.springframework.data.jpa.domain.Specification.where;
  * @author Massimo Neri
  */
 @Log4j2
-@RequiredArgsConstructor(access = AccessLevel.PROTECTED, onConstructor_ = @Autowired)
+@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 @Service("userService")
 class UserServiceImpl implements UserService {
     private final BusinessLayerMapper businessLayerMapper;

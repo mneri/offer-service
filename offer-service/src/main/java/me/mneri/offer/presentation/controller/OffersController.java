@@ -51,7 +51,7 @@ import java.util.UUID;
  * @author Massimo Neri
  */
 @Log4j2
-@RequiredArgsConstructor(access = AccessLevel.PROTECTED, onConstructor_ = @Autowired)
+@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 @RestController
 class OffersController implements OffersAPI {
     private final Clock clock;
