@@ -33,7 +33,6 @@ import me.mneri.offer.data.repository.OfferRepository;
 import me.mneri.offer.data.repository.UserRepository;
 import me.mneri.offer.data.specification.OfferSpec;
 import me.mneri.offer.data.specification.UserSpec;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

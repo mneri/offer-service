@@ -24,7 +24,6 @@ import me.mneri.offer.data.entity.Offer;
 import me.mneri.offer.presentation.dto.OfferDto;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.MappingTarget;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.Clock;

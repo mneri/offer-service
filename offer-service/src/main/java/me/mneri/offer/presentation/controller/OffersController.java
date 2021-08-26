@@ -38,7 +38,6 @@ import me.mneri.offer.presentation.dto.PagingDto;
 import me.mneri.offer.presentation.dto.ResponseDto;
 import me.mneri.offer.presentation.dto.UserDto;
 import me.mneri.offer.presentation.mapping.PresentationLayerMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.Clock;
