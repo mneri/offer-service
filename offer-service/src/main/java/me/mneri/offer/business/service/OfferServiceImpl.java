@@ -18,6 +18,7 @@
 
 package me.mneri.offer.business.service;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import me.mneri.offer.business.bean.OfferCreate;
@@ -53,9 +54,9 @@ import static org.springframework.data.jpa.domain.Specification.where;
  * @author Massimo Neri
  */
 @Log4j2
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
+@RequiredArgsConstructor(access = AccessLevel.PROTECTED, onConstructor_ = @Autowired)
 @Service
-public class OfferServiceImpl implements OfferService {
+class OfferServiceImpl implements OfferService {
     private final BusinessLayerMapper businessLayerMapper;
 
     private final Clock clock;

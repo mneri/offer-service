@@ -18,6 +18,7 @@
 
 package me.mneri.offer.business.mapping;
 
+import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import me.mneri.offer.business.bean.OfferCreate;
@@ -41,8 +42,8 @@ import java.time.Clock;
  * @author Massimo Neri
  */
 @Component
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
-public class BusinessLayerMapperHelper {
+@RequiredArgsConstructor(access = AccessLevel.PROTECTED, onConstructor_ = @Autowired)
+class BusinessLayerMapperHelper {
     private final Clock clock;
 
     private final EntityFactory entityFactory;

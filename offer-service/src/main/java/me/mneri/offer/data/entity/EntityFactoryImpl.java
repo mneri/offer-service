@@ -1,5 +1,6 @@
 package me.mneri.offer.data.entity;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -13,8 +14,8 @@ import java.util.Date;
  * @author Massimo Neri
  */
 @Component
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
-public class EntityFactoryImpl implements EntityFactory {
+@RequiredArgsConstructor(access = AccessLevel.PROTECTED, onConstructor_ = @Autowired)
+class EntityFactoryImpl implements EntityFactory {
     private final Clock clock;
 
     private final UUIDProvider uuidProvider;

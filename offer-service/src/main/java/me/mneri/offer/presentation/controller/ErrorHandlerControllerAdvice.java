@@ -18,6 +18,8 @@
 
 package me.mneri.offer.presentation.controller;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import me.mneri.offer.business.exception.OfferIsCancelledException;
 import me.mneri.offer.business.exception.OfferIsExpiredException;
@@ -38,8 +40,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  * @author Massimo Neri
  */
 @Log4j2
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @RestControllerAdvice
-public class ErrorHandlerControllerAdvice {
+class ErrorHandlerControllerAdvice {
     /**
      * Handler for {@link IllegalPageSizeException}
      */

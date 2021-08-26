@@ -18,6 +18,8 @@
 
 package me.mneri.offer.data.specification;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import me.mneri.offer.data.entity.Offer;
 import me.mneri.offer.data.entity.Offer_;
 import me.mneri.offer.data.entity.User;
@@ -33,7 +35,8 @@ import java.util.UUID;
  * Default implementation of the {@link UserSpec} component.
  */
 @Component
-public class UserSpecImpl implements UserSpec {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+class UserSpecImpl implements UserSpec {
     /**
      * {@inheritDoc}
      */

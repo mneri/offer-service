@@ -18,6 +18,7 @@
 
 package me.mneri.offer.data.specification;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import me.mneri.offer.data.entity.Offer;
 import me.mneri.offer.data.entity.Offer_;
@@ -38,8 +39,8 @@ import static org.springframework.data.jpa.domain.Specification.not;
  * @author Massimo Neri
  */
 @Component
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
-public class OfferSpecImpl implements OfferSpec {
+@RequiredArgsConstructor(access = AccessLevel.PROTECTED, onConstructor_ = @Autowired)
+class OfferSpecImpl implements OfferSpec {
     private final Clock clock;
 
     /**

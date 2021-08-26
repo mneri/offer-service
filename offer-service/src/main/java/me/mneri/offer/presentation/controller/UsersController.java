@@ -18,6 +18,7 @@
 
 package me.mneri.offer.presentation.controller;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import me.mneri.offer.business.bean.Paging;
@@ -44,9 +45,9 @@ import java.util.UUID;
  * @author Massimo Neri
  */
 @Log4j2
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
+@RequiredArgsConstructor(access = AccessLevel.PROTECTED, onConstructor_ = @Autowired)
 @RestController
-public class UsersController implements UsersAPI {
+class UsersController implements UsersAPI {
     private final OfferService offerService;
 
     private final PresentationLayerMapper presentationLayerMapper;

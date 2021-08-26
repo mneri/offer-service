@@ -18,6 +18,8 @@
 
 package me.mneri.offer.presentation.controller;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import me.mneri.offer.presentation.api.APIParameters;
 import me.mneri.offer.presentation.dto.PagingDto;
 import me.mneri.offer.presentation.exception.IllegalPageSizeException;
@@ -30,8 +32,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  *
  * @author Massimo Neri
  */
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @RestControllerAdvice
-public class ModelAttributeControllerAdvice {
+class ModelAttributeControllerAdvice {
     @ModelAttribute
     public PagingDto pagingDto(@RequestParam(value = APIParameters.PARAM_PAGE_NUMBER, required = false) Integer pageNumber,
                                @RequestParam(value = APIParameters.PARAM_PAGE_SIZE, required = false) Integer pageSize)

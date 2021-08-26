@@ -18,6 +18,7 @@
 
 package me.mneri.offer.presentation.mapping;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import me.mneri.offer.data.entity.Offer;
 import me.mneri.offer.presentation.dto.OfferDto;
@@ -34,8 +35,8 @@ import java.time.Clock;
  * @author Massimo Neri
  */
 @Component
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
-public class PresentationLayerMapperHelper {
+@RequiredArgsConstructor(access = AccessLevel.PROTECTED, onConstructor_ = @Autowired)
+class PresentationLayerMapperHelper {
     private final Clock clock;
 
     /**

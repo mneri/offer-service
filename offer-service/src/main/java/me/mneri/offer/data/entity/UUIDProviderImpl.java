@@ -18,6 +18,8 @@
 
 package me.mneri.offer.data.entity;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
@@ -28,7 +30,8 @@ import java.util.UUID;
  * @author Massimo Neri
  */
 @Component
-public class UUIDProviderImpl implements UUIDProvider {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+class UUIDProviderImpl implements UUIDProvider {
     /**
      * {@inheritDoc}
      */
