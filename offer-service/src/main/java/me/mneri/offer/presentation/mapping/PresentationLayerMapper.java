@@ -18,9 +18,9 @@
 
 package me.mneri.offer.presentation.mapping;
 
-import me.mneri.offer.business.bean.OfferCreate;
-import me.mneri.offer.business.bean.OfferUpdate;
-import me.mneri.offer.business.bean.Paging;
+import me.mneri.offer.business.pojo.OfferCreate;
+import me.mneri.offer.business.pojo.OfferUpdate;
+import me.mneri.offer.business.pojo.Paging;
 import me.mneri.offer.data.entity.Offer;
 import me.mneri.offer.data.entity.User;
 import me.mneri.offer.presentation.dto.OfferCreateDto;

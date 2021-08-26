@@ -29,7 +29,7 @@ import java.util.UUID;
  *
  * @author Massimo Neri
  */
-@Component
+@Component("uuidProvider")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 class UUIDProviderImpl implements UUIDProvider {
     /**

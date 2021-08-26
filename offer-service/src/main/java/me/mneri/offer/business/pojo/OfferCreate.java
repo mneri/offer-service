@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package me.mneri.offer.business.bean;
+package me.mneri.offer.business.pojo;
 
 import lombok.Data;
 import me.mneri.offer.data.entity.Offer;

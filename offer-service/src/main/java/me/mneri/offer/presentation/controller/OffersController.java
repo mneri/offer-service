@@ -21,7 +21,7 @@ package me.mneri.offer.presentation.controller;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import me.mneri.offer.business.bean.Paging;
+import me.mneri.offer.business.pojo.Paging;
 import me.mneri.offer.business.exception.OfferIsCancelledException;
 import me.mneri.offer.business.exception.OfferIsExpiredException;
 import me.mneri.offer.business.exception.OfferNotFoundException;

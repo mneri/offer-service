@@ -22,13 +22,24 @@ import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 import java.util.UUID;
 
+/**
+ * JPA attribute converter for {@link UUID} type.
+ *
+ * @author Massimo Neri
+ */
 @Converter(autoApply = true)
 public class UUIDConverter implements AttributeConverter<UUID, String> {
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String convertToDatabaseColumn(UUID uuid) {
         return uuid.toString();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public UUID convertToEntityAttribute(String string) {
         return UUID.fromString(string);

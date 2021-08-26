@@ -16,27 +16,21 @@
  * limitations under the License.
  */
 
-package me.mneri.offer.business.bean;
+package me.mneri.offer.business.pojo;
 
 import lombok.Data;
-import me.mneri.offer.data.entity.Offer;
-
-import java.math.BigDecimal;
+import lombok.ToString;
+import me.mneri.offer.data.entity.User;
 
 /**
- * Data to update an {@link Offer}.
+ * Data to create a new {@link User}.
  *
  * @author Massimo Neri
  */
 @Data
-public class OfferUpdate {
-    private String title;
+public class UserCreate {
+    private String username;
 
-    private String description;
-
-    private BigDecimal price;
-
-    private String currency;
-
-    private Long ttl;
+    @ToString.Exclude
+    private String password;
 }

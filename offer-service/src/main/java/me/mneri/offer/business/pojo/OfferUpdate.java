@@ -16,18 +16,27 @@
  * limitations under the License.
  */
 
-package me.mneri.offer.business.bean;
+package me.mneri.offer.business.pojo;
 
 import lombok.Data;
+import me.mneri.offer.data.entity.Offer;
+
+import java.math.BigDecimal;
 
 /**
- * Data for paging API results.
+ * Data to update an {@link Offer}.
  *
  * @author Massimo Neri
  */
 @Data
-public class Paging {
-    private Integer pageNumber;
+public class OfferUpdate {
+    private String title;
 
-    private Integer pageSize;
+    private String description;
+
+    private BigDecimal price;
+
+    private String currency;
+
+    private Long ttl;
 }

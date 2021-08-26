@@ -18,9 +18,9 @@
 
 package me.mneri.offer.business.mapping;
 
-import me.mneri.offer.business.bean.OfferCreate;
-import me.mneri.offer.business.bean.OfferUpdate;
-import me.mneri.offer.business.bean.UserCreate;
+import me.mneri.offer.business.pojo.OfferCreate;
+import me.mneri.offer.business.pojo.OfferUpdate;
+import me.mneri.offer.business.pojo.UserCreate;
 import me.mneri.offer.data.entity.Offer;
 import me.mneri.offer.data.entity.User;
 import org.mapstruct.BeanMapping;

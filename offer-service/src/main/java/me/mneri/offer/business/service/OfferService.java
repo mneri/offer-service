@@ -18,9 +18,9 @@
 
 package me.mneri.offer.business.service;
 
-import me.mneri.offer.business.bean.OfferCreate;
-import me.mneri.offer.business.bean.OfferUpdate;
-import me.mneri.offer.business.bean.Paging;
+import me.mneri.offer.business.pojo.OfferCreate;
+import me.mneri.offer.business.pojo.OfferUpdate;
+import me.mneri.offer.business.pojo.Paging;
 import me.mneri.offer.business.exception.OfferIsCancelledException;
 import me.mneri.offer.business.exception.OfferIsExpiredException;
 import me.mneri.offer.business.exception.OfferNotFoundException;

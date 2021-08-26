@@ -1,6 +1,7 @@
 package me.mneri.offer.business.bean;
 
 import lombok.val;
+import me.mneri.offer.business.pojo.UserCreate;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 

@@ -19,8 +19,8 @@
 package me.mneri.offer;
 
 import lombok.SneakyThrows;
-import me.mneri.offer.business.bean.OfferCreate;
-import me.mneri.offer.business.bean.UserCreate;
+import me.mneri.offer.business.pojo.OfferCreate;
+import me.mneri.offer.business.pojo.UserCreate;
 import me.mneri.offer.business.service.OfferService;
 import me.mneri.offer.business.service.UserService;
 import me.mneri.offer.data.entity.User;

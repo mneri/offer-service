@@ -16,21 +16,18 @@
  * limitations under the License.
  */
 
-package me.mneri.offer.business.bean;
+package me.mneri.offer.business.pojo;
 
 import lombok.Data;
-import lombok.ToString;
-import me.mneri.offer.data.entity.User;
 
 /**
- * Data to create a new {@link User}.
+ * Data for paging API results.
  *
  * @author Massimo Neri
  */
 @Data
-public class UserCreate {
-    private String username;
+public class Paging {
+    private Integer pageNumber;
 
-    @ToString.Exclude
-    private String password;
+    private Integer pageSize;
 }

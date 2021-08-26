@@ -12,7 +12,7 @@ import java.util.Date;
  *
  * @author Massimo Neri
  */
-@Component
+@Component("entityFactory")
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 class EntityFactoryImpl implements EntityFactory {
     private final Clock clock;

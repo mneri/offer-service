@@ -34,7 +34,7 @@ import java.util.UUID;
 /**
  * Default implementation of the {@link UserSpec} component.
  */
-@Component
+@Component("userSpec")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 class UserSpecImpl implements UserSpec {
     /**

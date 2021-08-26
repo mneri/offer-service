@@ -37,7 +37,7 @@ import static org.springframework.data.jpa.domain.Specification.not;
  *
  * @author Massimo Neri
  */
-@Component
+@Component("offerSpec")
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 class OfferSpecImpl implements OfferSpec {
     private final Clock clock;
