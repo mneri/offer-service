@@ -72,7 +72,7 @@ public class OfferServiceImpl implements OfferService {
      * {@inheritDoc}
      */
     @Override
-    @PreAuthorize("@offerService.isPublishedByUser(#offerId, authentication.name)")
+    @PreAuthorize("hasAuthority('offer:delete') and @offerService.isPublishedByUser(#offerId, authentication.name)")
     @Transactional
     public void delete(UUID offerId)
             throws OfferIsCancelledException, OfferIsExpiredException, OfferNotFoundException {

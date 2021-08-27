@@ -22,27 +22,22 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
-import me.mneri.offer.data.validator.Username;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.Index;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.UUID;
 
 /**
- * ORM for the {@code user} table.
+ * ORM for the {@code role} table.
  * <p>
  * The id is immutable and is assigned upon creation. ORM objects are compared by their id and not their state.
  *
@@ -52,48 +47,20 @@ import java.util.UUID;
 @Entity
 @EqualsAndHashCode(of = "id")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "user", indexes = @Index(name = "idx_user_username_unq", columnList = "username", unique = true))
-public class User {
-    /**
-     * The maximum length for a username field.
-     */
-    public static final int USERNAME_MAX_LENGTH = 24;
-
-    /**
-     * The minimum length for a username field.
-     */
-    public static final int USERNAME_MIN_LENGTH = 3;
-
-    /**
-     * The regular expression defining the format of a username field.
-     */
-    public static final String USERNAME_REGEXP = "[a-zA-Z0-9_]+";
-
-    @Column
+@Table(name = "role", indexes = @Index(name = "idx_role_name_unq", columnList = "name", unique = true))
+public class Role {
     @Id
+    @Column
     @NotNull
     @Setter(AccessLevel.PROTECTED)
     private UUID id;
 
-    @Column(unique = true)
-    @Username
-    private String username;
-
-    @Column(name = "password")
-    @NotBlank
-    @Setter(AccessLevel.PROTECTED)
-    @ToString.Exclude
-    private String encodedPassword;
-
     @Column
-    private boolean enabled;
+    @NotNull
+    @Setter(AccessLevel.PROTECTED)
+    private String name;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
     @ToString.Exclude
-    private List<Role> roles;
-
-    @Transient
-    public void setEncodedPassword(@NonNull String rawPassword, @NonNull PasswordEncoder passwordEncoder) {
-        setEncodedPassword(passwordEncoder.encode(rawPassword));
-    }
+    private List<Authority> authorities;
 }

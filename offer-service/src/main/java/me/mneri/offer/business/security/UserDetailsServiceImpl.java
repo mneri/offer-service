@@ -20,8 +20,11 @@ package me.mneri.offer.business.security;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import me.mneri.offer.data.entity.Authority;
 import me.mneri.offer.data.entity.User;
+import me.mneri.offer.data.repository.AuthorityRepository;
 import me.mneri.offer.data.repository.UserRepository;
+import me.mneri.offer.data.specification.AuthoritySpec;
 import me.mneri.offer.data.specification.UserSpec;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
@@ -30,6 +33,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 import static org.springframework.data.jpa.domain.Specification.where;
 
@@ -47,7 +52,16 @@ class UserDetailsServiceImpl implements UserDetailsService {
         @Mapping(target = "authorities", ignore = true)
         @Mapping(target = "password", source = "encodedPassword")
         UserDetailsImpl mapUserToUserDetailsImpl(User user);
+
+        @Mapping(target = "authority", source = "name")
+        GrantedAuthorityImpl mapAuthorityToGrantedAuthorityImpl(Authority authority);
+
+        List<GrantedAuthorityImpl> mapListOfAuthorityToListOfGrantedAuthorityImpl(List<Authority> authorities);
     }
+
+    private final AuthorityRepository authorityRepository;
+
+    private final AuthoritySpec authoritySpec;
 
     private final UserDetailsImplMapper mapper;
 
@@ -61,6 +75,13 @@ class UserDetailsServiceImpl implements UserDetailsService {
                 .findOne(where(userSpec.usernameIsEqualTo(username)))
                 .orElseThrow(() -> new UsernameNotFoundException(username));
 
-        return mapper.mapUserToUserDetailsImpl(user);
+        List<Authority> authorities = authorityRepository
+                .findAll(where(authoritySpec.isEnabled())
+                        .and(authoritySpec.ownerIdIsEqualTo(user.getId())));
+
+        UserDetailsImpl userDetails = mapper.mapUserToUserDetailsImpl(user);
+        userDetails.setAuthorities(mapper.mapListOfAuthorityToListOfGrantedAuthorityImpl(authorities));
+
+        return userDetails;
     }
 }

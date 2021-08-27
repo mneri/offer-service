@@ -42,6 +42,7 @@ import org.springframework.lang.NonNull;
         uses = BusinessLayerMapperHelper.class)
 public interface BusinessLayerMapper {
     @Mapping(target = "enabled", ignore = true)
+    @Mapping(target = "roles", ignore = true)
     User mapUserCreateToUser(UserCreate create);
 
     @Mapping(target = "cancelled", ignore = true)

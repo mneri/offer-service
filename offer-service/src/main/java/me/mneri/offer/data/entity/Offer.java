@@ -41,7 +41,7 @@ import java.util.Date;
 import java.util.UUID;
 
 /**
- * ORM for {@code offer} table.
+ * ORM for the {@code offer} table.
  * <p>
  * The id is immutable and is assigned upon creation. ORM objects are compared by their id and not their state.
  *
