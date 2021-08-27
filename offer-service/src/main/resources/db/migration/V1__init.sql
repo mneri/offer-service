@@ -1,11 +1,11 @@
 create table authority (
-    id varchar(255) not null,
+    id binary not null,
     name varchar(255) not null,
     enabled boolean,
     primary key (id));
 
 create table offer (
-    id varchar(255) not null,
+    id binary not null,
     title varchar(256),
     description varchar(8192),
     publisher varchar(255) not null,
@@ -17,21 +17,16 @@ create table offer (
     primary key (id));
 
 create table user_authority (
-    user varchar(255) not null,
-    authority varchar(255) not null,
+    user binary not null,
+    authority binary not null,
     primary key (user, authority));
 
 create table user (
-    id varchar(255) not null,
+    id binary not null,
     username varchar(24),
     password varchar(255),
     enabled boolean,
     primary key (id));
-
-create table user_role (
-    user varchar(255) not null,
-    role varchar(255) not null,
-    primary key (user, role));
 
 alter table authority
     add constraint idx_authority_name_unq unique (name);
@@ -45,20 +40,20 @@ alter table user_authority
     add constraint fk_user_authority_authority foreign key (authority) references authority;
 
 insert into user (id, username, password, enabled) values (
-    '72a2d9b4-8546-4726-91d6-185b65e60bdf',
+    'b4d9a2724685264791d6185b65e60bdf',
     'admin',
     '$2a$10$UgHDJ0NezWztW8YCByCvnOTw/xYQ/1XHrx/6L3LvqLDU0AULOEFpi',
     true);
 
-insert into authority (id, name, enabled) values ('78ad5230-40cd-4e6e-9848-0222e212b6dd', 'offer:write', true);
-insert into authority (id, name, enabled) values ('2a5179f7-1e59-4c1e-91d7-c7af352e56e6', 'offer:delete', true);
-insert into authority (id, name, enabled) values ('568cd745-9f61-4ded-9154-7c288c4fa315', 'user:write', true);
-insert into authority (id, name, enabled) values ('aa1fe7c4-359c-4ca8-84bb-2522f4684aa1', 'user:delete', true);
-insert into authority (id, name, enabled) values ('c625ebc1-9b92-4146-a95a-4184afcd2775', 'authority:read', true);
+insert into authority (id, name, enabled) values ('3052ad78cd406e4e98480222e212b6dd', 'offer:write', true);
+insert into authority (id, name, enabled) values ('f779512a591e1e4c91d7c7af352e56e6', 'offer:delete', true);
+insert into authority (id, name, enabled) values ('45d78c56619fed4d91547c288c4fa315', 'user:write', true);
+insert into authority (id, name, enabled) values ('c4e71faa9c35a84c84bb2522f4684aa1', 'user:delete', true);
+insert into authority (id, name, enabled) values ('c1eb25c6929b4641a95a4184afcd2775', 'authority:read', true);
 
 insert into user_authority (user, authority) values
-    ('72a2d9b4-8546-4726-91d6-185b65e60bdf', '78ad5230-40cd-4e6e-9848-0222e212b6dd'),
-    ('72a2d9b4-8546-4726-91d6-185b65e60bdf', '2a5179f7-1e59-4c1e-91d7-c7af352e56e6'),
-    ('72a2d9b4-8546-4726-91d6-185b65e60bdf', '568cd745-9f61-4ded-9154-7c288c4fa315'),
-    ('72a2d9b4-8546-4726-91d6-185b65e60bdf', 'aa1fe7c4-359c-4ca8-84bb-2522f4684aa1'),
-    ('72a2d9b4-8546-4726-91d6-185b65e60bdf', 'c625ebc1-9b92-4146-a95a-4184afcd2775');
+    ('b4d9a2724685264791d6185b65e60bdf', '3052ad78cd406e4e98480222e212b6dd'),
+    ('b4d9a2724685264791d6185b65e60bdf', 'f779512a591e1e4c91d7c7af352e56e6'),
+    ('b4d9a2724685264791d6185b65e60bdf', '45d78c56619fed4d91547c288c4fa315'),
+    ('b4d9a2724685264791d6185b65e60bdf', 'c4e71faa9c35a84c84bb2522f4684aa1'),
+    ('b4d9a2724685264791d6185b65e60bdf', 'c1eb25c6929b4641a95a4184afcd2775');

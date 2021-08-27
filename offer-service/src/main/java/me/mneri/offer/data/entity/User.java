@@ -75,7 +75,6 @@ public class User {
     @Id
     @NotNull
     @Setter(AccessLevel.PROTECTED)
-    @Type(type = "uuid-char")
     private UUID id;
 
     @Column(unique = true)
