@@ -27,9 +27,7 @@ import me.mneri.offer.data.entity.User;
 import me.mneri.offer.data.repository.OfferRepository;
 import me.mneri.offer.data.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.Clock;
@@ -40,8 +38,8 @@ import java.util.Date;
  *
  * @author Massimo Neri
  */
-@Component
-@Profile("!test") // Most of the tests rely on an empty initial database, we exclude this class from the test profile.
+//@Component
+//@Profile("!test") // Most of the tests rely on an empty initial database, we exclude this class from the test profile.
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class OfferCommandLineRunner implements CommandLineRunner {
     private final Clock clock;

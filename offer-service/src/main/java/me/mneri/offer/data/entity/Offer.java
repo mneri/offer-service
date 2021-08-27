@@ -26,11 +26,13 @@ import lombok.Setter;
 import lombok.ToString;
 import me.mneri.offer.data.validator.Description;
 import me.mneri.offer.data.validator.Title;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotEmpty;
@@ -77,10 +79,10 @@ public class Offer {
      */
     public static final int TTL_MIN_VALUE = 1;
 
-    @Column
     @Id
     @NotNull
     @Setter(AccessLevel.PROTECTED)
+    @Type(type = "uuid-char")
     private UUID id;
 
     @Column
@@ -112,6 +114,7 @@ public class Offer {
     @Column
     private boolean cancelled;
 
+    @JoinColumn(name = "publisher")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @NotNull
     @ToString.Exclude

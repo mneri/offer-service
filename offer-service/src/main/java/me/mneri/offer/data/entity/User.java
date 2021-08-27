@@ -26,6 +26,7 @@ import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
 import me.mneri.offer.data.validator.Username;
+import org.hibernate.annotations.Type;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.Column;
@@ -33,7 +34,9 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.Index;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
@@ -69,10 +72,10 @@ public class User {
      */
     public static final String USERNAME_REGEXP = "[a-zA-Z0-9_]+";
 
-    @Column
     @Id
     @NotNull
     @Setter(AccessLevel.PROTECTED)
+    @Type(type = "uuid-char")
     private UUID id;
 
     @Column(unique = true)
@@ -88,9 +91,13 @@ public class User {
     @Column
     private boolean enabled;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "user_authority",
+            inverseJoinColumns = @JoinColumn(name = "authority"),
+            joinColumns = @JoinColumn(name = "user"))
+    @ManyToMany(fetch = FetchType.LAZY)
     @ToString.Exclude
-    private List<Role> roles;
+    private List<Authority> authorities;
 
     @Transient
     public void setEncodedPassword(@NonNull String rawPassword, @NonNull PasswordEncoder passwordEncoder) {

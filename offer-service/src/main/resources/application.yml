@@ -38,7 +38,7 @@ spring:
       uri: http://configuration-service
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: none
     show-sql: false
 
 springdoc:

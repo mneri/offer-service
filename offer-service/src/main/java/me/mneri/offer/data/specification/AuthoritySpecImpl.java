@@ -22,8 +22,6 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import me.mneri.offer.data.entity.Authority;
 import me.mneri.offer.data.entity.Authority_;
-import me.mneri.offer.data.entity.Role;
-import me.mneri.offer.data.entity.Role_;
 import me.mneri.offer.data.entity.User;
 import me.mneri.offer.data.entity.User_;
 import org.springframework.data.jpa.domain.Specification;
@@ -58,12 +56,12 @@ class AuthoritySpecImpl implements AuthoritySpec {
         return (root, query, builder) -> {
             Subquery<UUID> subQuery = query.subquery(UUID.class);
             Root<User> subRoot = subQuery.from(User.class);
-            Join<Role, Authority> join = subRoot.join(User_.roles).join(Role_.authorities);
+            Join<User, Authority> join = subRoot.join(User_.authorities);
 
             subQuery.select(join.get(Authority_.id))
                     .where(builder.equal(subRoot.get(User_.id), userId));
 
-            return builder.equal(root.get(Authority_.id), subQuery);
+            return root.get(Authority_.id).in(subQuery);
         };
     }
 }

@@ -23,6 +23,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -46,9 +47,9 @@ import java.util.UUID;
 @Table(name = "authority", indexes = @Index(name = "idx_authority_name_unq", columnList = "name", unique = true))
 public class Authority {
     @Id
-    @Column
     @NotNull
     @Setter(AccessLevel.PROTECTED)
+    @Type(type = "uuid-char")
     private UUID id;
 
     @Column
