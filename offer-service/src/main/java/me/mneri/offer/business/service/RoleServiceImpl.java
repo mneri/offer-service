@@ -23,7 +23,9 @@ import lombok.RequiredArgsConstructor;
 import me.mneri.offer.data.entity.Role;
 import me.mneri.offer.data.repository.RoleRepository;
 import me.mneri.offer.data.specification.RoleSpec;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -43,6 +45,8 @@ class RoleServiceImpl implements RoleService {
     private final RoleSpec roleSpec;
 
     @Override
+    @PreAuthorize("hasAuthority('role:read')")
+    @Transactional
     public List<Role> findAllByOwnerId(UUID userId) {
         return roleRepository.findAll(where(roleSpec.ownerIdIsEqualTo(userId)));
     }

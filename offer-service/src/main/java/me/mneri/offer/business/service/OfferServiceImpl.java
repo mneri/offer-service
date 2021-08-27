@@ -21,15 +21,15 @@ package me.mneri.offer.business.service;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import me.mneri.offer.business.pojo.OfferCreate;
-import me.mneri.offer.business.pojo.OfferUpdate;
-import me.mneri.offer.business.pojo.Paging;
 import me.mneri.offer.business.exception.OfferIsCancelledException;
 import me.mneri.offer.business.exception.OfferIsExpiredException;
 import me.mneri.offer.business.exception.OfferNotFoundException;
 import me.mneri.offer.business.exception.UserIsNotEnabledException;
 import me.mneri.offer.business.exception.UserNotFoundException;
 import me.mneri.offer.business.mapping.BusinessLayerMapper;
+import me.mneri.offer.business.pojo.OfferCreate;
+import me.mneri.offer.business.pojo.OfferUpdate;
+import me.mneri.offer.business.pojo.Paging;
 import me.mneri.offer.data.entity.Offer;
 import me.mneri.offer.data.entity.User;
 import me.mneri.offer.data.repository.OfferRepository;
@@ -98,6 +98,7 @@ public class OfferServiceImpl implements OfferService {
      * {@inheritDoc}
      */
     @Override
+    @PreAuthorize("permitAll()")
     @Transactional
     public List<Offer> findAllOpen(Paging paging) {
         return offerRepository.findAll(where(offerSpec.isOpen()));
@@ -107,6 +108,7 @@ public class OfferServiceImpl implements OfferService {
      * {@inheritDoc}
      */
     @Override
+    @PreAuthorize("permitAll()")
     @Transactional
     public List<Offer> findAllOpenByPublisherId(UUID userId, Paging paging)
             throws UserIsNotEnabledException, UserNotFoundException {
@@ -125,6 +127,7 @@ public class OfferServiceImpl implements OfferService {
      * {@inheritDoc}
      */
     @Override
+    @PreAuthorize("permitAll()")
     @Transactional
     public Optional<Offer> findById(UUID id) {
         return offerRepository.findOne(where(offerSpec.idIsEqualTo(id)));
@@ -134,10 +137,12 @@ public class OfferServiceImpl implements OfferService {
      * {@inheritDoc}
      */
     @Override
+    @PreAuthorize("permitAll()")
     @Transactional
     public boolean isPublishedByUser(UUID offerId, String username) {
-        long count = offerRepository.count(where(offerSpec.idIsEqualTo(offerId)
-                                .and(offerSpec.publisherUsernameIsEqualTo(username))));
+        long count = offerRepository.count(
+                where(offerSpec.idIsEqualTo(offerId)
+                        .and(offerSpec.publisherUsernameIsEqualTo(username))));
         return count == 1;
     }
 
@@ -145,7 +150,7 @@ public class OfferServiceImpl implements OfferService {
      * {@inheritDoc}
      */
     @Override
-    @PreAuthorize("@offerService.isPublishedByUser(#offerId, authentication.name)")
+    @PreAuthorize("hasAuthority('offer:write') and @offerService.isPublishedByUser(#offerId, authentication.name)")
     @Transactional
     public void update(UUID offerId, OfferUpdate update)
             throws OfferIsCancelledException, OfferIsExpiredException, OfferNotFoundException {
@@ -171,6 +176,7 @@ public class OfferServiceImpl implements OfferService {
      * {@inheritDoc}
      */
     @Override
+    @PreAuthorize("hasAuthority('offer:write')")
     @Transactional
     public Offer save(OfferCreate create, UUID userId) throws UserIsNotEnabledException, UserNotFoundException {
         User user = userRepository

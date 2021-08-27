@@ -33,6 +33,7 @@ import me.mneri.offer.data.repository.OfferRepository;
 import me.mneri.offer.data.repository.UserRepository;
 import me.mneri.offer.data.specification.OfferSpec;
 import me.mneri.offer.data.specification.UserSpec;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -68,6 +69,7 @@ class UserServiceImpl implements UserService {
      * {@inheritDoc}
      */
     @Override
+    @PreAuthorize("permitAll()")
     @Transactional
     public List<User> findAllEnabled(Paging paging) {
         return userRepository.findAll(where(userSpec.isEnabled()));
@@ -77,6 +79,7 @@ class UserServiceImpl implements UserService {
      * {@inheritDoc}
      */
     @Override
+    @PreAuthorize("permitAll()")
     @Transactional
     public Optional<User> findById(UUID userId) {
         return userRepository.findOne(where(userSpec.idIsEqualTo(userId)));
@@ -86,6 +89,7 @@ class UserServiceImpl implements UserService {
      * {@inheritDoc}
      */
     @Override
+    @PreAuthorize("permitAll()")
     @Transactional
     public User findByOfferId(UUID offerId)
             throws OfferIsCancelledException, OfferIsExpiredException, OfferNotFoundException {
@@ -110,6 +114,7 @@ class UserServiceImpl implements UserService {
      * {@inheritDoc}
      */
     @Override
+    @PreAuthorize("hasAuthority('user:write')")
     @Transactional
     public User save(UserCreate create) {
         User user = businessLayerMapper.mapUserCreateToUser(create);

@@ -23,7 +23,9 @@ import lombok.RequiredArgsConstructor;
 import me.mneri.offer.data.entity.Authority;
 import me.mneri.offer.data.repository.AuthorityRepository;
 import me.mneri.offer.data.specification.AuthoritySpec;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -43,6 +45,8 @@ class AuthorityServiceImpl implements AuthorityService {
     private final AuthoritySpec authoritySpec;
 
     @Override
+    @PreAuthorize("hasAuthority('authority:read')")
+    @Transactional
     public List<Authority> findAllByOwnerId(UUID userId) {
         return authorityRepository
                 .findAll(where(authoritySpec.isEnabled()).and(authoritySpec.ownerIdIsEqualTo(userId)));

@@ -18,19 +18,21 @@
 
 package me.mneri.offer;
 
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import me.mneri.offer.business.pojo.OfferCreate;
-import me.mneri.offer.business.pojo.UserCreate;
-import me.mneri.offer.business.service.OfferService;
-import me.mneri.offer.business.service.UserService;
+import me.mneri.offer.data.entity.EntityFactory;
+import me.mneri.offer.data.entity.Offer;
 import me.mneri.offer.data.entity.User;
-import org.springframework.beans.factory.annotation.Autowired;
+import me.mneri.offer.data.repository.OfferRepository;
+import me.mneri.offer.data.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.time.Clock;
 import java.util.Date;
 
 /**
@@ -40,15 +42,17 @@ import java.util.Date;
  */
 @Component
 @Profile("!test") // Most of the tests rely on an empty initial database, we exclude this class from the test profile.
+@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class OfferCommandLineRunner implements CommandLineRunner {
-    @Autowired
-    private UserService userService;
+    private final Clock clock;
 
-    @Autowired
-    private OfferService offerService;
+    private final EntityFactory entityFactory;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+
+    private final OfferRepository offerRepository;
+
+    private final PasswordEncoder passwordEncoder;
 
     /**
      * Return a 30 days forward date.
@@ -62,32 +66,34 @@ public class OfferCommandLineRunner implements CommandLineRunner {
     @Override
     @SneakyThrows
     public void run(String... args) {
-        UserCreate mneriCreate = new UserCreate();
-        mneriCreate.setUsername("mneri");
-        mneriCreate.setPassword("secret");
+        User mneri = entityFactory.createUser();
+        mneri.setUsername("mneri");
+        mneri.setEncodedPassword("secret", passwordEncoder);
 
-        UserCreate jkaczmarczykCreate = new UserCreate();
-        jkaczmarczykCreate.setUsername("jkaczmarczyk");
-        jkaczmarczykCreate.setPassword("secret");
+        User jkacz = entityFactory.createUser();
+        jkacz.setUsername("jkacz");
+        jkacz.setEncodedPassword("secret", passwordEncoder);
 
-        User mneri = userService.save(mneriCreate);
-        User jkaczmarczyk = userService.save(jkaczmarczykCreate);
+        userRepository.save(mneri);
+        userRepository.save(jkacz);
 
-        OfferCreate freeCoffee = new OfferCreate();
+        Offer freeCoffee = entityFactory.createOffer();
         freeCoffee.setTitle("Buy one coffee, get one free");
         freeCoffee.setDescription("Come to our amazing shop and get one coffee for free!");
         freeCoffee.setPrice(new BigDecimal("2.00"));
         freeCoffee.setCurrency("GBP");
-        freeCoffee.setTtl(nextMonth());
+        freeCoffee.setTtl(nextMonth(), clock);
+        freeCoffee.setPublisher(mneri);
 
-        OfferCreate freeChocolate = new OfferCreate();
+        Offer freeChocolate = entityFactory.createOffer();
         freeChocolate.setTitle("Buy one chocolate, get one free");
         freeChocolate.setDescription("Come to our amazing shop and get one chocolate for free!");
         freeChocolate.setPrice(new BigDecimal("2.50"));
         freeChocolate.setCurrency("GBP");
-        freeChocolate.setTtl(nextMonth());
+        freeChocolate.setTtl(nextMonth(), clock);
+        freeChocolate.setPublisher(jkacz);
 
-        offerService.save(freeCoffee, mneri.getId());
-        offerService.save(freeChocolate, jkaczmarczyk.getId());
+        offerRepository.save(freeCoffee);
+        offerRepository.save(freeChocolate);
     }
 }
