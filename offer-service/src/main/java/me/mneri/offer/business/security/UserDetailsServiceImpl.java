@@ -33,6 +33,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -46,8 +47,7 @@ import static org.springframework.data.jpa.domain.Specification.where;
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 @Service
 class UserDetailsServiceImpl implements UserDetailsService {
-    @Mapper(componentModel = "spring",
-            injectionStrategy = InjectionStrategy.CONSTRUCTOR)
+    @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR)
     interface UserDetailsImplMapper {
         @Mapping(target = "authorities", ignore = true)
         @Mapping(target = "password", source = "encodedPassword")
@@ -70,6 +70,7 @@ class UserDetailsServiceImpl implements UserDetailsService {
     private final UserSpec userSpec;
 
     @Override
+    @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository
                 .findOne(where(userSpec.usernameIsEqualTo(username)))
