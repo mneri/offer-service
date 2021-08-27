@@ -18,3 +18,9 @@ eureka:
   client:
     fetch-registry: false
     register-with-eureka: false
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true

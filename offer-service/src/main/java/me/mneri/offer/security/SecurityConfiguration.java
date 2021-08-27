@@ -16,10 +16,11 @@
  * limitations under the License.
  */
 
-package me.mneri.offer.business.security;
+package me.mneri.offer.security;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import me.mneri.offer.security.filter.JWTAuthenticationFilter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -29,6 +30,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * Application wide security configuration.
@@ -40,6 +42,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+    private final JWTAuthenticationFilter jwtAuthenticationFilter;
+
     private final PasswordEncoder passwordEncoder;
 
     private final UserDetailsService userDetailsService;
@@ -54,13 +58,12 @@ class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .sessionManagement()
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                     .and()
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .csrf()
                     .disable()
                 .authorizeRequests()
                     .anyRequest()
-                        .permitAll()
-                    .and()
-                .httpBasic();
+                        .permitAll();
         //@formatter:on
     }
 

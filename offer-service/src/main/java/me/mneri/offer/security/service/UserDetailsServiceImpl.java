@@ -16,9 +16,10 @@
  * limitations under the License.
  */
 
-package me.mneri.offer.business.security;
+package me.mneri.offer.security.service;
 
 import lombok.AccessLevel;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import me.mneri.offer.data.entity.Authority;
 import me.mneri.offer.data.entity.User;
@@ -29,12 +30,14 @@ import me.mneri.offer.data.specification.UserSpec;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.List;
 
 import static org.springframework.data.jpa.domain.Specification.where;
@@ -47,8 +50,63 @@ import static org.springframework.data.jpa.domain.Specification.where;
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 @Service
 class UserDetailsServiceImpl implements UserDetailsService {
+    /**
+     * Simple implementation of the {@link UserDetails} interface.
+     *
+     * @author Massimo Neri
+     */
+    @Data
+    static class UserDetailsImpl implements UserDetails {
+        private Collection<? extends GrantedAuthority> authorities;
+
+        private String password;
+
+        private String username;
+
+        private boolean enabled;
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean isAccountNonExpired() {
+            return true;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean isAccountNonLocked() {
+            return true;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean isCredentialsNonExpired() {
+            return true;
+        }
+    }
+
+    /**
+     * Simple implementation of the {@link GrantedAuthority} interface.
+     *
+     * @author Massimo Neri
+     */
+    @Data
+    static class GrantedAuthorityImpl implements GrantedAuthority {
+        private String authority;
+    }
+
+    /**
+     * Mapper for framework security-related classes.
+     *
+     * @author Massimo Neri
+     */
     @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR)
-    interface UserDetailsImplMapper {
+    interface AuthMapper {
         @Mapping(target = "authorities", ignore = true)
         @Mapping(target = "password", source = "encodedPassword")
         UserDetailsImpl mapUserToUserDetailsImpl(User user);
@@ -59,16 +117,19 @@ class UserDetailsServiceImpl implements UserDetailsService {
         List<GrantedAuthorityImpl> mapListOfAuthorityToListOfGrantedAuthorityImpl(List<Authority> authorities);
     }
 
+    private final AuthMapper authMapper;
+    
     private final AuthorityRepository authorityRepository;
 
     private final AuthoritySpec authoritySpec;
-
-    private final UserDetailsImplMapper mapper;
 
     private final UserRepository userRepository;
 
     private final UserSpec userSpec;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -80,8 +141,8 @@ class UserDetailsServiceImpl implements UserDetailsService {
                 .findAll(where(authoritySpec.isEnabled())
                         .and(authoritySpec.ownerIdIsEqualTo(user.getId())));
 
-        UserDetailsImpl userDetails = mapper.mapUserToUserDetailsImpl(user);
-        userDetails.setAuthorities(mapper.mapListOfAuthorityToListOfGrantedAuthorityImpl(authorities));
+        UserDetailsImpl userDetails = authMapper.mapUserToUserDetailsImpl(user);
+        userDetails.setAuthorities(authMapper.mapListOfAuthorityToListOfGrantedAuthorityImpl(authorities));
 
         return userDetails;
     }

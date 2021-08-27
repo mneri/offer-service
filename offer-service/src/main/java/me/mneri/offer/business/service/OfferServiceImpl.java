@@ -74,8 +74,7 @@ public class OfferServiceImpl implements OfferService {
     @Override
     @PreAuthorize("hasAuthority('offer:delete') and @offerService.isPublishedByUser(#offerId, authentication.name)")
     @Transactional
-    public void delete(UUID offerId)
-            throws OfferIsCancelledException, OfferIsExpiredException, OfferNotFoundException {
+    public void delete(UUID offerId) throws OfferIsCancelledException, OfferIsExpiredException, OfferNotFoundException {
         Offer offer = offerRepository
                 .findOne(where(offerSpec.idIsEqualTo(offerId)))
                 .orElseThrow(() -> new OfferNotFoundException(offerId));

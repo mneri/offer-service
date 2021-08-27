@@ -28,6 +28,7 @@ import me.mneri.offer.business.exception.UserIsNotEnabledException;
 import me.mneri.offer.business.exception.UserNotFoundException;
 import me.mneri.offer.data.entity.Offer;
 import me.mneri.offer.data.entity.User;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
 import java.util.Optional;
@@ -38,6 +39,7 @@ import java.util.UUID;
  *
  * @author Massimo Neri
  */
+@PreAuthorize("denyAll()")
 public interface OfferService {
     /**
      * Delete (cancel) an offer.

@@ -19,6 +19,7 @@
 package me.mneri.offer.business.service;
 
 import me.mneri.offer.data.entity.Authority;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
 import java.util.UUID;
@@ -28,6 +29,13 @@ import java.util.UUID;
  *
  * @author Massimo Neri
  */
+@PreAuthorize("denyAll()")
 public interface AuthorityService {
+    /**
+     * Find all the authorities of the specified user.
+     *
+     * @param userId The user id.
+     * @return The list of the user's authorities.
+     */
     List<Authority> findAllByOwnerId(UUID userId);
 }

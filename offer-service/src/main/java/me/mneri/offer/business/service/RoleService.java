@@ -19,6 +19,7 @@
 package me.mneri.offer.business.service;
 
 import me.mneri.offer.data.entity.Role;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
 import java.util.UUID;
@@ -28,6 +29,7 @@ import java.util.UUID;
  *
  * @author Massimo Neri
  */
+@PreAuthorize("denyAll()")
 public interface RoleService {
     List<Role> findAllByOwnerId(UUID userId);
 }
