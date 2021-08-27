@@ -26,7 +26,6 @@ import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
 import me.mneri.offer.data.validator.Username;
-import org.hibernate.annotations.Type;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.Column;

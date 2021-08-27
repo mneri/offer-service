@@ -26,7 +26,6 @@ import lombok.Setter;
 import lombok.ToString;
 import me.mneri.offer.data.validator.Description;
 import me.mneri.offer.data.validator.Title;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
