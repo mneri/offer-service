@@ -2,6 +2,7 @@ create table authority (
     id binary not null,
     name varchar(255) not null,
     enabled boolean,
+    version integer not null default 0,
     primary key (id));
 
 create table offer (
@@ -14,6 +15,7 @@ create table offer (
     cancelled boolean,
     create_time timestamp not null,
     end_time timestamp not null,
+    version integer not null default 0,
     primary key (id));
 
 create table user_authority (
@@ -26,6 +28,7 @@ create table user (
     username varchar(24),
     password varchar(255),
     enabled boolean,
+    version integer not null default 0,
     primary key (id));
 
 alter table authority
