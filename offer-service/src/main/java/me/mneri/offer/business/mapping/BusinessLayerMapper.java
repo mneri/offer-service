@@ -71,7 +71,7 @@ public interface BusinessLayerMapper {
      * @return A new {@link Offer} instance.
      */
     @Mapping(target = "cancelled", ignore = true)
-    @Mapping(target = "publisher", ignore = true)
+    @Mapping(target = "publisher", ignore = true) // Done by the helper
     Offer mapOfferCreateToOffer(OfferCreate create, @Context @NonNull User publisher);
 
     /**

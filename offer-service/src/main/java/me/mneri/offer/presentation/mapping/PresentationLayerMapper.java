@@ -61,16 +61,11 @@ public interface PresentationLayerMapper {
 
     /**
      * Map the specified {@link Offer} instance to a new instance of {@link OfferDto}.
-     * <p>
-     * The following {@link OfferDto} fields are not mapped:
-     * <ul>
-     *     <li>{@code ttl}</li>
-     * </ul>
      *
      * @param offer The {@link Offer} instance.
      * @return A new {@link OfferDto} instance.
      */
-    @Mapping(target = "ttl", ignore = true)
+    @Mapping(target = "ttl", ignore = true) // Done by the helper
     OfferDto mapOfferToOfferDto(Offer offer);
 
     /**
