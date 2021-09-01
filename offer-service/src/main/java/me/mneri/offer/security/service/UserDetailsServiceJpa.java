@@ -20,6 +20,7 @@ package me.mneri.offer.security.service;
 
 import lombok.AccessLevel;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import me.mneri.offer.data.entity.Authority;
 import me.mneri.offer.data.entity.User;
@@ -38,6 +39,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import static org.springframework.data.jpa.domain.Specification.where;
@@ -56,6 +58,7 @@ class UserDetailsServiceJpa implements UserDetailsService {
      * @author Massimo Neri
      */
     @Data
+    @EqualsAndHashCode(of = "username")
     static class UserDetailsImpl implements UserDetails {
         private Collection<? extends GrantedAuthority> authorities;
 
@@ -161,7 +164,7 @@ class UserDetailsServiceJpa implements UserDetailsService {
                         .and(AuthoritySpec.ownerIdIsEqualTo(user.getId())));
 
         UserDetailsImpl userDetails = authMapper.mapUserToUserDetailsImpl(user);
-        userDetails.setAuthorities(authMapper.mapAuthorityToGrantedAuthorityImpl(authorities));
+        userDetails.setAuthorities(Collections.unmodifiableList(authMapper.mapAuthorityToGrantedAuthorityImpl(authorities)));
 
         return userDetails;
     }
