@@ -41,14 +41,51 @@ import org.springframework.lang.NonNull;
         injectionStrategy = InjectionStrategy.CONSTRUCTOR,
         uses = BusinessLayerMapperHelper.class)
 public interface BusinessLayerMapper {
+    /**
+     * Map an instance of {@link UserCreate} to a new instance of {@link User}.
+     * <p>
+     * The following {@link User} fields are not mapped:
+     * <ul>
+     *     <li>{@code enabled}</li>
+     *     <li>{@code authorities}</li>
+     * </ul>
+     *
+     * @param create The {@link UserCreate} instance.
+     * @return A new {@link User} instance.
+     */
     @Mapping(target = "enabled", ignore = true)
     @Mapping(target = "authorities", ignore = true)
     User mapUserCreateToUser(UserCreate create);
 
+    /**
+     * Map an instance of {@link OfferCreate} to a new instance of {@link Offer}.
+     * <p>
+     * The following {@link Offer} fields are not mapped:
+     * <ul>
+     *     <li>{@code cancelled}</li>
+     * </ul>
+     * The value of the field {@code publisher} is determined from the {@code publisher} parameter.
+     *
+     * @param create    The {@link OfferCreate} instance.
+     * @param publisher The publisher of the offer.
+     * @return A new {@link Offer} instance.
+     */
     @Mapping(target = "cancelled", ignore = true)
     @Mapping(target = "publisher", ignore = true)
     Offer mapOfferCreateToOffer(OfferCreate create, @Context @NonNull User publisher);
 
+    /**
+     * Merge the state of the specified {@link OfferUpdate} object into the specified {@link Offer} instance.
+     * <p>
+     * The following {@link Offer} fields are not mapped:
+     * <ul>
+     *     <li>{@code cancelled}</li>
+     *     <li>{@code publisher}</li>
+     * </ul>
+     *
+     * @param offer  The {@link Offer} instance.
+     * @param update The {@link OfferUpdate} instance.
+     */
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(target = "cancelled", ignore = true)
     @Mapping(target = "publisher", ignore = true)

@@ -43,18 +43,65 @@ import java.util.List;
         injectionStrategy = InjectionStrategy.CONSTRUCTOR,
         uses = PresentationLayerMapperHelper.class)
 public interface PresentationLayerMapper {
+    /**
+     * Map an instance of {@link OfferCreateDto} to a new instance of {@link OfferCreate}.
+     *
+     * @param dto The {@link OfferCreateDto} instance.
+     * @return A new {@link OfferCreate} instance.
+     */
     OfferCreate mapOfferCreateDtoToOfferCreate(OfferCreateDto dto);
 
+    /**
+     * Map the specified {@link Offer} instances to new instances of {@link OfferDto}.
+     *
+     * @param offers The {@link Offer} instances.
+     * @return A {@link List} of newly instantiated {@link OfferDto}s.
+     */
     List<OfferDto> mapOfferToOfferDto(Iterable<Offer> offers);
 
+    /**
+     * Map the specified {@link Offer} instance to a new instance of {@link OfferDto}.
+     * <p>
+     * The following {@link OfferDto} fields are not mapped:
+     * <ul>
+     *     <li>{@code ttl}</li>
+     * </ul>
+     *
+     * @param offer The {@link Offer} instance.
+     * @return A new {@link OfferDto} instance.
+     */
     @Mapping(target = "ttl", ignore = true)
     OfferDto mapOfferToOfferDto(Offer offer);
 
+    /**
+     * Map an instance of {@link OfferUpdateDto} to a new instance of {@link OfferUpdate}.
+     *
+     * @param dto The {@link OfferUpdateDto} instance.
+     * @return A new {@link OfferUpdate} instance.
+     */
     OfferUpdate mapOfferUpdateDtoToOfferUpdate(OfferUpdateDto dto);
 
-    Paging mapPagingDtoToPaging(PagingDto pagingDto);
+    /**
+     * Map an instance of {@link PagingDto} to a new instance of {@link Paging}.
+     *
+     * @param dto The {@link PagingDto} instance.
+     * @return A new {@link Paging} instance.
+     */
+    Paging mapPagingDtoToPaging(PagingDto dto);
 
-    List<UserDto> mapUserToUserDto(Iterable<User> user);
+    /**
+     * Map the specified {@link User} instances to new instances of {@link UserDto}.
+     *
+     * @param users The {@link User} instances.
+     * @return A {@link List} of newly instantiated {@link UserDto}s.
+     */
+    List<UserDto> mapUserToUserDto(Iterable<User> users);
 
+    /**
+     * Map the specified {@link User} instance to a new instance of {@link UserDto}.
+     *
+     * @param user The {@link User} instance.
+     * @return A new {@link UserDto} instance.
+     */
     UserDto mapUserToUserDto(User user);
 }
