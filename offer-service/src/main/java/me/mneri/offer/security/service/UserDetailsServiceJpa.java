@@ -107,14 +107,37 @@ class UserDetailsServiceJpa implements UserDetailsService {
      */
     @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR)
     interface AuthMapper {
+        /**
+         * Map the specified {@link User} instance to a new {@link UserDetailsImpl} instance.
+         * <p>
+         * The following {@link UserDetailsImpl} are not mapped:
+         * <ul>
+         *     <li>{@code authorities}</li>
+         * </ul>
+         *
+         * @param user The {@link User} instance.
+         * @return A new {@link UserDetailsImpl} instance.
+         */
         @Mapping(target = "authorities", ignore = true)
         @Mapping(target = "password", source = "encodedPassword")
         UserDetailsImpl mapUserToUserDetailsImpl(User user);
 
+        /**
+         * Map the specified {@link Authority} instance to a new {@link GrantedAuthorityImpl} instance.
+         *
+         * @param authority The {@link Authority} instance.
+         * @return A new {@link GrantedAuthorityImpl} instance.
+         */
         @Mapping(target = "authority", source = "name")
         GrantedAuthorityImpl mapAuthorityToGrantedAuthorityImpl(Authority authority);
 
-        List<GrantedAuthorityImpl> mapListOfAuthorityToListOfGrantedAuthorityImpl(List<Authority> authorities);
+        /**
+         * Map the specified {@link Authority} instances to new instances of {@link GrantedAuthorityImpl}.
+         *
+         * @param authorities The {@link Authority} instances.
+         * @return A {@link List} of newly instantiated {@link GrantedAuthorityImpl}s.
+         */
+        List<GrantedAuthorityImpl> mapAuthorityToGrantedAuthorityImpl(List<Authority> authorities);
     }
 
     private final AuthMapper authMapper;
@@ -138,7 +161,7 @@ class UserDetailsServiceJpa implements UserDetailsService {
                         .and(AuthoritySpec.ownerIdIsEqualTo(user.getId())));
 
         UserDetailsImpl userDetails = authMapper.mapUserToUserDetailsImpl(user);
-        userDetails.setAuthorities(authMapper.mapListOfAuthorityToListOfGrantedAuthorityImpl(authorities));
+        userDetails.setAuthorities(authMapper.mapAuthorityToGrantedAuthorityImpl(authorities));
 
         return userDetails;
     }
