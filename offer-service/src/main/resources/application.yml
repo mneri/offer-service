@@ -41,6 +41,10 @@ spring:
       ddl-auto: none
     show-sql: false
 
+security:
+  jwt:
+    secret: secret
+
 springdoc:
   api-docs-path: /v3-api-docs
   override-with-generic-response: false
