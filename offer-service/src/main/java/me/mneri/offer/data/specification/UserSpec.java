@@ -18,45 +18,44 @@
 
 package me.mneri.offer.data.specification;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import me.mneri.offer.data.entity.Offer;
+import me.mneri.offer.data.entity.Offer_;
 import me.mneri.offer.data.entity.User;
+import me.mneri.offer.data.entity.User_;
 import org.springframework.data.jpa.domain.Specification;
 
+import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Subquery;
 import java.util.UUID;
 
 /**
- * Specification definition for the {@link User} entity.
- *
- * @author Massimo Neri
+ * Default implementation of the {@link UserSpec} component.
  */
-public interface UserSpec {
-    /**
-     * Return a {@link Specification} for the SQL predicate {@code user.id = ?}.
-     *
-     * @param value The value to match against the id.
-     * @return The specification.
-     */
-    Specification<User> idIsEqualTo(UUID value);
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public class UserSpec {
+    public static Specification<User> idIsEqualTo(UUID uuid) {
+        return (root, query, builder) -> builder.equal(root.get(User_.id), uuid);
+    }
 
-    /**
-     * Return a {@link Specification} for the SQL predicate {@code user.enabled = 1}.
-     *
-     * @return The specification.
-     */
-    Specification<User> isEnabled();
+    public static Specification<User> isEnabled() {
+        return (root, query, builder) -> builder.equal(root.get(User_.enabled), true);
+    }
 
-    /**
-     * Return a {@link Specification} for the SQL predicate
-     * {@code user.id = (select publisher from offer where offer.id = ?)}
-     *
-     * @param offerId The id of the offer.
-     * @return The specification.
-     */
-    Specification<User> isPublisherOf(UUID offerId);
+    public static Specification<User> isPublisherOf(UUID offerId) {
+        return (root, query, builder) -> {
+            Subquery<UUID> subQuery = query.subquery(UUID.class);
+            Root<Offer> subRoot = subQuery.from(Offer.class);
 
-    /**
-     * Return a Specification for the SQL predicate user.username = ?
-     * @param username The username
-     * @return The specification.
-     */
-    Specification<User> usernameIsEqualTo(String username);
+            subQuery.select(subRoot.get(Offer_.publisher).get(User_.id))
+                    .where(builder.equal(subRoot.get(Offer_.id), offerId));
+
+            return builder.equal(root.get(User_.id), subQuery);
+        };
+    }
+
+    public static Specification<User> usernameIsEqualTo(String username) {
+        return (root, query, builder) -> builder.equal(root.get(User_.username), username);
+    }
 }

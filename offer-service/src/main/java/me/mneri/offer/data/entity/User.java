@@ -19,7 +19,6 @@
 package me.mneri.offer.data.entity;
 
 import lombok.AccessLevel;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,7 +32,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -52,11 +50,13 @@ import java.util.UUID;
  *
  * @author Massimo Neri
  */
-@Data
 @Entity
 @EqualsAndHashCode(of = "id")
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "user", indexes = @Index(name = "idx_user_username_unq", columnList = "username", unique = true))
+@Setter
+@Table(name = "user")
+@ToString
 public class User {
     /**
      * The maximum length for a username field.

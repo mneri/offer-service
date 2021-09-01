@@ -26,8 +26,10 @@ import me.mneri.offer.business.exception.UserNotFoundException;
 import me.mneri.offer.business.pojo.Paging;
 import me.mneri.offer.business.service.OfferService;
 import me.mneri.offer.business.service.UserService;
+import me.mneri.offer.data.entity.Offer;
 import me.mneri.offer.data.entity.User;
 import me.mneri.offer.presentation.api.UsersAPI;
+import me.mneri.offer.presentation.dto.OfferCreateDto;
 import me.mneri.offer.presentation.dto.OfferDto;
 import me.mneri.offer.presentation.dto.PagingDto;
 import me.mneri.offer.presentation.dto.ResponseDto;
@@ -93,5 +95,12 @@ class UsersController implements UsersAPI {
                 presentationLayerMapper.mapOfferToOfferDto(offerService.findAllOpenByPublisherId(userId, paging));
 
         return new ResponseDto<>(offers);
+    }
+
+    @Override
+    public ResponseDto<OfferDto> postOffer(UUID userId, OfferCreateDto createDto)
+            throws UserIsNotEnabledException, UserNotFoundException {
+        Offer offer = offerService.save(presentationLayerMapper.mapOfferCreateDtoToOfferCreate(createDto), userId);
+        return new ResponseDto<>(presentationLayerMapper.mapOfferToOfferDto(offer));
     }
 }

@@ -43,6 +43,7 @@ public interface UserService {
      * @param paging The paging specification.
      * @return The list of all enabled users or an empty list if no enable user exist.
      */
+    @PreAuthorize("permitAll()")
     List<User> findAllEnabled(Paging paging);
 
     /**
@@ -52,6 +53,7 @@ public interface UserService {
      * @return If the user is present return an {@link Optional} of the user; otherwise return an empty
      * {@link Optional}.
      */
+    @PreAuthorize("permitAll()")
     Optional<User> findById(UUID userId);
 
     /**
@@ -60,6 +62,7 @@ public interface UserService {
      * @param offerId The offer id.
      * @return The user.
      */
+    @PreAuthorize("permitAll()")
     User findByOfferId(UUID offerId)
             throws OfferIsCancelledException, OfferIsExpiredException, OfferNotFoundException;
 
@@ -68,5 +71,6 @@ public interface UserService {
      *
      * @param create The data of the user to create.
      */
+    @PreAuthorize("hasAuthority('user:write') or hasAuthority('user:write-any')")
     User save(UserCreate create);
 }

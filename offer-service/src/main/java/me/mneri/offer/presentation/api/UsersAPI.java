@@ -29,16 +29,22 @@ import me.mneri.offer.business.exception.UserIsNotEnabledException;
 import me.mneri.offer.business.exception.UserNotFoundException;
 import me.mneri.offer.data.entity.Offer;
 import me.mneri.offer.data.entity.User;
+import me.mneri.offer.presentation.dto.OfferCreateDto;
 import me.mneri.offer.presentation.dto.OfferDto;
 import me.mneri.offer.presentation.dto.PagingDto;
 import me.mneri.offer.presentation.dto.ResponseDto;
 import me.mneri.offer.presentation.dto.UserDto;
+import org.springframework.http.HttpStatus;
 import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 
@@ -132,7 +138,35 @@ public interface UsersAPI {
                             description = "If the user doesn't exist.",
                             content = @Content)})
     @GetMapping(value = "/{userId}/offers", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
-    ResponseDto<List<OfferDto>> getOffersByPublisherId(@PathVariable UUID userId,
-                                                       @ModelAttribute @Parameter(hidden = true) PagingDto pagingDto)
+    ResponseDto<List<OfferDto>> getOffersByPublisherId(
+            @PathVariable UUID userId,
+            @ModelAttribute @Parameter(hidden = true) PagingDto pagingDto)
+            throws UserIsNotEnabledException, UserNotFoundException;
+
+
+    /**
+     * Create a new {@link Offer}.
+     *
+     * @param userId    The id of the user.
+     * @param createDto The offer.
+     * @throws UserIsNotEnabledException If the user with the specified id is not enabled.
+     * @throws UserNotFoundException     If a user with the specified id was not found in the repository.
+     */
+    @Operation(
+            summary = "Insert a new open offer.",
+            description = "Insert a new open offer in the repository.",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "201",
+                            description = "Successful operation."),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "If the user doesn't exist or it's not enabled.",
+                            content = @Content)})
+    @PostMapping(value = "/{userId}/offers", consumes = MimeTypeUtils.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    ResponseDto<OfferDto> postOffer(
+            @PathVariable UUID userId,
+            @Valid @RequestBody OfferCreateDto createDto)
             throws UserIsNotEnabledException, UserNotFoundException;
 }

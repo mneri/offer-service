@@ -18,60 +18,47 @@
 
 package me.mneri.offer.data.specification;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import me.mneri.offer.data.entity.Offer;
+import me.mneri.offer.data.entity.Offer_;
+import me.mneri.offer.data.entity.User_;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.time.Clock;
+import java.util.Date;
 import java.util.UUID;
 
+import static org.springframework.data.jpa.domain.Specification.not;
+
 /**
- * Specification definition for the {@link Offer}.
+ * Default implementation of the {@link OfferSpec} component.
  *
  * @author Massimo Neri
  */
-public interface OfferSpec {
-    /**
-     * Return a {@link Specification} for the SQL predicate {@code offer.id = ?}.
-     *
-     * @param value The offer id.
-     * @return The specification.
-     */
-    Specification<Offer> idIsEqualTo(UUID value);
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public class OfferSpec {
+    public static Specification<Offer> idIsEqualTo(UUID value) {
+        return (root, query, builder) -> builder.equal(root.get(Offer_.id), value);
+    }
 
-    /**
-     * Return a {@link Specification} for the SQL predicate {@code offer.canceled = 1}.
-     *
-     * @return The specification.
-     */
-    Specification<Offer> isCanceled();
+    public static Specification<Offer> isCanceled() {
+        return (root, query, builder) -> builder.equal(root.get(Offer_.cancelled), true);
+    }
 
-    /**
-     * Return a {@link Specification} for the SQL predicate {@code offer.end_time <= NOW()}.
-     *
-     * @return The specification.
-     */
-    Specification<Offer> isExpired();
+    public static Specification<Offer> isExpired(Clock clock) {
+        return (root, query, builder) -> builder.lessThanOrEqualTo(root.get(Offer_.endTime), new Date(clock.millis()));
+    }
 
-    /**
-     * Return a {@link Specification} for the SQL predicate {@code offer.canceled = 0 AND offer.end_time >= NOW()}. This
-     * is equivalent to the call {@code not(isCanceled()).and(not(isExpired())}.
-     *
-     * @return The specification.
-     */
-    Specification<Offer> isOpen();
+    public static Specification<Offer> isOpen(Clock clock) {
+        return not(isCanceled()).and(not(isExpired(clock)));
+    }
 
-    /**
-     * Return a {@link Specification} for the SQL predicate {@code offer.publisher = ?}.
-     *
-     * @param value The publisher's id.
-     * @return The specification.
-     */
-    Specification<Offer> publisherIdIsEqualTo(UUID value);
+    public static Specification<Offer> publisherIdIsEqualTo(UUID uuid) {
+        return (root, query, builder) -> builder.equal(root.join(Offer_.publisher).get(User_.id), uuid);
+    }
 
-    /**
-     * Return a {@link Specification} for the SQL predicate {@code offer.publisher.username = ?}.
-     *
-     * @param username The publisher's id.
-     * @return The specification.
-     */
-    Specification<Offer> publisherUsernameIsEqualTo(String username);
+    public static Specification<Offer> publisherUsernameIsEqualTo(String username) {
+        return (root, query, builder) -> builder.equal(root.join(Offer_.publisher).get(User_.username), username);
+    }
 }

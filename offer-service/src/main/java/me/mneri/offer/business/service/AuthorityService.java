@@ -37,5 +37,6 @@ public interface AuthorityService {
      * @param userId The user id.
      * @return The list of the user's authorities.
      */
+    @PreAuthorize("hasAuthority('authority:read')")
     List<Authority> findAllByOwnerId(UUID userId);
 }

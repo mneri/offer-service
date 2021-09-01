@@ -33,7 +33,7 @@ import me.mneri.offer.data.repository.OfferRepository;
 import me.mneri.offer.data.repository.UserRepository;
 import me.mneri.offer.data.specification.OfferSpec;
 import me.mneri.offer.data.specification.UserSpec;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,51 +50,45 @@ import static org.springframework.data.jpa.domain.Specification.where;
  * @author Massimo Neri
  */
 @Log4j2
+@Primary
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-@Service("userService")
-class UserServiceImpl implements UserService {
+@Service
+class UserServiceJpa implements UserService {
     private final BusinessLayerMapper businessLayerMapper;
 
     private final Clock clock;
 
     private final OfferRepository offerRepository;
 
-    private final OfferSpec offerSpec;
-
     private final UserRepository userRepository;
 
-    private final UserSpec userSpec;
-
     /**
      * {@inheritDoc}
      */
     @Override
-    @PreAuthorize("permitAll()")
     @Transactional
     public List<User> findAllEnabled(Paging paging) {
-        return userRepository.findAll(where(userSpec.isEnabled()));
+        return userRepository.findAll(where(UserSpec.isEnabled()));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    @PreAuthorize("permitAll()")
     @Transactional
     public Optional<User> findById(UUID userId) {
-        return userRepository.findOne(where(userSpec.idIsEqualTo(userId)));
+        return userRepository.findOne(where(UserSpec.idIsEqualTo(userId)));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    @PreAuthorize("permitAll()")
     @Transactional
     public User findByOfferId(UUID offerId)
             throws OfferIsCancelledException, OfferIsExpiredException, OfferNotFoundException {
         Offer offer = offerRepository
-                .findOne(where(offerSpec.idIsEqualTo(offerId)))
+                .findOne(where(OfferSpec.idIsEqualTo(offerId)))
                 .orElseThrow(() -> new OfferNotFoundException(offerId));
 
         if (offer.isCancelled()) {
@@ -106,7 +100,7 @@ class UserServiceImpl implements UserService {
         }
 
         return userRepository
-                .findOne(where(userSpec.isPublisherOf(offerId)))
+                .findOne(where(UserSpec.isPublisherOf(offerId)))
                 .orElseThrow(IllegalStateException::new);
     }
 
@@ -114,7 +108,6 @@ class UserServiceImpl implements UserService {
      * {@inheritDoc}
      */
     @Override
-    @PreAuthorize("hasAuthority('user:write')")
     @Transactional
     public User save(UserCreate create) {
         User user = businessLayerMapper.mapUserCreateToUser(create);

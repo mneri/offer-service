@@ -49,7 +49,7 @@ import static org.springframework.data.jpa.domain.Specification.where;
  */
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 @Service
-class UserDetailsServiceImpl implements UserDetailsService {
+class UserDetailsServiceJpa implements UserDetailsService {
     /**
      * Simple implementation of the {@link UserDetails} interface.
      *
@@ -118,14 +118,10 @@ class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     private final AuthMapper authMapper;
-    
+
     private final AuthorityRepository authorityRepository;
 
-    private final AuthoritySpec authoritySpec;
-
     private final UserRepository userRepository;
-
-    private final UserSpec userSpec;
 
     /**
      * {@inheritDoc}
@@ -134,12 +130,12 @@ class UserDetailsServiceImpl implements UserDetailsService {
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository
-                .findOne(where(userSpec.usernameIsEqualTo(username)))
+                .findOne(where(UserSpec.usernameIsEqualTo(username)))
                 .orElseThrow(() -> new UsernameNotFoundException(username));
 
         List<Authority> authorities = authorityRepository
-                .findAll(where(authoritySpec.isEnabled())
-                        .and(authoritySpec.ownerIdIsEqualTo(user.getId())));
+                .findAll(where(AuthoritySpec.isEnabled())
+                        .and(AuthoritySpec.ownerIdIsEqualTo(user.getId())));
 
         UserDetailsImpl userDetails = authMapper.mapUserToUserDetailsImpl(user);
         userDetails.setAuthorities(authMapper.mapListOfAuthorityToListOfGrantedAuthorityImpl(authorities));

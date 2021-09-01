@@ -18,18 +18,40 @@
 
 package me.mneri.offer.data.specification;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import me.mneri.offer.data.entity.Authority;
+import me.mneri.offer.data.entity.Authority_;
+import me.mneri.offer.data.entity.User;
+import me.mneri.offer.data.entity.User_;
 import org.springframework.data.jpa.domain.Specification;
 
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Subquery;
 import java.util.UUID;
 
 /**
- * Specification definition for the {@link Authority}.
+ * Default implementation of the {@link AuthoritySpec} component.
  *
  * @author Massimo Neri
  */
-public interface AuthoritySpec {
-    Specification<Authority> isEnabled();
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public class AuthoritySpec {
+    public static Specification<Authority> isEnabled() {
+        return (root, query, builder) -> builder.equal(root.get(Authority_.enabled), true);
+    }
 
-    Specification<Authority> ownerIdIsEqualTo(UUID userId);
+    public static Specification<Authority> ownerIdIsEqualTo(UUID userId) {
+        return (root, query, builder) -> {
+            Subquery<UUID> subQuery = query.subquery(UUID.class);
+            Root<User> subRoot = subQuery.from(User.class);
+            Join<User, Authority> join = subRoot.join(User_.authorities);
+
+            subQuery.select(join.get(Authority_.id))
+                    .where(builder.equal(subRoot.get(User_.id), userId));
+
+            return root.get(Authority_.id).in(subQuery);
+        };
+    }
 }

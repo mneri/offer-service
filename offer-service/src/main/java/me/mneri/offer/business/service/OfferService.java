@@ -49,6 +49,8 @@ public interface OfferService {
      * @throws OfferIsExpiredException   If the offer with the specified id has expired.
      * @throws OfferNotFoundException    If the offer with the specified id was not found in the repository.
      */
+    @PreAuthorize("(hasAuthority('offer:delete') and @authHelper.isPublishedByUser(#offerId, authentication.name))" +
+            "or hasAuthority('offer:delete-any')")
     void delete(UUID offerId) throws OfferIsCancelledException, OfferIsExpiredException, OfferNotFoundException;
 
     /**
@@ -57,6 +59,7 @@ public interface OfferService {
      * @param paging The paging specification.
      * @return The list of the open offers.
      */
+    @PreAuthorize("permitAll()")
     Iterable<Offer> findAllOpen(Paging paging);
 
     /**
@@ -68,6 +71,7 @@ public interface OfferService {
      * @throws UserIsNotEnabledException If the specified user is not enabled.
      * @throws UserNotFoundException     If the user with the specified id was not found in the repository.
      */
+    @PreAuthorize("permitAll()")
     List<Offer> findAllOpenByPublisherId(UUID userId, Paging paging)
             throws UserIsNotEnabledException, UserNotFoundException;
 
@@ -77,17 +81,8 @@ public interface OfferService {
      * @param id The id of the offer.
      * @return The offer with the specified id.
      */
+    @PreAuthorize("permitAll()")
     Optional<Offer> findById(UUID id);
-
-    /**
-     * Return {@code true} if the specified {@link Offer} is published by the specified {@link User}.
-     *
-     * @param offerId  The offer id.
-     * @param username The user's username.
-     * @return {@code true} if the specified offer is published by the specified user, {@code false} otherwise.
-     */
-    @SuppressWarnings("unused")
-    boolean isPublishedByUser(UUID offerId, String username);
 
     /**
      * Update the specified {@link Offer} given the specified user id.
@@ -100,6 +95,8 @@ public interface OfferService {
      * @throws OfferIsExpiredException   If the offer with the specified id has expired.
      * @throws OfferNotFoundException    If the offer with the specified id was not found in the repository.
      */
+    @PreAuthorize("(hasAuthority('offer:write') and @authHelper.isPublishedByUser(#offerId, authentication.name))" +
+            "or hasAuthority('offer:write-any')")
     void update(UUID offerId, OfferUpdate update)
             throws OfferIsCancelledException, OfferIsExpiredException, OfferNotFoundException;
 
@@ -112,5 +109,7 @@ public interface OfferService {
      * @throws UserIsNotEnabledException If the user with the specified id is not enabled.
      * @throws UserNotFoundException     If a user with the specified id was not found in the repository.
      */
+    @PreAuthorize("(hasAuthority('offer:write') and @authHelper.isUsernameEqualTo(#userId, authentication.name))" +
+            "or hasAuthority('offer:write-any')")
     Offer save(OfferCreate create, UUID userId) throws UserIsNotEnabledException, UserNotFoundException;
 }

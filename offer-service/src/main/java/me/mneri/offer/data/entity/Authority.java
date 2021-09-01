@@ -19,7 +19,6 @@
 package me.mneri.offer.data.entity;
 
 import lombok.AccessLevel;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,7 +28,6 @@ import lombok.ToString;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Index;
 import javax.persistence.Table;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
@@ -42,11 +40,13 @@ import java.util.UUID;
  *
  * @author Massimo Neri
  */
-@Data
 @Entity
 @EqualsAndHashCode(of = "id")
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "authority", indexes = @Index(name = "idx_authority_name_unq", columnList = "name", unique = true))
+@Setter
+@Table(name = "authority")
+@ToString
 public class Authority {
     @Id
     @NotNull

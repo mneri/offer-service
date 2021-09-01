@@ -20,10 +20,11 @@ package me.mneri.offer.business.service;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import me.mneri.offer.data.entity.Authority;
 import me.mneri.offer.data.repository.AuthorityRepository;
 import me.mneri.offer.data.specification.AuthoritySpec;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,18 +38,17 @@ import static org.springframework.data.jpa.domain.Specification.where;
  *
  * @author Massimo Neri
  */
+@Log4j2
+@Primary
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 @Service
-class AuthorityServiceImpl implements AuthorityService {
+class AuthorityServiceJpa implements AuthorityService {
     private final AuthorityRepository authorityRepository;
 
-    private final AuthoritySpec authoritySpec;
-
     @Override
-    @PreAuthorize("hasAuthority('authority:read')")
     @Transactional
     public List<Authority> findAllByOwnerId(UUID userId) {
         return authorityRepository
-                .findAll(where(authoritySpec.isEnabled()).and(authoritySpec.ownerIdIsEqualTo(userId)));
+                .findAll(where(AuthoritySpec.isEnabled()).and(AuthoritySpec.ownerIdIsEqualTo(userId)));
     }
 }

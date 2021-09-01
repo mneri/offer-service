@@ -36,7 +36,7 @@ import me.mneri.offer.data.repository.OfferRepository;
 import me.mneri.offer.data.repository.UserRepository;
 import me.mneri.offer.data.specification.OfferSpec;
 import me.mneri.offer.data.specification.UserSpec;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -53,30 +53,26 @@ import static org.springframework.data.jpa.domain.Specification.where;
  * @author Massimo Neri
  */
 @Log4j2
+@Primary
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 @Service("offerService")
-public class OfferServiceImpl implements OfferService {
+public class OfferServiceJpa implements OfferService {
     private final BusinessLayerMapper businessLayerMapper;
 
     private final Clock clock;
 
     private final OfferRepository offerRepository;
 
-    private final OfferSpec offerSpec;
-
     private final UserRepository userRepository;
-
-    private final UserSpec userSpec;
 
     /**
      * {@inheritDoc}
      */
     @Override
-    @PreAuthorize("hasAuthority('offer:delete') and @offerService.isPublishedByUser(#offerId, authentication.name)")
     @Transactional
     public void delete(UUID offerId) throws OfferIsCancelledException, OfferIsExpiredException, OfferNotFoundException {
         Offer offer = offerRepository
-                .findOne(where(offerSpec.idIsEqualTo(offerId)))
+                .findOne(where(OfferSpec.idIsEqualTo(offerId)))
                 .orElseThrow(() -> new OfferNotFoundException(offerId));
 
         if (offer.isCancelled()) {
@@ -97,64 +93,47 @@ public class OfferServiceImpl implements OfferService {
      * {@inheritDoc}
      */
     @Override
-    @PreAuthorize("permitAll()")
     @Transactional
     public List<Offer> findAllOpen(Paging paging) {
-        return offerRepository.findAll(where(offerSpec.isOpen()));
+        return offerRepository.findAll(where(OfferSpec.isOpen(clock)));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    @PreAuthorize("permitAll()")
     @Transactional
     public List<Offer> findAllOpenByPublisherId(UUID userId, Paging paging)
             throws UserIsNotEnabledException, UserNotFoundException {
         User user = userRepository
-                .findOne(where(userSpec.idIsEqualTo(userId)))
+                .findOne(where(UserSpec.idIsEqualTo(userId)))
                 .orElseThrow(() -> new UserNotFoundException(userId));
 
         if (!user.isEnabled()) {
             throw new UserIsNotEnabledException(userId);
         }
 
-        return offerRepository.findAll(where(offerSpec.isOpen()).and(offerSpec.publisherIdIsEqualTo(userId)));
+        return offerRepository.findAll(where(OfferSpec.isOpen(clock)).and(OfferSpec.publisherIdIsEqualTo(userId)));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    @PreAuthorize("permitAll()")
     @Transactional
     public Optional<Offer> findById(UUID id) {
-        return offerRepository.findOne(where(offerSpec.idIsEqualTo(id)));
+        return offerRepository.findOne(where(OfferSpec.idIsEqualTo(id)));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    @PreAuthorize("permitAll()")
-    @Transactional
-    public boolean isPublishedByUser(UUID offerId, String username) {
-        long count = offerRepository.count(
-                where(offerSpec.idIsEqualTo(offerId)
-                        .and(offerSpec.publisherUsernameIsEqualTo(username))));
-        return count == 1;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @PreAuthorize("hasAuthority('offer:write') and @offerService.isPublishedByUser(#offerId, authentication.name)")
     @Transactional
     public void update(UUID offerId, OfferUpdate update)
             throws OfferIsCancelledException, OfferIsExpiredException, OfferNotFoundException {
         Offer offer = offerRepository
-                .findOne(where(offerSpec.idIsEqualTo(offerId)))
+                .findOne(where(OfferSpec.idIsEqualTo(offerId)))
                 .orElseThrow(() -> new OfferNotFoundException(offerId));
 
         if (offer.isCancelled()) {
@@ -175,11 +154,10 @@ public class OfferServiceImpl implements OfferService {
      * {@inheritDoc}
      */
     @Override
-    @PreAuthorize("hasAuthority('offer:write')")
     @Transactional
     public Offer save(OfferCreate create, UUID userId) throws UserIsNotEnabledException, UserNotFoundException {
         User user = userRepository
-                .findOne(where(userSpec.idIsEqualTo(userId)))
+                .findOne(where(UserSpec.idIsEqualTo(userId)))
                 .orElseThrow(() -> new UserNotFoundException(userId));
 
         if (!user.isEnabled()) {

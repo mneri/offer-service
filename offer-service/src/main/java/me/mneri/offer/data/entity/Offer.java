@@ -19,7 +19,6 @@
 package me.mneri.offer.data.entity;
 
 import lombok.AccessLevel;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,6 +33,7 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 import javax.validation.constraints.NotEmpty;
@@ -50,10 +50,13 @@ import java.util.UUID;
  *
  * @author Massimo Neri
  */
-@Data
 @Entity
 @EqualsAndHashCode(of = "id")
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Setter
+@Table(name = "offer")
+@ToString
 public class Offer {
     /**
      * The maximum length for a description field.
