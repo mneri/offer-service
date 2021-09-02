@@ -20,6 +20,7 @@ package me.mneri.offer.security.filter;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
 import lombok.AccessLevel;
@@ -108,11 +109,15 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
             String token = getAuthorizationToken(request);
 
             if (token != null) {
-                DecodedJWT jwt = verifyToken(token);
-                String username = jwt.getSubject();
+                try {
+                    DecodedJWT jwt = verifyToken(token);
+                    String username = jwt.getSubject();
 
-                if (username != null) {
-                    authenticate(securityContext, request, username);
+                    if (username != null) {
+                        authenticate(securityContext, request, username);
+                    }
+                } catch (JWTVerificationException e) {
+                    log.info("Failed to verify JWT. token={}", token);
                 }
             }
         }
