@@ -48,10 +48,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 
@@ -171,7 +171,7 @@ public interface OffersAPI {
      * Create a new {@link Offer}.
      *
      * @param createDto The offer.
-     * @param auth      The id of the user attempting the creation.
+     * @param principal The authenticated user.
      * @throws UserIsNotEnabledException If the user with the specified id is not enabled.
      * @throws UserNotFoundException     If a user with the specified id was not found in the repository.
      */
@@ -188,8 +188,7 @@ public interface OffersAPI {
                             content = @Content)})
     @PostMapping(consumes = MimeTypeUtils.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    ResponseDto<OfferDto> postOffer(@Valid @RequestBody OfferCreateDto createDto,
-                                    @RequestParam(APIParameters.PARAM_AUTH_TOKEN) UUID auth)
+    ResponseDto<OfferDto> postOffer(@Valid @RequestBody OfferCreateDto createDto, Principal principal)
             throws UserIsNotEnabledException, UserNotFoundException;
 
     /**

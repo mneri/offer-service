@@ -147,8 +147,8 @@ public interface UsersAPI {
     /**
      * Create a new {@link Offer}.
      *
-     * @param userId    The id of the user.
      * @param createDto The offer.
+     * @param userId    The id of the publisher.
      * @throws UserIsNotEnabledException If the user with the specified id is not enabled.
      * @throws UserNotFoundException     If a user with the specified id was not found in the repository.
      */
@@ -165,8 +165,6 @@ public interface UsersAPI {
                             content = @Content)})
     @PostMapping(value = "/{userId}/offers", consumes = MimeTypeUtils.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    ResponseDto<OfferDto> postOffer(
-            @PathVariable UUID userId,
-            @Valid @RequestBody OfferCreateDto createDto)
+    ResponseDto<OfferDto> postOffer(@PathVariable UUID userId, @Valid @RequestBody OfferCreateDto createDto)
             throws UserIsNotEnabledException, UserNotFoundException;
 }

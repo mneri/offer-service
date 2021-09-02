@@ -38,8 +38,10 @@ import me.mneri.offer.presentation.dto.PagingDto;
 import me.mneri.offer.presentation.dto.ResponseDto;
 import me.mneri.offer.presentation.dto.UserDto;
 import me.mneri.offer.presentation.mapping.PresentationLayerMapper;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.Principal;
 import java.time.Clock;
 import java.util.List;
 import java.util.UUID;
@@ -113,9 +115,15 @@ class OffersController implements OffersAPI {
      * {@inheritDoc}
      */
     @Override
-    public ResponseDto<OfferDto> postOffer(OfferCreateDto createDto, UUID auth)
+    public ResponseDto<OfferDto> postOffer(OfferCreateDto createDto, Principal principal)
             throws UserIsNotEnabledException, UserNotFoundException {
-        Offer offer = offerService.save(presentationLayerMapper.mapOfferCreateDtoToOfferCreate(createDto), auth);
+        UUID userId = userService
+                .findByUsername(principal.getName())
+                .orElseThrow(() -> new UsernameNotFoundException(principal.getName()))
+                .getId();
+
+        Offer offer = offerService.save(presentationLayerMapper.mapOfferCreateDtoToOfferCreate(createDto), userId);
+
         return new ResponseDto<>(presentationLayerMapper.mapOfferToOfferDto(offer));
     }
 

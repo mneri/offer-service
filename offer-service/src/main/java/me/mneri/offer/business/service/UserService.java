@@ -67,6 +67,16 @@ public interface UserService {
             throws OfferIsCancelledException, OfferIsExpiredException, OfferNotFoundException;
 
     /**
+     * Find the user with the specified username in the repository.
+     *
+     * @param username The username.
+     * @return If the user is present return an {@link Optional} of the user; otherwise return an empty
+     * {@link Optional}.
+     */
+    @PreAuthorize("permitAll()")
+    Optional<User> findByUsername(String username);
+
+    /**
      * Persist a user into the database.
      *
      * @param create The data of the user to create.

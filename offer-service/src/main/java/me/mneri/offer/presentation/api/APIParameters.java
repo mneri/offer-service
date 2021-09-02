@@ -28,8 +28,6 @@ import lombok.NoArgsConstructor;
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class APIParameters {
-    public static final String PARAM_AUTH_TOKEN = "auth.token";
-
     public static final String PARAM_PAGE_NUMBER = "page.number";
 
     public static final int PARAM_PAGE_NUMBER_DEFAULT = 0;

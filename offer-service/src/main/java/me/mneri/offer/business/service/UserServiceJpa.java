@@ -108,6 +108,14 @@ class UserServiceJpa implements UserService {
      * {@inheritDoc}
      */
     @Override
+    public Optional<User> findByUsername(String username) {
+        return userRepository.findOne(where(UserSpec.usernameIsEqualTo(username)));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     @Transactional
     public User save(UserCreate create) {
         User user = businessLayerMapper.mapUserCreateToUser(create);
