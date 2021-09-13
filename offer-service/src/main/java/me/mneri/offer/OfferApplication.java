@@ -24,6 +24,7 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
 
 import java.time.Clock;
 
@@ -35,6 +36,16 @@ import java.time.Clock;
 @EnableEurekaClient
 @SpringBootApplication
 public class OfferApplication {
+    /**
+     * Application {@link AnonymousAuthenticationFilter}.
+     *
+     * @return The anonymous authentication filter.
+     */
+    @Bean
+    protected AnonymousAuthenticationFilter anonymousAuthenticationFilter() {
+        return new AnonymousAuthenticationFilter(AnonymousAuthenticationFilter.class.getCanonicalName());
+    }
+
     /**
      * Application {@link Clock}.
      *

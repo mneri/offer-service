@@ -30,6 +30,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
@@ -42,6 +43,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+    private final AnonymousAuthenticationFilter anonymousAuthenticationFilter;
+
     private final JWTAuthenticationFilter jwtAuthenticationFilter;
 
     private final PasswordEncoder passwordEncoder;
@@ -59,6 +62,7 @@ class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                     .and()
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(anonymousAuthenticationFilter, JWTAuthenticationFilter.class)
                 .csrf()
                     .disable()
                 .authorizeRequests()
