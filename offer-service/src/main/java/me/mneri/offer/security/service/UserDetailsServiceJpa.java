@@ -159,9 +159,7 @@ class UserDetailsServiceJpa implements UserDetailsService {
                 .findOne(where(UserSpec.usernameIsEqualTo(username)))
                 .orElseThrow(() -> new UsernameNotFoundException(username));
 
-        List<Authority> authorities = authorityRepository
-                .findAll(where(AuthoritySpec.isEnabled())
-                        .and(AuthoritySpec.ownerIdIsEqualTo(user.getId())));
+        List<Authority> authorities = authorityRepository.findAll(AuthoritySpec.ownerIdIsEqualTo(user.getId()));
 
         UserDetailsImpl userDetails = authMapper.mapUserToUserDetailsImpl(user);
         userDetails.setAuthorities(Collections.unmodifiableList(authMapper.mapAuthorityToGrantedAuthorityImpl(authorities)));

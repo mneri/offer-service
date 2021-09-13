@@ -48,7 +48,6 @@ class AuthorityServiceJpa implements AuthorityService {
     @Override
     @Transactional
     public List<Authority> findAllByOwnerId(UUID userId) {
-        return authorityRepository
-                .findAll(where(AuthoritySpec.isEnabled()).and(AuthoritySpec.ownerIdIsEqualTo(userId)));
+        return authorityRepository.findAll(where(AuthoritySpec.ownerIdIsEqualTo(userId)));
     }
 }

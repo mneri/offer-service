@@ -38,10 +38,6 @@ import java.util.UUID;
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class AuthoritySpec {
-    public static Specification<Authority> isEnabled() {
-        return (root, query, builder) -> builder.equal(root.get(Authority_.enabled), true);
-    }
-
     public static Specification<Authority> ownerIdIsEqualTo(UUID userId) {
         return (root, query, builder) -> {
             Subquery<UUID> subQuery = query.subquery(UUID.class);

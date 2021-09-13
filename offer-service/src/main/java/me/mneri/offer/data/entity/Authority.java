@@ -24,12 +24,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.data.annotation.Immutable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
@@ -43,28 +43,17 @@ import java.util.UUID;
 @Entity
 @EqualsAndHashCode(of = "id")
 @Getter
+@Immutable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Setter
+@Setter(AccessLevel.PROTECTED)
 @Table(name = "authority")
 @ToString
 public class Authority {
     @Id
     @NotNull
-    @Setter(AccessLevel.PROTECTED)
     private UUID id;
 
     @Column
     @NotNull
-    @Setter(AccessLevel.PROTECTED)
     private String name;
-
-    @Column
-    private boolean enabled;
-
-    @Column
-    @Getter(AccessLevel.PROTECTED)
-    @Setter(AccessLevel.PROTECTED)
-    @ToString.Exclude
-    @Version
-    private long version;
 }

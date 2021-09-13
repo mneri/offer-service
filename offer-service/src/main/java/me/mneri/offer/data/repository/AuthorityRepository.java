@@ -20,7 +20,6 @@ package me.mneri.offer.data.repository;
 
 import me.mneri.offer.data.entity.Authority;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -30,5 +29,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 @SuppressWarnings("unused")
-public interface AuthorityRepository extends CrudRepository<Authority, String>, JpaSpecificationExecutor<Authority> {
+public interface AuthorityRepository extends ReadOnlyRepository<Authority, String>, JpaSpecificationExecutor<Authority> {
 }
